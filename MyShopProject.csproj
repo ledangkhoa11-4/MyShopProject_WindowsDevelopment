@@ -20,10 +20,14 @@
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
   </ApplicationDefinition>
+  <Page Include="AddProductWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="MainWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
   </Page>
+  <Compile Include="AddProductWindow.xaml.cs" />
   <Compile Include="App.xaml.cs">
     <DependentUpon>App.xaml</DependentUpon>
     <SubType>Code</SubType>
@@ -43,6 +47,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Folder Include="Fonts\" />
     <Folder Include="Images\" />
   </ItemGroup>
 

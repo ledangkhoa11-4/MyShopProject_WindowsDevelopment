@@ -4,7 +4,8 @@
                 xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                 Title="MainWindow" Height="1000" Width="1198"
                 xmlns:local="clr-namespace:MyShopProject"
-        SizeToContent="WidthAndHeight">
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <local:Base64ToBitmapConverter x:Key="bitmapConverter"/>
@@ -12,35 +13,89 @@
     </Window.Resources>
     <Canvas Height="1000" Width="1198" >
         <telerik:RadTabControl Height="968" Width="1199" SelectionChanged="tabChanged" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" >
-            <telerik:RadTabItem x:Name="RadTabItem4" Header="Dashboard"/>
-            <telerik:RadTabItem x:Name="RadTabItem5" Header="Category" >
-                <Canvas Margin="0,0,0,-372" >
+            <telerik:RadTabItem x:Name="RadTabItem4" >
+                <telerik:RadTabItem.Header>
+                    <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Dashboard</TextBlock>
+                </telerik:RadTabItem.Header>
+                <Canvas>
+
+
+                </Canvas>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem x:Name="RadTabItem5" >
+                <telerik:RadTabItem.Header>
+                    <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Categories</TextBlock>
+                </telerik:RadTabItem.Header>
+                <Canvas Margin="0,0,0,0" >
+                    <Canvas.Resources>
+                        <ResourceDictionary>
+                            <telerik:FontFamiliesProvider x:Key="FontFamiliesProvider"/>
+                            <telerik:EditingContextTypeToBoolConverter x:Key="EditingContextTypeToBoolConverter"/>
+                            <telerik:IconSources x:Key="IconSources" DarkBasePath="pack://application:,,,/Telerik.Windows.Controls.RichTextBox;component/RichTextBoxUI/Images/MSOffice/Dark/" LightBasePath="pack://application:,,,/Telerik.Windows.Controls.RichTextBox;component/RichTextBoxUI/Images/MSOffice/" ModernBasePath="pack://application:,,,/Telerik.Windows.Controls.RichTextBox;component/RichTextBoxUI/Images/MSOffice/Modern/"/>
+                            <telerik:IconSources x:Key="ShapesIconSources" DarkBasePath="pack://application:,,,/Telerik.Windows.Controls.RichTextBox;component/RichTextBoxUI/Images/Shapes/Dark/" LightBasePath="pack://application:,,,/Telerik.Windows.Controls.RichTextBox;component/RichTextBoxUI/Images/Shapes/Light/" ModernBasePath="pack://application:,,,/Telerik.Windows.Controls.RichTextBox;component/RichTextBoxUI/Images/Shapes/Light/"/>
+                        </ResourceDictionary>
+                    </Canvas.Resources>
                     <telerik:RadDataForm 
                         ItemsSource="{Binding listCat}"
                         x:Name ="currentCat"
-                        telerik:StyleManager.Theme="Office2019" 
-                        Height="388" Width="1178" Canvas.Top="538" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" DeletingItem="beforeDelCat" Canvas.Left="11"/>
+                        telerik:StyleManager.Theme="Material" 
+                        Height="388" Width="1178" Canvas.Top="538" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" DeletingItem="beforeDelCat" Canvas.Left="11">
+
+
+                    </telerik:RadDataForm>
 
                     <telerik:RadGridView 
+                        RowLoaded ="CateTableLoaded"
                         ItemsSource="{Binding listCat}"
                         ShowGroupPanel="False"
                         x:Name="listCategory" 
-                        telerik:StyleManager.Theme="Office2019" 
+                        telerik:StyleManager.Theme="Material" 
                         HorizontalAlignment="Center" Canvas.Top="10" 
                         VerticalAlignment="Center" Width="1178" Height="458" 
                         Canvas.Left="11" RowHeight="35"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent"/>
                     <telerik:HtmlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
+                    <telerik:XamlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
+                    <Grid x:Name="radRichTextBoxParent">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                    <telerik:XamlDataProvider RichTextBox="{Binding ElementName=radRichTextBox1}"/>
+                    <Grid x:Name="radRichTextBoxParent2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52*"/>
+                            <ColumnDefinition Width="427*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                    </Grid>
 
                 </Canvas>
             </telerik:RadTabItem>
-            <telerik:RadTabItem x:Name="RadTabItem6" Header="Product">
+            <telerik:RadTabItem x:Name="RadTabItem6" >
+                <telerik:RadTabItem.Header>
+                    <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Products</TextBlock>
+                </telerik:RadTabItem.Header>
                 <Grid Background="#00000000" Margin="0,0,0,-356">
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="155*"/>
                         <ColumnDefinition Width="35*"/>
-                        <ColumnDefinition Width="1009*"/>
+                        <ColumnDefinition Width="98*"/>
+                        <ColumnDefinition Width="911*"/>
                     </Grid.ColumnDefinitions>
                     <telerik:RadCardView 
+                        
+                        IsHitTestVisible="True"
+                        PreviewMouseRightButtonDown="rightButtonDownRadCard"
+                        IsFilteringAllowed="False"
+                        CanUserSortDescriptors="False" 
+                        ShowGroupPanel="False"
                         ItemsSource="{Binding listBook}"
                          CardHeaderBinding="{Binding Name}"
                         IsReadOnly ="True"
@@ -49,7 +104,13 @@
                         HorizontalAlignment="Left" 
                         VerticalAlignment="Top"
                         AutoGenerateDataFieldDescriptors="False"
-                        telerik:StyleManager.Theme="Office2019" Grid.ColumnSpan="3" Width="1178" Height="577" Margin="10,10,0,0">
+                        telerik:StyleManager.Theme="Office2019" Grid.ColumnSpan="4" Width="1178" Height="753" Margin="11,76,0,0" Filtering="prepareFilter" MouseDoubleClick="editBookEvent">
+                        <telerik:RadContextMenu.ContextMenu >
+                            <telerik:RadContextMenu telerik:StyleManager.Theme="Crystal" x:Name="contextMenu" MinWidth="120">
+                                <telerik:RadMenuItem Header="Edit"/>
+                                <telerik:RadMenuItem Header="Delete" />
+                            </telerik:RadContextMenu>
+                        </telerik:RadContextMenu.ContextMenu>
 
                         <telerik:RadCardView.DataFieldDescriptors>
                             <telerik:CardDataFieldDescriptor Header="Book cover:" DataMemberBinding="{Binding ImageBase64}">
@@ -93,8 +154,60 @@
                     </telerik:RadCardView>
                     <telerik:RadDataPager 
                         Source="{Binding listBook}"
-                        DisplayMode="All" HorizontalAlignment="Left" Margin="11,592,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="45" Width="1178" PageSize="1" Grid.ColumnSpan="3"/>
+                        DisplayMode="All" HorizontalAlignment="Left" Margin="11,829,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="45" Width="1178" PageSize="1" Grid.ColumnSpan="4"/>
+                    <telerik:RadRibbonDropDownButton KeepOpen="True" Grid.Column="3" Height="28" IsOpen="False" Margin="798,76,11,0" Text="Filter by: 
+                                                     " VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5">
+
+                        <telerik:RadRibbonDropDownButton.DropDownContent >
+                            <ListBox telerik:StyleManager.Theme="Material">
+                                <ListBoxItem >
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Price:</TextBlock>
+                                        <telerik:RadSlider  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" telerik:StyleManager.Theme="Material" Minimum="0" Maximum="300">
+                                            <telerik:RadSlider.Thumbs>
+                                                <telerik:RangeSliderThumb RangeStart="0" RangeEnd="100" />
+                                            </telerik:RadSlider.Thumbs>
+                                        </telerik:RadSlider>
+                                    </StackPanel>
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <telerik:RadRibbonDropDownButton Margin="-18 0 0 0" telerik:StyleManager.Theme="Material"  Text="Category name" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                        <telerik:RadRibbonDropDownButton.DropDownContent>
+                                            <ListBox telerik:StyleManager.Theme="Material" MinWidth="200" HorizontalAlignment="Right">
+                                                <ListBoxItem >
+                                                    <StackPanel Orientation="Vertical">
+                                                        <CheckBox Content="Kinh dị" Margin="0 0 0 15"></CheckBox>
+                                                        <CheckBox Content="Kinh dị" Margin="0 0 0 15"></CheckBox>
+                                                        <CheckBox Content="Kinh dị" Margin="0 0 0 15"></CheckBox>
+                                                    </StackPanel>
+                                                </ListBoxItem>
+                                            </ListBox>
+                                        </telerik:RadRibbonDropDownButton.DropDownContent>
+                                    </telerik:RadRibbonDropDownButton>
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <telerik:RadButton Grid.Column="2" Content="Apply" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
+                                </ListBoxItem>
+                            </ListBox>
+                        </telerik:RadRibbonDropDownButton.DropDownContent>
+                    </telerik:RadRibbonDropDownButton>
+                    <telerik:RadWatermarkTextBox HorizontalAlignment="Left" Margin="10,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" WatermarkContent="Search by name" Width="522" telerik:StyleManager.Theme="Material" Grid.ColumnSpan="4"/>
+                    <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="249,20,0,0" Text="Search" VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5"/>
+                    <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="722,20,0,0" Text="Add new product" VerticalAlignment="Top" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5"/>
+
+
                 </Grid>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem  >
+                <telerik:RadTabItem.Header>
+                    <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Orders</TextBlock>
+                </telerik:RadTabItem.Header>
+                <Canvas>
+                    <telerik:RadDatePicker Canvas.Left="265" Canvas.Top="177" telerik:StyleManager.Theme="Material" DisplayDateStart="2023-01-01"/>
+
+
+
+                </Canvas>
             </telerik:RadTabItem>
 
         </telerik:RadTabControl>

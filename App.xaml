@@ -4,10 +4,11 @@
     xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
     StartupUri="MainWindow.xaml">
     <Application.Resources>
-      <ResourceDictionary>
-          <ResourceDictionary.MergedDictionaries>
-              
-          </ResourceDictionary.MergedDictionaries>
-      </ResourceDictionary>
+        
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="FontFamily" Value="/Font/#Lato" />
+            </Style>
+        
+        
     </Application.Resources>
 </Application>
