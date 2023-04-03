@@ -1,0 +1,99 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyShopProject"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.AddOrderWindow"
+        mc:Ignorable="d"
+        Title="AddOrderWindow" Height="600" Width="900
+    ">
+    <Window.Resources>
+        <local:Base64ToBitmapConverter x:Key="bitmapConverter"/>
+        <local:PriceConverter x:Key="priceConverter"/>
+    </Window.Resources>
+    <Canvas>
+
+        <telerik:RadMultiColumnComboBox 
+            DisplayMemberPath="Name" 
+            Canvas.Left="22" Canvas.Top="147" 
+            telerik:StyleManager.Theme="Fluent" 
+            HorizontalAlignment="Left" VerticalAlignment="Top" 
+            Width="322" DropDownMinWidth="500" 
+            SelectionMode="Multiple"
+            AutoCompleteMode="Search" MatchCase="False" 
+            >
+            <telerik:RadMultiColumnComboBox.ItemsSourceProvider>
+                <telerik:GridViewItemsSourceProvider ItemsSource="{Binding listBook}" AutoGenerateColumns="false">
+                    <telerik:GridViewItemsSourceProvider.RowStyle>
+                        <Style TargetType="telerik:GridViewRow">
+                            <Setter Property="IsEnabled" Value="{Binding IsOnStock}">
+                            </Setter>
+                        </Style>
+                    </telerik:GridViewItemsSourceProvider.RowStyle>
+
+                    <telerik:GridViewItemsSourceProvider.Columns>
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Id}" />
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" IsReadOnly="True" />
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding QuantityStock}" IsReadOnly="True" />
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding QuantityOrder}" IsReadOnly="True" />
+                        <telerik:GridViewDataColumn>
+
+                        </telerik:GridViewDataColumn>
+
+                    </telerik:GridViewItemsSourceProvider.Columns>
+                </telerik:GridViewItemsSourceProvider>
+            </telerik:RadMultiColumnComboBox.ItemsSourceProvider>
+
+
+        </telerik:RadMultiColumnComboBox>
+
+
+
+
+
+
+
+
+        <GroupBox Height="504" Canvas.Left="474" Canvas.Top="10" Width="402" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <GroupBox.Header>
+                <TextBlock FontSize="16" FontWeight="Bold" >
+                    Shopping cart
+                </TextBlock>
+            </GroupBox.Header>
+            <Canvas>
+                <ListView ItemsSource="{Binding listBook}"
+                    Height="458" Width="372" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Canvas Margin="-5 0 0 0" Height="131" Background="#F0F0F0" Width="369" Canvas.Left="310" Canvas.Top="161" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" Canvas.Left="102" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">ID:</TextBlock>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Id}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Canvas.Left="102" Canvas.Top="29" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Name:</TextBlock>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Name}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Canvas.Left="102" Canvas.Top="48">
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Stock:</TextBlock>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Text="{Binding QuantityStock}"></TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Canvas.Left="102" Canvas.Top="67" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Total price:</TextBlock>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Text="{Binding SellingPrice, Converter={StaticResource priceConverter}}"></TextBlock>
+                                </StackPanel>
+                                <telerik:RadNumericUpDown Value="{Binding QuantityStock}" Minimum="0" Maximum="{Binding QuantityStock}" Canvas.Left="176" Canvas.Top="98" Width="164" HorizontalAlignment="Center" VerticalAlignment="Top" telerik:StyleManager.Theme="Windows8" Background="#FFE8E5E5" Height="22" IsInteger="True"/>
+                                <TextBlock Canvas.Left="102" Canvas.Top="102" HorizontalAlignment="Center" VerticalAlignment="Top">Quantity:</TextBlock>
+                                <Image Stretch="Fill" d:Source="Images/design_book.jpg" Source="{Binding ImageBase64, Converter={StaticResource bitmapConverter}}" Height="113" Width="82" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center"></Image>
+                            </Canvas>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Canvas>
+        </GroupBox>
+
+    </Canvas>
+
+
+</Window>

@@ -133,7 +133,8 @@
                             <telerik:CardDataFieldDescriptor Header="Published year:" DataMemberBinding="{Binding PublishedYear}"/>
                             <telerik:CardDataFieldDescriptor Header="Purchase price:" DataMemberBinding="{Binding PurchasePrice , Converter={StaticResource priceConverter}}"/>
                             <telerik:CardDataFieldDescriptor Header="Selling price:" DataMemberBinding="{Binding SellingPrice, Converter={StaticResource priceConverter}}"/>
-                            <telerik:CardDataFieldDescriptor Header="Quantity:" DataMemberBinding="{Binding Quantity}"/>
+                            <telerik:CardDataFieldDescriptor Header="Quantity on Stock:" DataMemberBinding="{Binding QuantityStock}"/>
+                            <telerik:CardDataFieldDescriptor Header="Quantity on Order:" DataMemberBinding="{Binding QuantityOrder}"/>
                             <telerik:CardDataFieldDescriptor Header="Description:" DataMemberBinding="{Binding Description}">
                                 <telerik:CardDataFieldDescriptor.ReadOnlyTemplate>
                                     <DataTemplate>
@@ -193,7 +194,7 @@
                     </telerik:RadRibbonDropDownButton>
                     <telerik:RadWatermarkTextBox HorizontalAlignment="Left" Margin="10,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" WatermarkContent="Search by name" Width="522" telerik:StyleManager.Theme="Material" Grid.ColumnSpan="4"/>
                     <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="249,20,0,0" Text="Search" VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5"/>
-                    <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="722,20,0,0" Text="Add new product" VerticalAlignment="Top" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5"/>
+                    <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="722,20,0,0" Text="Add new product" VerticalAlignment="Top" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newProductBtnClick"/>
 
 
                 </Grid>

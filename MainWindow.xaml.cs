@@ -34,12 +34,11 @@ namespace MyShopProject
 
     public partial class MainWindow : Window
     {
-        public MainViewModel modelBinding { get; set; }
+        public static MainViewModel modelBinding { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            var tmp = new AddProductWindow();
-            tmp.Show();
+
             modelBinding = new MainViewModel();
             Category cat = new Category() { Id = 1L, Name = "Comic", Description = "Xin chao" };
             Category cat2 = new Category() { Id = 2L, Name = "Romantic", Description = "Xin chao\nXinChao2" };
@@ -61,7 +60,7 @@ namespace MyShopProject
                 SellingPrice = 150000,
                 Author = "Nguyễn Nhật Ánh",
                 PublishedYear = 2018,
-                Quantity = 85,
+                QuantityStock = 85,
                 CatID = 3L,
                 Description = "Một cuốn sách để đời của Nguyệt Nhật Ánh về hành trình của tuổi trẻ hồn nhiên"
             };
@@ -74,9 +73,11 @@ namespace MyShopProject
                 SellingPrice = 150000,
                 Author = "Nguyễn Nhật Ánh",
                 PublishedYear = 2018,
-                Quantity = 85,
+                QuantityStock = 85,
+                QuantityOrder = 85,
                 CatID = 3L,
-                Description = "Một cuốn sách để đời của Nguyệt Nhật Ánh về hành trình của tuổi trẻ hồn nhiên"
+                Description = "Một cuốn sách để đời của Nguyệt Nhật Ánh về hành trình của tuổi trẻ hồn nhiên",
+                IsOnStock = false
             };
             Book book3 = new Book
             {
@@ -87,7 +88,7 @@ namespace MyShopProject
                 SellingPrice = 150000,
                 Author = "Nguyễn Nhật Ánh",
                 PublishedYear = 2018,
-                Quantity = 85,
+                QuantityStock = 85,
                 CatID = 3L,
                 Description = "Một cuốn sách để đời của Nguyệt Nhật Ánh về hành trình của tuổi trẻ hồn nhiên"
             };
@@ -100,12 +101,13 @@ namespace MyShopProject
      
 
             this.DataContext = modelBinding;
-
+            var tmp = new AddOrderWindow();
+            tmp.Show();
 
             //var id = 3L;
             //var searchedBook = modelBinding.listBook.FirstOrDefault(obj => obj.CatID == id);
             //MessageBox.Show(searchedBook.Name);
-           
+
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -264,7 +266,11 @@ namespace MyShopProject
 
 
         }
-      
 
+        private void newProductBtnClick(object sender, RoutedEventArgs e)
+        {
+            var tmp = new AddProductWindow();
+            tmp.ShowDialog();
+        }
     }
 }
