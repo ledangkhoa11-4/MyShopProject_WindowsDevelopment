@@ -202,12 +202,7 @@
                 <telerik:RadTabItem.Header>
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Orders</TextBlock>
                 </telerik:RadTabItem.Header>
-                <Canvas>
-                    <telerik:RadDatePicker Canvas.Left="265" Canvas.Top="177" telerik:StyleManager.Theme="Material" DisplayDateStart="2023-01-01"/>
-
-
-
-                </Canvas>
+                <Canvas/>
             </telerik:RadTabItem>
 
         </telerik:RadTabControl>
