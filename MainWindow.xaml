@@ -202,7 +202,9 @@
                 <telerik:RadTabItem.Header>
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Orders</TextBlock>
                 </telerik:RadTabItem.Header>
-                <Canvas/>
+                <Canvas>
+                    <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="1010" Canvas.Top="20" VerticalAlignment="Top"/>
+                </Canvas>
             </telerik:RadTabItem>
 
         </telerik:RadTabControl>

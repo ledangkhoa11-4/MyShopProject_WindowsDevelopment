@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,9 +8,10 @@ using Telerik.Windows.Rendering;
 
 namespace MyShopProject.DTO
 {
-    public class Book : INotifyDataChanged
+    public class Book : INotifyPropertyChanged
     {
-        public event EventHandler DataChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public string _id { get; set; }
         public string Name { get; set; }
         public string ImageBase64 { get; set; }
