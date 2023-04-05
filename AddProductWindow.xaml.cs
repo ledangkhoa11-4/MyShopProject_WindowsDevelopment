@@ -24,5 +24,14 @@ namespace MyShopProject
             InitializeComponent();
         }
 
+        private void RadRibbonButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Save_Product_Btn(object sender, RoutedEventArgs e)
+        {
+            //Write code here
+        }
     }
 }

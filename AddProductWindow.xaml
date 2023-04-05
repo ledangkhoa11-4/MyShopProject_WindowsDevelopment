@@ -58,6 +58,6 @@
                        Stretch="Fill" Canvas.Left="10" Canvas.Top="10"></Image>
             </Canvas>
         </GroupBox>
-        <telerik:RadRibbonButton Height="1" Canvas.Left="464" Text="Submit" Canvas.Top="271" Width="160" Background="#FFD0CCCC" telerik:StyleManager.Theme="Material" VerticalAlignment="Top" IsAutoSize="False" FontStyle="Italic" FontWeight="Bold"/>
+        <telerik:RadRibbonButton Height="1" Canvas.Left="464" Text="Submit" Canvas.Top="271" Width="160" Background="#FFD0CCCC" telerik:StyleManager.Theme="Material" VerticalAlignment="Top" IsAutoSize="False" FontStyle="Italic" FontWeight="Bold" Click="Save_Product_Btn"/>
     </Canvas>
 </Window>
