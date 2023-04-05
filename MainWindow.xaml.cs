@@ -13,6 +13,7 @@ using Category = MyShopProject.DTO.Category;
 using Book = MyShopProject.DTO.Book;
 using MyShopProject.BUS;
 using MyShopProject.DTO;
+using MyShopProject.DAO;
 
 namespace MyShopProject
 {
@@ -38,6 +39,8 @@ namespace MyShopProject
         {
             InitializeComponent();
             category_BUS = new Category_BUS();
+
+            /*HARD DATA*/
             modelBinding = new MainViewModel();
             Category a = new Category{
                 _id = "111qsdasdd",
@@ -263,7 +266,15 @@ namespace MyShopProject
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
         {
-
+            var testConn =  await API.testConnection();
+            if(testConn.Item1 == false)
+            {
+                MessageBox.Show(testConn.Item2 + "Application will close", "Error connect web service");
+                System.Windows.Application.Current.Shutdown();
+            }
+            
+            //var a = await category_BUS.getAllCategory();
+            //Debug.WriteLine(a.Count);
             //modelBinding.listCat = await category_BUS.getAllCategory();
             this.DataContext = modelBinding;
         }
