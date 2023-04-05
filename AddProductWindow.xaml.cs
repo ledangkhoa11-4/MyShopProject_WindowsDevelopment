@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyShopProject.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,9 +15,7 @@ using System.Windows.Shapes;
 
 namespace MyShopProject
 {
-    /// <summary>
-    /// Interaction logic for AddProductWindow.xaml
-    /// </summary>
+    
     public partial class AddProductWindow : Window
     {
         public AddProductWindow()

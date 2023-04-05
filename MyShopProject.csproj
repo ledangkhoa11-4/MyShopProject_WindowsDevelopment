@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="Telerik.UI.for.Wpf.60.Xaml" Version="2022.1.222" />
   </ItemGroup>
   
@@ -36,12 +37,17 @@
     <SubType>Code</SubType>
   </Compile>
   <Compile Include="Base64ToBitmapConverter.cs" />
-  <Compile Include="Category.cs" />
+  <Compile Include="BUS\Category_BUS.cs" />
+  <Compile Include="DAO\API.cs" />
+  <Compile Include="DAO\Category_DAO.cs" />
+  <Compile Include="DTO\Book.cs" />
+  <Compile Include="DTO\Category.cs" />
+  <Compile Include="DTO\DetailOrder.cs" />
+  <Compile Include="DTO\Order.cs" />
   <Compile Include="MainWindow.xaml.cs">
     <DependentUpon>MainWindow.xaml</DependentUpon>
     <SubType>Code</SubType>
   </Compile>
-  <Compile Include="Book.cs" />
   <Compile Include="PriceConverter.cs" />
 </ItemGroup>
   
