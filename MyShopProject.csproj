@@ -43,6 +43,7 @@
   <Compile Include="DTO\Book.cs" />
   <Compile Include="DTO\Category.cs" />
   <Compile Include="DTO\DetailOrder.cs" />
+  <Compile Include="DTO\Coupon.cs" />
   <Compile Include="DTO\Order.cs" />
   <Compile Include="MainWindow.xaml.cs">
     <DependentUpon>MainWindow.xaml</DependentUpon>
