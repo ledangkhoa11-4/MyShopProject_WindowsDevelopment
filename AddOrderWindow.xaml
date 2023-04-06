@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyShopProject"
+        xmlns:local="clr-namespace:MyShopProject.Converters"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.AddOrderWindow"
         mc:Ignorable="d"
         Title="AddOrderWindow" Height="576" Width="970"
@@ -112,28 +112,28 @@
                         <DataTemplate>
                             <Canvas Height="142" Background="#F0F0F0" Width="384" Canvas.Left="60" Canvas.Top="402" HorizontalAlignment="Center" VerticalAlignment="Top">
                                 <StackPanel DataContext="{Binding Book}" Orientation="Horizontal" Canvas.Left="102" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Name:</TextBlock>
-                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57"><Run Text="Name:"/></TextBlock>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Name}"/>
                                 </StackPanel>
                                 <StackPanel DataContext="{Binding Book}" Orientation="Horizontal" Canvas.Left="102" Canvas.Top="36" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Author:</TextBlock>
-                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Author}"></TextBlock>
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57"><Run Text="Author:"/></TextBlock>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Author}"/>
                                 </StackPanel>
                                 <StackPanel DataContext="{Binding Book}" Orientation="Horizontal" Canvas.Left="102" Canvas.Top="62" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Stock:</TextBlock>
-                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Text="{Binding QuantityStock}"></TextBlock>
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57"><Run Text="Stock:"/></TextBlock>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" Text="{Binding QuantityStock}"/>
                                 </StackPanel>
                                 <StackPanel  Orientation="Horizontal" Canvas.Left="102" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top">
-                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Price:</TextBlock>
+                                    <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57"><Run Text="Price:"/></TextBlock>
                                     <TextBlock Canvas.Left="35" Canvas.Top="7" d:Text="500.000đ"  Text="{Binding Book.SellingPrice, Converter={StaticResource priceConverter}}"/>
                                 </StackPanel>
                                 <telerik:RadNumericUpDown Value="{Binding QuantityBuy}" Minimum="1" Maximum="{Binding Book.QuantityStock}" Canvas.Left="177" Canvas.Top="111" Width="53" HorizontalAlignment="Left" VerticalAlignment="Center" telerik:StyleManager.Theme="Windows8" Background="#FFE8E5E5" Height="6" IsInteger="True" />
-                                <TextBlock Canvas.Left="102" Canvas.Top="115" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.675,0.892">Quantity:</TextBlock>
+                                <TextBlock Canvas.Left="102" Canvas.Top="115" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.675,0.892"><Run Text="Quantity:"/></TextBlock>
                                 <StackPanel DataContext="{Binding Book}" HorizontalAlignment="Center" Canvas.Left="5" Canvas.Top="5" VerticalAlignment="Center" Height="132">
                                     <Image Stretch="Fill" d:Source="Images/design_book.jpg" Source="{Binding ImageBase64, Converter={StaticResource bitmapConverter}}" Height="132" Width="86"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Canvas.Left="251" Canvas.Top="120" HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <TextBlock VerticalAlignment="Center" Canvas.Left="243" Canvas.Top="125" RenderTransformOrigin="0.675,0.892" HorizontalAlignment="Center"  FontWeight="Bold" Margin="0 0 10 0" FontStyle="Italic" FontSize="11">Total:</TextBlock>
+                                    <TextBlock VerticalAlignment="Center" Canvas.Left="243" Canvas.Top="125" RenderTransformOrigin="0.675,0.892" HorizontalAlignment="Center"  FontWeight="Bold" Margin="0 0 10 0" FontStyle="Italic" FontSize="11"><Run Text="Total:"/></TextBlock>
                                     <TextBlock Canvas.Left="280" Canvas.Top="118" RenderTransformOrigin="0.675,0.892" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" d:Text="99.999.999đ" Text="{Binding TotalPrice, Converter={StaticResource priceConverter}}" Foreground="#FFEE4D2D" FontStyle="Italic" FontSize="14"/>
                                 </StackPanel>
                             </Canvas>
@@ -148,6 +148,11 @@
             <TextBlock Text="{Binding newOrder.TotalPriceOrder, Converter={StaticResource priceConverter}}" VerticalAlignment="Center" Canvas.Left="114" TextWrapping="Wrap" d:Text="1.500.000đ" Canvas.Top="378" FontSize="20" FontWeight="Bold"  Foreground="#FFEE4D2D" FontStyle="Italic"/>
 
         </StackPanel>
+        <telerik:RadBusyIndicator x:Name="isLoadingIndicator" IsBusy="False" Background="Transparent" Canvas.Left="642" Canvas.Top="15" telerik:StyleManager.Theme="Office2013" Height="36" Width="282" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <telerik:RadBusyIndicator.BusyContent>
+                <TextBlock Foreground="#333" FontStyle="Italic"  Text="We are loading book info..." />
+            </telerik:RadBusyIndicator.BusyContent>
+        </telerik:RadBusyIndicator>
 
     </Canvas>
 

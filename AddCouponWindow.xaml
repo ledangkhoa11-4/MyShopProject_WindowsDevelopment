@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyShopProject"
+        xmlns:local="clr-namespace:MyShopProject.Converters"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.AddCouponWindow"
         mc:Ignorable="d"
         Title="AddCouponWindow" Height="353" Width="826">
@@ -21,7 +21,7 @@
             </GroupBox.Header>
             <Canvas>
                 <telerik:Label FontSize="14" Content="Coupon name: " Canvas.Left="10" Canvas.Top="27" Height="36" HorizontalAlignment="Left" VerticalAlignment="Center" Width="130" />
-                <telerik:RadWatermarkTextBox Canvas.Left="145" TextWrapping="Wrap"  Canvas.Top="27" WatermarkContent="Eg. Flash sale 5/5" Width="223" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" Height="36" VerticalAlignment="Center"/>
+                <telerik:RadWatermarkTextBox Text="{Binding Name}" Canvas.Left="145" TextWrapping="Wrap"  Canvas.Top="27" WatermarkContent="Eg. Flash sale 5/5" Width="223" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" Height="36" VerticalAlignment="Center"/>
                 <telerik:Label FontSize="14" Content="Date added: " Canvas.Left="10" Canvas.Top="80" Height="36" Width="130" HorizontalAlignment="Left" VerticalAlignment="Center" />
                 <telerik:RadDatePicker x:Name="datePicked" Canvas.Left="145" Canvas.Top="76" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center" Width="223" IsEnabled="False" IsTooltipEnabled="False"/>
                 <telerik:Label FontSize="14" Content="Discount percent: " Canvas.Left="10" Canvas.Top="136" Height="36" Width="130" HorizontalAlignment="Center" VerticalAlignment="Top" />
@@ -52,7 +52,7 @@
             </Canvas>
 
         </Border>
-        <telerik:RadRibbonButton Height="NaN" Canvas.Left="671" Text="Create coupon" Canvas.Top="262" Width="119" telerik:StyleManager.Theme="Material" VerticalAlignment="Center" Background="#FFDADADA" CornerRadius="6,6,6,6"/>
+        <telerik:RadRibbonButton Click="createCouponClick" Height="NaN" Canvas.Left="671" Text="Create coupon" Canvas.Top="262" Width="119" telerik:StyleManager.Theme="Material" VerticalAlignment="Center" Background="#FFDADADA" CornerRadius="6,6,6,6"/>
 
     </Canvas>
 </Window>

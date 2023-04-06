@@ -6,13 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace MyShopProject
+namespace MyShopProject.Converters
 {
     public class PercentConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var stringNumber = value.ToString();
+            var doubleValue = (Double)value;
+            var stringNumber = doubleValue.ToString("0.##");
             return $"{stringNumber}%";
         }
 

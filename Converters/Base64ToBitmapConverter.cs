@@ -9,7 +9,7 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
-namespace MyShopProject
+namespace MyShopProject.Converters
 {
     public class Base64ToBitmapConverter : IValueConverter
     {
@@ -17,16 +17,23 @@ namespace MyShopProject
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var base64Str = value as string;
-            byte[] bytes = System.Convert.FromBase64String(base64Str);
-            using (MemoryStream stream = new MemoryStream(bytes))
+            try
             {
-                BitmapImage image = new BitmapImage();
-                image.BeginInit();
-                image.StreamSource = stream;
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.EndInit();
-                return image;
+                byte[] bytes = System.Convert.FromBase64String(base64Str);
+                using (MemoryStream stream = new MemoryStream(bytes))
+                {
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.StreamSource = stream;
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.EndInit();
+                    return image;
+                }
             }
+            catch(Exception ex) { 
+                return new BitmapImage();
+            }
+            
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

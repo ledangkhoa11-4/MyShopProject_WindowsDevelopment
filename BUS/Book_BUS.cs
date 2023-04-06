@@ -30,11 +30,18 @@ namespace MyShopProject.BUS
         }
         public async Task<String> getImageBook(string id)
         {
-            string base64Encoded = await book_DAO.getImageBook(id);
-            Debug.WriteLine(base64Encoded.Length);
-            base64Encoded= base64Encoded.Remove(0,1);
-            base64Encoded= base64Encoded.Remove(base64Encoded.Length-1,1);
-            return base64Encoded;
+            try
+            {
+                string base64Encoded = await book_DAO.getImageBook(id);
+                base64Encoded = base64Encoded.Remove(0, 1);
+                base64Encoded = base64Encoded.Remove(base64Encoded.Length - 1, 1);
+                return base64Encoded;
+            }
+            catch(Exception ex)
+            {
+                return "";
+            }
+            
         }
     }
 }

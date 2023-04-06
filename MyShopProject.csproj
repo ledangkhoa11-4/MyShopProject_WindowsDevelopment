@@ -40,12 +40,14 @@
     <DependentUpon>App.xaml</DependentUpon>
     <SubType>Code</SubType>
   </Compile>
-  <Compile Include="Base64ToBitmapConverter.cs" />
+  <Compile Include="BUS\Coupon_BUS.cs" />
+  <Compile Include="Converters\Base64ToBitmapConverter.cs" />
   <Compile Include="BUS\Book_BUS.cs" />
   <Compile Include="BUS\Category_BUS.cs" />
   <Compile Include="DAO\API.cs" />
   <Compile Include="DAO\Book_DAO.cs" />
   <Compile Include="DAO\Category_DAO.cs" />
+  <Compile Include="DAO\Coupon_DAO.cs" />
   <Compile Include="DTO\Book.cs" />
   <Compile Include="DTO\Category.cs" />
   <Compile Include="DTO\DetailOrder.cs" />
@@ -55,8 +57,8 @@
     <DependentUpon>MainWindow.xaml</DependentUpon>
     <SubType>Code</SubType>
   </Compile>
-  <Compile Include="PercentConverter.cs" />
-  <Compile Include="PriceConverter.cs" />
+  <Compile Include="Converters\PercentConverter.cs" />
+  <Compile Include="Converters\PriceConverter.cs" />
 </ItemGroup>
   
   <ItemGroup>

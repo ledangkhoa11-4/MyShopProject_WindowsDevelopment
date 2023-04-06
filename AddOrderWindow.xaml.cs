@@ -37,6 +37,7 @@ namespace MyShopProject
     {
         private Book_BUS _bookBus { get; set; }
         public AddOrderScreenModel modelBinding { get; set; }
+        private List<bool> isStillLoading = new List<bool>();
         public AddOrderWindow()
         {
             InitializeComponent();
@@ -57,17 +58,22 @@ namespace MyShopProject
         {
             var addedItems = e.AddedItems;
             var removedItems = e.RemovedItems;
-
             foreach (Book product in addedItems)
             {
-                var base64Image = await _bookBus.getImageBook(product._id);
-
-                product.ImageBase64 = $"{base64Image}";
                 this.modelBinding.newOrder.BookAndQuantity.Add(new DetailOrder
                 {
                     Book = product,
                     QuantityBuy = 1
                 });
+                isLoadingIndicator.IsBusy = true;
+                isStillLoading.Add(true);
+                var base64Image = await _bookBus.getImageBook(product._id);
+                isStillLoading.Remove(true);
+                if(isStillLoading.Count > 0 )
+                    isLoadingIndicator.IsBusy = true;
+                else isLoadingIndicator.IsBusy = false; ;
+                product.ImageBase64 = $"{base64Image}";
+
 
             }
             foreach (Book productRm in removedItems)
@@ -81,20 +87,25 @@ namespace MyShopProject
 
         private void addCouponToCartEvent(object sender, Telerik.Windows.Controls.SelectionChangeEventArgs e)
         {
+            foreach (Coupon c in e.RemovedItems)
+            {
+                if (this.modelBinding.newOrder.Coupon == c)
+                    this.modelBinding.newOrder.Coupon = null;
+            }
             foreach (Coupon c in e.AddedItems)
             {
                 this.modelBinding.newOrder.Coupon = c;
-            }
-            foreach (Coupon c in e.RemovedItems)
-            {
-                this.modelBinding.newOrder.Coupon = null;
             }
         }
 
         private void AddNewCoupon(object sender, RoutedEventArgs e)
         {
             var newCouponScreen = new AddCouponWindow();
-            newCouponScreen.ShowDialog();
+            if (newCouponScreen.ShowDialog() == true)
+            {
+                MainWindow.modelBinding.listCoupon.Add(newCouponScreen.newCoupon);
+            }
+            
         }
     }
 }
