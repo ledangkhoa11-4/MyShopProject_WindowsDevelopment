@@ -22,12 +22,14 @@ namespace MyShopProject
        public ObservableCollection<Category> listCat { get; set; } 
        public ObservableCollection<Book> listBook { get; set; } 
        public ObservableCollection<Order> listOrder { get; set; }
+        public ObservableCollection<Coupon> listCoupon { get; set; }
 
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
             listBook = new ObservableCollection<Book>();
             listOrder = new ObservableCollection<Order>();
+            listCoupon = new ObservableCollection<Coupon>();
         }
     }
 
@@ -94,6 +96,15 @@ namespace MyShopProject
             modelBinding.listBook.Add(book1);
             modelBinding.listBook.Add(book2);
             modelBinding.listBook.Add(book3);
+
+            Coupon cp1 = new Coupon
+            {
+                _id = "abc",
+                Name = "Flash sale 5-5",
+                DateAdd = DateTime.Now,
+                DiscountPercent = 25.5
+            };
+            modelBinding.listCoupon.Add(cp1);
 
         }
 

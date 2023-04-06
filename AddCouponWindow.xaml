@@ -1,0 +1,58 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyShopProject"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.AddCouponWindow"
+        mc:Ignorable="d"
+        Title="AddCouponWindow" Height="353" Width="826">
+    <Window.Resources>
+        <local:PercentConverter x:Key="percentConverter"/>
+
+    </Window.Resources>
+    <Canvas>
+
+        <GroupBox Height="222" Canvas.Left="10" Canvas.Top="42" Width="390" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <GroupBox.Header>
+                <TextBlock FontSize="16" FontWeight="Bold" >
+                    Coupon Information
+                </TextBlock>
+            </GroupBox.Header>
+            <Canvas>
+                <telerik:Label FontSize="14" Content="Coupon name: " Canvas.Left="10" Canvas.Top="27" Height="36" HorizontalAlignment="Left" VerticalAlignment="Center" Width="130" />
+                <telerik:RadWatermarkTextBox Canvas.Left="145" TextWrapping="Wrap"  Canvas.Top="27" WatermarkContent="Eg. Flash sale 5/5" Width="223" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" Height="36" VerticalAlignment="Center"/>
+                <telerik:Label FontSize="14" Content="Date added: " Canvas.Left="10" Canvas.Top="80" Height="36" Width="130" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <telerik:RadDatePicker x:Name="datePicked" Canvas.Left="145" Canvas.Top="76" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center" Width="223" IsEnabled="False" IsTooltipEnabled="False"/>
+                <telerik:Label FontSize="14" Content="Discount percent: " Canvas.Left="10" Canvas.Top="136" Height="36" Width="130" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                <telerik:RadNumericUpDown Value="{Binding DiscountPercent}" Minimum="1" Maximum="100" Canvas.Left="145" Canvas.Top="136" Width="223" HorizontalAlignment="Left" VerticalAlignment="Center" telerik:StyleManager.Theme="Material"/>
+
+            </Canvas>
+        </GroupBox>
+
+        <Border CornerRadius="20" Width="330" Height="192"  Canvas.Left="440" Canvas.Top="42" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0 0.5" StartPoint="1 0.5">
+                    <GradientStop Color="#0093E9" Offset="1.25"/>
+                    <GradientStop Color="#80D0C7"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Canvas>
+                <telerik:Label Content="G I F T   C A R D" Canvas.Left="19" Canvas.Top="20" Foreground="#FFE8E8E8" FontSize="20" FontFamily="Segoe UI Semibold">
+
+                </telerik:Label>
+                <Image Source="Images/gift.png" Height="128" Width="115" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="215" Stretch="UniformToFill" Canvas.Top="-10"/>
+                <TextBlock  Canvas.Left="22" Canvas.Top="96" Foreground="White" FontSize="36" FontWeight="Bold">
+                    <Run Text="{Binding DiscountPercent, Converter={StaticResource percentConverter}}"></Run>
+                    <Run>OFF</Run>
+                </TextBlock>
+                <TextBlock Text="All Purchase" Canvas.Left="22" Canvas.Top="139" Foreground="White" FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Text="{Binding DateAdd}" Canvas.Left="243" Canvas.Top="164" Foreground="White" FontSize="15" HorizontalAlignment="Left" VerticalAlignment="Top" FontStyle="Italic"/>
+
+            </Canvas>
+
+        </Border>
+        <telerik:RadRibbonButton Height="NaN" Canvas.Left="671" Text="Create coupon" Canvas.Top="262" Width="119" telerik:StyleManager.Theme="Material" VerticalAlignment="Center" Background="#FFDADADA" CornerRadius="6,6,6,6"/>
+
+    </Canvas>
+</Window>

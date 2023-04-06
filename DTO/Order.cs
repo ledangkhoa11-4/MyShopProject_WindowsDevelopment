@@ -37,7 +37,17 @@ namespace MyShopProject.DTO
         
         public DateTime PurchaseDate { get; set; } = DateTime.Now;
         public string Customer { get; set; } = "";
-        public Coupon Coupon { get; set; } = null;
+        private Coupon _coupon = null;
+        public Coupon Coupon { get
+            {
+                return _coupon;
+            }
+            set
+            {
+                _coupon = value;
+                UpdateTotalPrice();
+            }
+        }
         public int TotalPriceOrder { get; set; } = 0;
 
         public Order()
@@ -79,6 +89,11 @@ namespace MyShopProject.DTO
             foreach (DetailOrder item in _bookAndQuantity)
             {
                 total += item.TotalPrice;
+            }
+            if(this.Coupon!= null)
+            {
+                var discountPrice = total*Coupon.DiscountPercent/100.0;
+                total = total - Convert.ToInt32(discountPrice);
             }
             TotalPriceOrder = total;
         }

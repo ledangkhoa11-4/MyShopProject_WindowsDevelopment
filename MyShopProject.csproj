@@ -20,6 +20,9 @@
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
   </ApplicationDefinition>
+  <Page Include="AddCouponWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="AddOrderWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
@@ -30,6 +33,7 @@
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
   </Page>
+  <Compile Include="AddCouponWindow.xaml.cs" />
   <Compile Include="AddOrderWindow.xaml.cs" />
   <Compile Include="AddProductWindow.xaml.cs" />
   <Compile Include="App.xaml.cs">
@@ -37,8 +41,10 @@
     <SubType>Code</SubType>
   </Compile>
   <Compile Include="Base64ToBitmapConverter.cs" />
+  <Compile Include="BUS\Book_BUS.cs" />
   <Compile Include="BUS\Category_BUS.cs" />
   <Compile Include="DAO\API.cs" />
+  <Compile Include="DAO\Book_DAO.cs" />
   <Compile Include="DAO\Category_DAO.cs" />
   <Compile Include="DTO\Book.cs" />
   <Compile Include="DTO\Category.cs" />
@@ -49,8 +55,13 @@
     <DependentUpon>MainWindow.xaml</DependentUpon>
     <SubType>Code</SubType>
   </Compile>
+  <Compile Include="PercentConverter.cs" />
   <Compile Include="PriceConverter.cs" />
 </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Images\gift.png" />
+  </ItemGroup>
   
   <ItemGroup>
     <None Include="app.manifest" />
@@ -58,7 +69,6 @@
   
   <ItemGroup>
     <Folder Include="Fonts\" />
-    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>

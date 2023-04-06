@@ -12,15 +12,15 @@
     <Window.Resources>
         <local:Base64ToBitmapConverter x:Key="bitmapConverter"/>
         <local:PriceConverter x:Key="priceConverter"/>
-
+        <local:PercentConverter x:Key="percentConverter"/>
 
     </Window.Resources>
     <Canvas>
 
-        <telerik:RadRibbonButton Height="1" Canvas.Left="320" Text="Create Order" Canvas.Top="361" Width="160" Background="#FFD0CCCC" telerik:StyleManager.Theme="Material" VerticalAlignment="Top" IsAutoSize="False" FontStyle="Italic" FontWeight="Bold"/>
+        <telerik:RadRibbonButton Height="1" Canvas.Left="318" Text="Create Order" Canvas.Top="366" Width="160" Background="#FFD0CCCC" telerik:StyleManager.Theme="Material" VerticalAlignment="Center" IsAutoSize="False" FontStyle="Italic" FontWeight="Bold" CornerRadius="6,6,6,6"/>
 
 
-        <GroupBox Height="293" Canvas.Left="10" Canvas.Top="20" Width="468" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <GroupBox Height="298" Canvas.Left="10" Canvas.Top="20" Width="468" HorizontalAlignment="Center" VerticalAlignment="Top">
             <GroupBox.Header>
                 <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding test}" >
                     Detail Order
@@ -34,10 +34,10 @@
                 <telerik:Label FontSize="14" Content="Products: " Canvas.Left="10" Canvas.Top="174" Height="36" Width="152" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <telerik:RadMultiColumnComboBox 
                     DisplayMemberPath="Name" 
-                    Canvas.Left="167" Canvas.Top="178" 
+                    Canvas.Left="10" Canvas.Top="215" 
                     telerik:StyleManager.Theme="Fluent" 
-                    HorizontalAlignment="Left" VerticalAlignment="Top" 
-                    Width="266" DropDownMinWidth="500" 
+                    HorizontalAlignment="Center" VerticalAlignment="Center" 
+                    Width="423" DropDownMinWidth="500" 
                     SelectionMode="Multiple"
                     AutoCompleteMode="Search" MatchCase="False" SelectionChanged="addProductToCartEvent">
                     <telerik:RadMultiColumnComboBox.ItemsSourceProvider>
@@ -63,28 +63,23 @@
 
 
                 </telerik:RadMultiColumnComboBox>
-                <telerik:Label FontSize="14" Content="Coupon: " Canvas.Left="10" Canvas.Top="127" Height="36" Width="152" HorizontalAlignment="Center" VerticalAlignment="Top" />
+                <telerik:Label Content="Coupon" FontSize="14" Canvas.Left="10" Canvas.Top="127" Height="36" Width="152" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
                 <telerik:RadMultiColumnComboBox 
                     DisplayMemberPath="Name" 
                     Canvas.Left="167" Canvas.Top="131" 
                     telerik:StyleManager.Theme="Fluent" 
                     Width="266" DropDownMinWidth="500" 
                     SelectionMode="Single"
+                    CloseDropDownAfterSelectionInput="True"
                     AutoCompleteMode="Search" MatchCase="False" 
-            HorizontalAlignment="Center" VerticalAlignment="Center" >
-                    <telerik:RadMultiColumnComboBox.ItemsSourceProvider>
-                        <telerik:GridViewItemsSourceProvider ItemsSource="{Binding listBook}" AutoGenerateColumns="false">
-                            <telerik:GridViewItemsSourceProvider.RowStyle>
-                                <Style TargetType="{x:Type telerik:GridViewRow}">
-                                    <Setter Property="IsEnabled" Value="{Binding IsOnStock}"/>
-                                </Style>
-                            </telerik:GridViewItemsSourceProvider.RowStyle>
+            HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="addCouponToCartEvent" >
 
+                    <telerik:RadMultiColumnComboBox.ItemsSourceProvider>
+                        <telerik:GridViewItemsSourceProvider ItemsSource="{Binding listAllCoupon}" AutoGenerateColumns="false">
                             <telerik:GridViewItemsSourceProvider.Columns>
-                                <telerik:GridViewDataColumn DataMemberBinding="{Binding Id}" />
                                 <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" IsReadOnly="True" />
-                                <telerik:GridViewDataColumn DataMemberBinding="{Binding QuantityStock}" IsReadOnly="True" />
-                                <telerik:GridViewDataColumn DataMemberBinding="{Binding QuantityOrder}" IsReadOnly="True" />
+                                <telerik:GridViewDataColumn DataMemberBinding="{Binding DiscountPercent, Converter = {StaticResource percentConverter}}" IsReadOnly="True" />
                                 <telerik:GridViewDataColumn/>
 
                             </telerik:GridViewItemsSourceProvider.Columns>
@@ -93,6 +88,7 @@
 
 
                 </telerik:RadMultiColumnComboBox>
+                <telerik:RadButton Click="AddNewCoupon" Content="Add Coupon" Height="28" Canvas.Left="353" Canvas.Top="164" Width="80" telerik:StyleManager.Theme="Office2019" CornerRadius="6,6,6,6"/>
             </Canvas>
         </GroupBox>
 
@@ -107,9 +103,14 @@
             <Canvas>
                 <ListView  ItemsSource="{Binding newOrder.BookAndQuantity}"
                     Height="458" Width="398" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Margin" Value="0, 5, 0, 2"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Canvas Height="142" Background="#F0F0F0" Width="381" Canvas.Left="60" Canvas.Top="402" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Canvas Height="142" Background="#F0F0F0" Width="384" Canvas.Left="60" Canvas.Top="402" HorizontalAlignment="Center" VerticalAlignment="Top">
                                 <StackPanel DataContext="{Binding Book}" Orientation="Horizontal" Canvas.Left="102" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57">Name:</TextBlock>
                                     <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Name}"></TextBlock>
@@ -142,7 +143,7 @@
 
             </Canvas>
         </GroupBox>
-        <StackPanel Orientation="Horizontal" Canvas.Left="309" Canvas.Top="318" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <StackPanel Orientation="Horizontal" Canvas.Left="309" Canvas.Top="323" HorizontalAlignment="Center" VerticalAlignment="Top">
             <telerik:Label VerticalAlignment="Center" Content="Total: " Canvas.Left="43" Canvas.Top="372" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman" FontWeight="Bold" FontSize="16"/>
             <TextBlock Text="{Binding newOrder.TotalPriceOrder, Converter={StaticResource priceConverter}}" VerticalAlignment="Center" Canvas.Left="114" TextWrapping="Wrap" d:Text="1.500.000đ" Canvas.Top="378" FontSize="20" FontWeight="Bold"  Foreground="#FFEE4D2D" FontStyle="Italic"/>
 
