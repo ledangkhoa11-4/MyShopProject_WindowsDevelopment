@@ -53,11 +53,13 @@
   <Compile Include="BUS\Account_BUS.cs" />
   <Compile Include="BUS\Category_BUS.cs" />
   <Compile Include="DAO\Account_DAO.cs" />
+  <Compile Include="BUS\Product_BUS.cs" />
   <Compile Include="DAO\API.cs" />
   <Compile Include="DAO\Book_DAO.cs" />
   <Compile Include="DAO\Category_DAO.cs" />
   <Compile Include="DAO\Coupon_DAO.cs" />
   <Compile Include="DTO\Account.cs" />
+  <Compile Include="DAO\Product_DAO.cs" />
   <Compile Include="DTO\Book.cs" />
   <Compile Include="DTO\Category.cs" />
   <Compile Include="DTO\DetailOrder.cs" />
