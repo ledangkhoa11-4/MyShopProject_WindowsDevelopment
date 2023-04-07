@@ -11,19 +11,15 @@ namespace MyShopProject.DAO
 {
     class Account_DAO
     {
-        private API api;
-        public Account_DAO()
-        {
-            this.api = new API("http://127.0.0.1:5000");
-        }
+       
         public async Task<Account?> getAccount(string username)
         {
-            var json = await api.getMethod($"/account/{username}");
+            var json = await API.getMethod($"/account/{username}");
             var account = JsonConvert.DeserializeObject<Account>(json);
             return account;
         }
         public async Task<Boolean> addAccount(Account account)
-        {
+        {// /account đâu?  //c ái n ày xem b ên coupon cua t sua lai no dang post len 127.0.0.1 roi
             string http = "http://127.0.0.1:5000";
             var content = new StringContent(JsonConvert.SerializeObject(account),Encoding.UTF8, "application/json");
             var client = new HttpClient();
