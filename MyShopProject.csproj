@@ -30,6 +30,9 @@
   <Page Include="AddProductWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
+  <Page Include="EditProductWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="LoginWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
@@ -68,6 +71,7 @@
   <Compile Include="DTO\DetailOrder.cs" />
   <Compile Include="DTO\Coupon.cs" />
   <Compile Include="DTO\Order.cs" />
+  <Compile Include="EditProductWindow.xaml.cs" />
   <Compile Include="LoginWindow.xaml.cs" />
   <Compile Include="MainWindow.xaml.cs">
     <DependentUpon>MainWindow.xaml</DependentUpon>

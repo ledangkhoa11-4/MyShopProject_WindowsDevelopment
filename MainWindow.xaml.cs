@@ -14,6 +14,7 @@ using Book = MyShopProject.DTO.Book;
 using MyShopProject.BUS;
 using MyShopProject.DTO;
 using MyShopProject.DAO;
+using Telerik.Windows.Persistence.Core;
 
 namespace MyShopProject
 {
@@ -97,20 +98,21 @@ namespace MyShopProject
                 default:
                     return;
             }
-            
+
 
         }
         private void cateLoaded()
         {
-           
-        }
-        private void productLoaded()
-        {
 
+        }
+        private async void productLoaded()
+        {
+            modelBinding.listBook = await product_BUS.getAllProduct();
+            this.DataContext = modelBinding;
         }
         private void categoryGenerated2(object sender, Telerik.Windows.Controls.Data.DataForm.AutoGeneratingFieldEventArgs e)
         {
-            if(e.PropertyName == "_id")
+            if (e.PropertyName == "_id")
             {
                 e.DataField.IsEnabled = false;
                 return;
@@ -120,7 +122,7 @@ namespace MyShopProject
         private void selectCateEvent(object sender, Telerik.Windows.Controls.GridView.GridViewSelectedCellsChangedEventArgs e)
         {
             var currentItem = listCategory.SelectedItem as Category;
-            currentCat.CurrentItem= currentItem;
+            currentCat.CurrentItem = currentItem;
         }
 
         private void beforeDelCat(object sender, System.ComponentModel.CancelEventArgs e)
@@ -136,7 +138,7 @@ namespace MyShopProject
                 e.Cancel = false;
             else
                 e.Cancel = true;
-            
+
         }
         private void CateTableLoaded(object sender, Telerik.Windows.Controls.GridView.RowLoadedEventArgs e)
         {
@@ -148,18 +150,18 @@ namespace MyShopProject
             }
             catch (Exception ex)
             {
-
+                Debug.WriteLine(ex.Message);
             }
-            
+
         }
 
         private void prepareFilter(object sender, Telerik.Windows.Controls.Data.CardView.CardViewFilteringEventArgs e)
         {
             var a = e.Added;
-            foreach(var item in a)
+            foreach (var item in a)
             {
                 Debug.WriteLine(item.ToString());
-                
+
             }
         }
 
@@ -168,17 +170,73 @@ namespace MyShopProject
             try
             {
                 var bookSelected = bookCardView.SelectedItem as Book;
-                Debug.WriteLine(bookSelected.Name);
+                Debug.WriteLine(bookSelected._id);
 
-              
+                var tmp = new EditProductWindow(modelBinding.listCat, bookSelected);
+                tmp.ShowDialog();
+                if (tmp.DialogResult == true)
+                {
+                    productLoaded();
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                //ignore
+                Debug.WriteLine(ex.Message);
             }
-            
-        }
 
+        }
+        private void editBookClick(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        {
+            try
+            {
+                var selectedBook = bookCardView.SelectedItem as Book;
+                Debug.WriteLine(selectedBook._id);
+
+                var tmp = new EditProductWindow(modelBinding.listCat, selectedBook);
+                tmp.ShowDialog();
+                if (tmp.DialogResult == true)
+                {
+                    productLoaded();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
+        private async void deleteBookClick(object sender, Telerik.Windows.RadRoutedEventArgs e)
+        {
+            try
+            {
+            
+                var bookSelected = bookCardView.SelectedItem as Book;
+                var product_BUS = new Product_BUS();
+                Debug.WriteLine(bookSelected.ToString());
+                var result = await product_BUS.DelProduct(bookSelected);
+                var alert = new RadDesktopAlert();
+                if (result.Length != 0)
+                {
+                    alert.Header = "UPDATE BOOK SUCCESSFULLy";
+                    alert.Content = "Congratulation, your book was deleted!!!";
+                    alert.ShowDuration = 3000;
+                    this.DialogResult = true;
+                }
+                else
+                {
+                    alert.Header = "ERROR";
+                    alert.Content = "There was an error on update database, please try again!!!";
+                    alert.ShowDuration = 3000;
+                }
+                RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                manager.ShowAlert(alert);
+                productLoaded();
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+        }
         private void RadMenuItem_Click(object sender, Telerik.Windows.RadRoutedEventArgs e)
         {
             try
@@ -228,14 +286,15 @@ namespace MyShopProject
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
         {
-            var testConn =  await API.testConnection();
-            if(testConn.Item1 == false)
+            var testConn = await API.testConnection();
+            if (testConn.Item1 == false)
             {
                 MessageBox.Show(testConn.Item2 + "Application will close", "Error connect web service");
                 System.Windows.Application.Current.Shutdown();
             }
             var login = new LoginWindow();
-            if(login.ShowDialog() == true) {
+            if (login.ShowDialog() == true)
+            {
                 currentUser = login.currentAccount;
                 
             }
@@ -252,5 +311,11 @@ namespace MyShopProject
             var newOrderScreen = new AddOrderWindow();
             newOrderScreen.ShowDialog();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

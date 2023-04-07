@@ -26,17 +26,33 @@ using Telerik.Windows.Controls;
 
 namespace MyShopProject
 {
-    
-    public partial class AddProductWindow : Window
+    /// <summary>
+    /// Interaction logic for EditProductWindow.xaml
+    /// </summary>
+    public partial class EditProductWindow : Window
     {
         public ObservableCollection<DTO.Category> _listCat { get; set; }
         public Book _book { get; set; }
-        public AddProductWindow(ObservableCollection<DTO.Category> listCat)
+        public EditProductWindow(ObservableCollection<DTO.Category> listCat, Book book)
         {
             InitializeComponent();
-            _book= new Book();
+            _book = book;
             _listCat = listCat;
             DataContext = this;
+        }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            name.Text = _book.Name;
+            author.Text = _book.Author;
+            purchasePrice.Text = _book.PurchasePrice.ToString();
+            sellingPrice.Text = _book.SellingPrice.ToString();
+            publishedYear.Text = _book.PublishedYear.ToString();
+            quantity.Value = _book.QuantityStock;
+            //var selectedItem = _listCat.FirstOrDefault(c => c._id == _book.CatID).Name;
+            //cateChoosingBox.SelectedItem = selectedItem;
+            var converter = new Base64ToBitmapConverter();
+            var bitmap = (BitmapImage)converter.Convert(_book.ImageBase64, null, null, null);
+            CoverImage.Source = bitmap;
         }
 
         private void RadRibbonButton_Click(object sender, RoutedEventArgs e)
@@ -103,12 +119,12 @@ namespace MyShopProject
             else
             {
                 var product_BUS = new Product_BUS();
-                var result = await product_BUS.AddProduct(_book);
+                var result = await product_BUS.EditProduct(_book);
                 var alert = new RadDesktopAlert();
                 if (result.Length != 0)
                 {
-                    alert.Header = "ADD NEW BOOK SUCCESSFULLy";
-                    alert.Content = "Congratulation, your book was added!!!";
+                    alert.Header = "UPDATE BOOK SUCCESSFULLy";
+                    alert.Content = "Congratulation, your book was edited!!!";
                     alert.ShowDuration = 3000;
                     this.DialogResult = true;
                 }
@@ -126,10 +142,7 @@ namespace MyShopProject
 
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private void RadRibbonButton_Click_1(object sender, RoutedEventArgs e)
         {
@@ -153,7 +166,7 @@ namespace MyShopProject
                 var converter = new Base64ToBitmapConverter();
                 string base64String = (string)converter.ConvertBack(bitmap, null, null, null);
                 MessageBox.Show(base64String);
-                _book.ImageBase64= base64String;
+                _book.ImageBase64 = base64String;
             }
         }
     }

@@ -29,5 +29,15 @@ namespace MyShopProject.BUS
             var jsonData = JsonConvert.SerializeObject(newBook);
             return await product_DAO.addNewProduct(jsonData);
         }
+        public async Task<String> EditProduct(Book book)
+        {
+            var jsonData = JsonConvert.SerializeObject(book);
+            return await product_DAO.editProduct(jsonData, book._id);
+        }
+        public async Task<String> DelProduct(Book book)
+        {
+            var jsonData = JsonConvert.SerializeObject(book);
+            return await product_DAO.delProduct(jsonData, book._id);
+        }
     }
 }
