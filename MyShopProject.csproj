@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -38,6 +37,9 @@
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
   </Page>
+  <Page Include="SignUpWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Compile Include="AddCouponWindow.xaml.cs" />
   <Compile Include="AddOrderWindow.xaml.cs" />
   <Compile Include="AddProductWindow.xaml.cs" />
@@ -53,12 +55,14 @@
   <Compile Include="BUS\Category_BUS.cs" />
   <Compile Include="Converters\OldDiscountPriceConverter.cs" />
   <Compile Include="DAO\Account_DAO.cs" />
+  <Compile Include="BUS\Product_BUS.cs" />
   <Compile Include="DAO\API.cs" />
   <Compile Include="DAO\Book_DAO.cs" />
   <Compile Include="DAO\Category_DAO.cs" />
   <Compile Include="DAO\Coupon_DAO.cs" />
   <Compile Include="DAO\Order_DAO.cs" />
   <Compile Include="DTO\Account.cs" />
+  <Compile Include="DAO\Product_DAO.cs" />
   <Compile Include="DTO\Book.cs" />
   <Compile Include="DTO\Category.cs" />
   <Compile Include="DTO\DetailOrder.cs" />
@@ -71,6 +75,7 @@
   </Compile>
   <Compile Include="Converters\PercentConverter.cs" />
   <Compile Include="Converters\PriceConverter.cs" />
+  <Compile Include="SignUpWindow.xaml.cs" />
 </ItemGroup>
   
   <ItemGroup>
@@ -78,6 +83,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="app.manifest" />
   </ItemGroup>
   

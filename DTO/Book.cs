@@ -36,7 +36,7 @@ namespace MyShopProject.DTO
             }
         }
         public int QuantityOrder { get; set; } = 0;
-        public long CatID { get; set; }
+        public string CatID { get; set; }
         public string Description { get; set; }
         private bool isOnStock;
         public bool IsOnStock { get; set; } = true;

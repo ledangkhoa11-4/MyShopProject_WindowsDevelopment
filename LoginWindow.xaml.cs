@@ -1,6 +1,11 @@
-﻿using System;
+﻿using MyShopProject.BUS;
+using MyShopProject.DTO;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Telerik.Windows.Controls;
 
 namespace MyShopProject
 {
@@ -19,16 +25,90 @@ namespace MyShopProject
     /// </summary>
     public partial class LoginWindow : Window
     {
+        public Account currentAccount;
         public LoginWindow()
         {
             InitializeComponent();
+            string username = ConfigurationManager.AppSettings["Username"]!;
+            string passwordIn64 = ConfigurationManager.AppSettings["Password"]!;
+            string entropyIn64 = ConfigurationManager.AppSettings["Entropy"]!;
+            if (passwordIn64.Length != 0)
+            {
+                byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
+                byte[] cypherTextInBytes = Convert.FromBase64String(passwordIn64);
+
+                byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
+                    entropyInBytes,
+                    DataProtectionScope.CurrentUser
+                );
+
+                string password = Encoding.UTF8.GetString(passwordInBytes);
+
+                usernameTextBox.Text = username;
+                passwordBox.Password = password;
+                rememberCheckBox.SetCurrentValue(CheckBox.IsCheckedProperty, true);
+
+            }
         }
 
-        private void connectButton_Click(object sender, RoutedEventArgs e)
+        private async void connectButton_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameTextBox.Text;
             string password = passwordBox.Password;
+            var passwordInBytes = Encoding.UTF8.GetBytes(password);
+            var entropy = new byte[20];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(entropy);
+            }
 
+            var cypherText = ProtectedData.Protect(
+                passwordInBytes,
+                entropy,
+                DataProtectionScope.CurrentUser
+            );
+
+            var passwordIn64 = Convert.ToBase64String(cypherText);
+            var entropyIn64 = Convert.ToBase64String(entropy);
+            Account account = new Account() { Username= username, Password = passwordIn64 };
+            var account_BUS = new Account_BUS();
+            var result = await account_BUS.getAccount(account);
+            var alert = new RadDesktopAlert();
+            if(rememberCheckBox.IsChecked== true)
+            {
+                var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+                config.AppSettings.Settings["Username"].Value = username;
+                config.AppSettings.Settings["Password"].Value = passwordIn64;
+                config.AppSettings.Settings["Entropy"].Value = entropyIn64;
+
+                config.Save(ConfigurationSaveMode.Full);
+                ConfigurationManager.RefreshSection("appSettings");
+            }
+            if (result != null)
+            {
+                currentAccount = result;
+                this.DialogResult = true;
+                this.Close();
+            }
+            else
+            {
+                alert.Header = "ERROR";
+                alert.Content = "Unvalid account, please check again!!!";
+                alert.ShowDuration = 3000;
+                RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                manager.ShowAlert(alert);
+            }
+            
+        }
+
+        private void signupButton_Click(object sender, RoutedEventArgs e)
+        {
+            var signup = new SignUpWindow();
+            if(signup.ShowDialog() == true)
+            {
+
+            }
         }
     }
 }

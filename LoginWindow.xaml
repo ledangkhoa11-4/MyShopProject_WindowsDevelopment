@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800">
     <Canvas>
-        <Button Name="connectButton" Width="80" Height="35" Content="Connect" Click="connectButton_Click" Canvas.Left="177" Canvas.Top="182" />
+        <Button Name="connectButton" Width="80" Height="35" Content="Connect" Click="connectButton_Click" Canvas.Left="137" Canvas.Top="196" />
+        <Button Name="signupButton"  Width="80" Height="35" Content="Sign up" Click="signupButton_Click" Canvas.Left="265" Canvas.Top="196"></Button>
         <TextBlock Text="Username:" Canvas.Left="105" Canvas.Top="49"/>
         <TextBox Name="usernameTextBox" Width="150" Height="35" Canvas.Left="177" Canvas.Top="39"/>
         <TextBlock Text="Password:" Canvas.Left="109" Canvas.Top="89"/>

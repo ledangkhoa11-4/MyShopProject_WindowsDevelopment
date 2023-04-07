@@ -98,7 +98,7 @@
                         ItemsSource="{Binding listBook}"
                          CardHeaderBinding="{Binding Name}"
                         IsReadOnly ="True"
-                        MajorLength = "382"
+                        MajorLength = "370"
                         x:Name ="bookCardView"
                         HorizontalAlignment="Left" 
                         VerticalAlignment="Top"
