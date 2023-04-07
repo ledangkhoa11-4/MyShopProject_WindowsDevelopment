@@ -13,6 +13,7 @@ using Category = MyShopProject.DTO.Category;
 using Book = MyShopProject.DTO.Book;
 using MyShopProject.BUS;
 using MyShopProject.DTO;
+using MyShopProject.DAO;
 
 namespace MyShopProject
 {
@@ -21,25 +22,28 @@ namespace MyShopProject
        public ObservableCollection<Category> listCat { get; set; } 
        public ObservableCollection<Book> listBook { get; set; } 
        public ObservableCollection<Order> listOrder { get; set; }
+        public ObservableCollection<Coupon> listCoupon { get; set; }
 
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
             listBook = new ObservableCollection<Book>();
             listOrder = new ObservableCollection<Order>();
+            listCoupon = new ObservableCollection<Coupon>();
         }
     }
 
     public partial class MainWindow : Window
     {
         public Category_BUS category_BUS { get; set; }
+        public Coupon_BUS coupon_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; }
         public MainWindow()
         {
             InitializeComponent();
             category_BUS = new Category_BUS();
-            modelBinding = new MainViewModel();
-            Debug.WriteLine("A");
+            coupon_BUS = new Coupon_BUS();
+
 
         }
 
@@ -212,9 +216,16 @@ namespace MyShopProject
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
         {
-
-            //modelBinding.listCat = await category_BUS.getAllCategory();
-            //this.DataContext = modelBinding;
+            var testConn =  await API.testConnection();
+            if(testConn.Item1 == false)
+            {
+                MessageBox.Show(testConn.Item2 + "Application will close", "Error connect web service");
+                System.Windows.Application.Current.Shutdown();
+            }
+            modelBinding = new MainViewModel();
+            modelBinding.listCat = await category_BUS.getAllCategory();
+            modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
+            this.DataContext = modelBinding;
         }
 
         private void newOrderBtnClick(object sender, RoutedEventArgs e)
