@@ -106,8 +106,8 @@
                         telerik:StyleManager.Theme="Office2019" Grid.ColumnSpan="4" Width="1178" Height="596" Margin="11,76,0,0" Filtering="prepareFilter" MouseDoubleClick="editBookEvent">
                         <telerik:RadContextMenu.ContextMenu >
                             <telerik:RadContextMenu telerik:StyleManager.Theme="Crystal" x:Name="contextMenu" MinWidth="120">
-                                <telerik:RadMenuItem Header="Edit"/>
-                                <telerik:RadMenuItem Header="Delete" />
+                                <telerik:RadMenuItem Header="Edit" Click="editBookClick"/>
+                                <telerik:RadMenuItem Header="Delete" Click="deleteBookClick"/>
                             </telerik:RadContextMenu>
                         </telerik:RadContextMenu.ContextMenu>
 
@@ -143,6 +143,7 @@
                                     </DataTemplate>
                                 </telerik:CardDataFieldDescriptor.ReadOnlyTemplate>
                             </telerik:CardDataFieldDescriptor>
+                           
                         </telerik:RadCardView.DataFieldDescriptors>
 
                         <telerik:RadCardView.CardHeaderTemplate>
