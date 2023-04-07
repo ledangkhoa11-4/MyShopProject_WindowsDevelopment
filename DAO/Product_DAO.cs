@@ -10,14 +10,9 @@ namespace MyShopProject.DAO
 {
     public class Product_DAO
     {
-        public API api;
-        public Product_DAO()
-        {
-            this.api = new API("http://127.0.0.1:5000");
-        }
         public async Task<List<Book>> getAll()
         {
-            var json = await api.getMethod("/product?brief=false");
+            var json = await API.getMethod("/product?brief=false");
             var productList = JsonConvert.DeserializeObject<List<Book>>(json);
             return productList;
         }
