@@ -47,7 +47,7 @@
   </Compile>
   <Compile Include="BUS\Coupon_BUS.cs" />
   <Compile Include="Converters\Base64ToBitmapConverter.cs" />
-  <Compile Include="BUS\Book_BUS.cs" 
+  <Compile Include="BUS\Book_BUS.cs"/> 
   <Compile Include="BUS\Account_BUS.cs" />
   <Compile Include="BUS\Category_BUS.cs" />
   <Compile Include="DAO\Account_DAO.cs" />
@@ -80,6 +80,7 @@
   
   <ItemGroup>
     <Folder Include="Fonts\" />
+     <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>
