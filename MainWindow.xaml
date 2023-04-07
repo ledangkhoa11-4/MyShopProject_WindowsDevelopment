@@ -203,7 +203,20 @@
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Orders</TextBlock>
                 </telerik:RadTabItem.Header>
                 <Canvas>
-                    <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="1010" Canvas.Top="20" VerticalAlignment="Top"/>
+                    <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="1010" Canvas.Top="20" VerticalAlignment="Top" CornerRadius="8,8,8,8"/>
+                    <telerik:RadGridView x:Name="manualGridView"   
+                     ItemsSource="{Binding Clubs}"  
+                     AutoGenerateColumns="False" telerik:StyleManager.Theme="VisualStudio2019" Canvas.Left="10" Canvas.Top="65" ShowGroupPanel="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178" Height="607" EnableStickyGroupHeaders="True" IsReadOnly="True" CanUserResizeColumns="False" >
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Width="100" DataMemberBinding="{Binding Name}" Header="ID"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Customer"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Purchase Date"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Discount Percent"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Total Purchase Amount"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Order Price"/>
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
+
                 </Canvas>
             </telerik:RadTabItem>
 

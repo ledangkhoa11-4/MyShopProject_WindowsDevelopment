@@ -10,9 +10,9 @@ namespace MyShopProject.DAO
 {
     public class Order_DAO
     {
-        public async Task<List<Order>> getAll()
+        public async Task<List<Order>> getAll(int limit, int offset)
         {
-            var json = await API.getMethod("/coupon");
+            var json = await API.getMethod($"/order?limit={limit}&offset={offset}");
             var orderList = JsonConvert.DeserializeObject<List<Order>>(json);
             return orderList;
         }

@@ -18,6 +18,14 @@ namespace MyShopProject.DAO
             var bookList = JsonConvert.DeserializeObject<List<Book>>(json);
             return bookList;
         }
+        public async Task<Book> get(string _id, bool isBrief = false)
+        {
+            var query = isBrief == true ? $"/{_id}?brief=true" : $"/{_id}";
+            var json = await API.getMethod($"/product{query}");
+            Debug.WriteLine(json);
+            var book = JsonConvert.DeserializeObject<Book>(json);
+            return book;
+        }
         public async Task<String> getImageBook(string id)
         {
             var str = await API.getMethod($"/product/image/{id}");
