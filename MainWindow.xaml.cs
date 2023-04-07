@@ -33,10 +33,12 @@ namespace MyShopProject
     public partial class MainWindow : Window
     {
         public Category_BUS category_BUS { get; set; }
+        public Product_BUS product_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; }
         public MainWindow()
         {
             InitializeComponent();
+            product_BUS = new Product_BUS();
             category_BUS = new Category_BUS();
             modelBinding = new MainViewModel();
             Debug.WriteLine("A");
@@ -80,7 +82,8 @@ namespace MyShopProject
                     cateLoaded();
                     break;
 
-                case "Item3":
+                case "Product":
+                    productLoaded();
                     break;
 
                 default:
@@ -92,6 +95,10 @@ namespace MyShopProject
         private void cateLoaded()
         {
            
+        }
+        private void productLoaded()
+        {
+
         }
         private void categoryGenerated2(object sender, Telerik.Windows.Controls.Data.DataForm.AutoGeneratingFieldEventArgs e)
         {
@@ -206,15 +213,20 @@ namespace MyShopProject
 
         private void newProductBtnClick(object sender, RoutedEventArgs e)
         {
-            var tmp = new AddProductWindow();
+            var tmp = new AddProductWindow(modelBinding.listCat);
             tmp.ShowDialog();
         }
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
         {
 
-            //modelBinding.listCat = await category_BUS.getAllCategory();
-            //this.DataContext = modelBinding;
+            modelBinding.listCat = await category_BUS.getAllCategory();
+            
+            modelBinding.listBook = await product_BUS.getAllProduct();
+
+            this.DataContext = modelBinding;
+
+
         }
 
         private void newOrderBtnClick(object sender, RoutedEventArgs e)
