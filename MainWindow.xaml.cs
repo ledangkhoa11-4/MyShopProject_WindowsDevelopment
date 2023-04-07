@@ -115,7 +115,12 @@ namespace MyShopProject
             if (e.PropertyName == "_id")
             {
                 e.DataField.IsEnabled = false;
-                return;
+   
+            }
+            if (e.PropertyName == "Description")
+            {
+                e.DataField.MaxWidth = 1300;
+                
             }
         }
 
@@ -317,5 +322,10 @@ namespace MyShopProject
 
         }
 
+        private void viewDetailOrderEvent(object sender, MouseButtonEventArgs e)
+        {
+            var detailOrder = new OrderDetailWindow(modelBinding.listOrder[0]);
+            detailOrder.Show();
+        }
     }
 }

@@ -23,7 +23,7 @@
 
         <GroupBox Height="305" Canvas.Left="10" Canvas.Top="20" Width="468" HorizontalAlignment="Center" VerticalAlignment="Top">
             <GroupBox.Header>
-                <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding test}" >
+                <TextBlock FontSize="16" FontWeight="Bold" >
                     Detail Order
                 </TextBlock>
             </GroupBox.Header>

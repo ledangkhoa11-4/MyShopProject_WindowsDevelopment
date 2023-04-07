@@ -51,7 +51,7 @@
                         telerik:StyleManager.Theme="Material" 
                         HorizontalAlignment="Center" Canvas.Top="10" 
                         VerticalAlignment="Top" Width="1178" Height="318" 
-                        Canvas.Left="11" RowHeight="35"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent"/>
+                        Canvas.Left="11" RowHeight="40"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent"/>
                     <telerik:HtmlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
                     <telerik:XamlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
                     <Grid x:Name="radRichTextBoxParent">
@@ -143,7 +143,7 @@
                                     </DataTemplate>
                                 </telerik:CardDataFieldDescriptor.ReadOnlyTemplate>
                             </telerik:CardDataFieldDescriptor>
-                           
+
                         </telerik:RadCardView.DataFieldDescriptors>
 
                         <telerik:RadCardView.CardHeaderTemplate>
@@ -205,16 +205,16 @@
                 </telerik:RadTabItem.Header>
                 <Canvas>
                     <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="1010" Canvas.Top="20" VerticalAlignment="Top" CornerRadius="8,8,8,8"/>
-                    <telerik:RadGridView x:Name="manualGridView"   
-                     ItemsSource="{Binding Clubs}"  
-                     AutoGenerateColumns="False" telerik:StyleManager.Theme="VisualStudio2019" Canvas.Left="10" Canvas.Top="65" ShowGroupPanel="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178" Height="607" EnableStickyGroupHeaders="True" IsReadOnly="True" CanUserResizeColumns="False" >
+                    <telerik:RadGridView x:Name="listOrderGridView"   
+                     ItemsSource="{Binding listOrder}"  
+                     AutoGenerateColumns="False" RowHeight="50" telerik:StyleManager.Theme="VisualStudio2019" Canvas.Left="10" Canvas.Top="65" ShowGroupPanel="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178" Height="607" EnableStickyGroupHeaders="True" IsReadOnly="True" CanUserResizeColumns="False" MouseDoubleClick="viewDetailOrderEvent" >
                         <telerik:RadGridView.Columns>
-                            <telerik:GridViewDataColumn Width="100" DataMemberBinding="{Binding Name}" Header="ID"/>
-                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Customer"/>
-                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Purchase Date"/>
-                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Discount Percent"/>
-                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Total Purchase Amount"/>
-                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Established}" Header="Order Price"/>
+                            <telerik:GridViewDataColumn Width="100" DataMemberBinding="{Binding _id}" Header="ID"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Customer}" Header="Customer"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding PurchaseDate}" Header="Purchase Date"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Coupon.DiscountPercentm}" Header="Discount Percent"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding TotalPriceOrder}" Header="Total Purchase Amount"/>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding TotalPriceOrder, Converter={StaticResource priceConverter}}" Header="Order Price"/>
                         </telerik:RadGridView.Columns>
                     </telerik:RadGridView>
 
@@ -222,6 +222,5 @@
             </telerik:RadTabItem>
 
         </telerik:RadTabControl>
-
     </Canvas>
 </Window>
