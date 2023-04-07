@@ -38,6 +38,7 @@ namespace MyShopProject
         public Category_BUS category_BUS { get; set; }
         public Coupon_BUS coupon_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; }
+        public Account currentUser = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -222,10 +223,15 @@ namespace MyShopProject
                 MessageBox.Show(testConn.Item2 + "Application will close", "Error connect web service");
                 System.Windows.Application.Current.Shutdown();
             }
-            modelBinding = new MainViewModel();
-            modelBinding.listCat = await category_BUS.getAllCategory();
-            modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-            this.DataContext = modelBinding;
+            var login = new LoginWindow();
+            if(login.ShowDialog() == true) {
+                currentUser = login.currentAccount;
+                modelBinding = new MainViewModel();
+                modelBinding.listCat = await category_BUS.getAllCategory();
+                modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
+                this.DataContext = modelBinding;
+            }
+            
         }
 
         private void newOrderBtnClick(object sender, RoutedEventArgs e)

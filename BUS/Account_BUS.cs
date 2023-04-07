@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MyShopProject.DAO;
+using MyShopProject.DTO;
+using Newtonsoft.Json;
 using Account = MyShopProject.DTO.Account;
 namespace MyShopProject.BUS
 {
@@ -15,10 +17,19 @@ namespace MyShopProject.BUS
         {
             account_DAO = new Account_DAO();
         }
-        public async Task<Account?> GetAccount(string username)
+        public async Task<Account> getAccount(Account account)
         {
-            Account? res = await account_DAO.getAccount(username);
+            Account res = await account_DAO.getAccount(account.Username);
             return res;
+        }
+        public async Task<bool> checkExists(Account account)
+        {
+            return await account_DAO.checkExist(account.Username);
+        }
+        public async Task<String> addAccount(Account account)
+        {
+            var jsonData = JsonConvert.SerializeObject(account);
+            return await account_DAO.addAccount(jsonData);
         }
     }
 }

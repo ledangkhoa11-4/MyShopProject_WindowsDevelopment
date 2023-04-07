@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -38,6 +37,9 @@
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
   </Page>
+  <Page Include="SignUpWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Compile Include="AddCouponWindow.xaml.cs" />
   <Compile Include="AddOrderWindow.xaml.cs" />
   <Compile Include="AddProductWindow.xaml.cs" />
@@ -47,7 +49,7 @@
   </Compile>
   <Compile Include="BUS\Coupon_BUS.cs" />
   <Compile Include="Converters\Base64ToBitmapConverter.cs" />
-  <Compile Include="BUS\Book_BUS.cs"/> 
+  <Compile Include="BUS\Book_BUS.cs" /> 
   <Compile Include="BUS\Account_BUS.cs" />
   <Compile Include="BUS\Category_BUS.cs" />
   <Compile Include="DAO\Account_DAO.cs" />
@@ -68,6 +70,7 @@
   </Compile>
   <Compile Include="Converters\PercentConverter.cs" />
   <Compile Include="Converters\PriceConverter.cs" />
+  <Compile Include="SignUpWindow.xaml.cs" />
 </ItemGroup>
   
   <ItemGroup>
@@ -75,6 +78,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="app.manifest" />
   </ItemGroup>
   
