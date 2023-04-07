@@ -41,7 +41,8 @@ namespace MyShopProject
 
         private async void createCouponClick(object sender, RoutedEventArgs e)
         {
-            if(newCoupon.Name.Length == 0)
+            
+            if (newCoupon.Name.Length == 0)
             {
                 var alert = new RadDesktopAlert();
                 alert.Header = "MISSING INFORMATION";

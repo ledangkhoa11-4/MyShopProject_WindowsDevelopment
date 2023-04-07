@@ -20,7 +20,7 @@ namespace MyShopProject.DTO
         public string _id { get; set; } = "";
         private ObservableCollection<DetailOrder> _bookAndQuantity = new ObservableCollection<DetailOrder>();
         
-        public ObservableCollection<DetailOrder>BookAndQuantity { 
+        public ObservableCollection<DetailOrder>DetailCart { 
             get
             {
                 return _bookAndQuantity;

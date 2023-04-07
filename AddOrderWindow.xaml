@@ -13,14 +13,15 @@
         <local:Base64ToBitmapConverter x:Key="bitmapConverter"/>
         <local:PriceConverter x:Key="priceConverter"/>
         <local:PercentConverter x:Key="percentConverter"/>
+        <local:OldDiscountPriceConverter x:Key="oldPriceConverter"/>
 
     </Window.Resources>
     <Canvas>
 
-        <telerik:RadRibbonButton Height="1" Canvas.Left="318" Text="Create Order" Canvas.Top="366" Width="160" Background="#FFD0CCCC" telerik:StyleManager.Theme="Material" VerticalAlignment="Center" IsAutoSize="False" FontStyle="Italic" FontWeight="Bold" CornerRadius="6,6,6,6"/>
+        <telerik:RadRibbonButton Click="CreateOrderClick" Height="1" Canvas.Left="10" Text="Create Order" Canvas.Top="415" Width="160" Background="#FFD0CCCC" telerik:StyleManager.Theme="Material" VerticalAlignment="Top" IsAutoSize="False" FontStyle="Italic" FontWeight="Bold" CornerRadius="6,6,6,6"/>
 
 
-        <GroupBox Height="298" Canvas.Left="10" Canvas.Top="20" Width="468" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <GroupBox Height="305" Canvas.Left="10" Canvas.Top="20" Width="468" HorizontalAlignment="Center" VerticalAlignment="Top">
             <GroupBox.Header>
                 <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding test}" >
                     Detail Order
@@ -28,18 +29,18 @@
             </GroupBox.Header>
             <Canvas>
                 <telerik:Label FontSize="14" Content="Customer name: " Canvas.Left="10" Canvas.Top="27" Height="36" HorizontalAlignment="Left" VerticalAlignment="Top" Width="152" />
-                <telerik:RadWatermarkTextBox Canvas.Left="167" TextWrapping="Wrap"  Canvas.Top="27" WatermarkContent="Eg. Nguyen Van A" Width="266" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" Height="36" VerticalAlignment="Center"/>
-                <telerik:RadDateTimePicker Canvas.Left="167" Canvas.Top="77" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center" Width="266"/>
+                <telerik:RadWatermarkTextBox Text="{Binding newOrder.Customer}" Canvas.Left="167" TextWrapping="Wrap"  Canvas.Top="27" WatermarkContent="Eg. Nguyen Van A" Width="266" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" Height="36" VerticalAlignment="Center"/>
+                <telerik:RadDateTimePicker SelectedValue="{Binding newOrder.PurchaseDate}" Canvas.Left="167" Canvas.Top="77" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center" Width="266"/>
                 <telerik:Label FontSize="14" Content="Purchase date: " Canvas.Left="10" Canvas.Top="77" Height="36" Width="152" HorizontalAlignment="Center" VerticalAlignment="Top" />
-                <telerik:Label FontSize="14" Content="Products: " Canvas.Left="10" Canvas.Top="174" Height="36" Width="152" HorizontalAlignment="Left" VerticalAlignment="Top" />
                 <telerik:RadMultiColumnComboBox 
+                    x:Name="cartCombobox"
                     DisplayMemberPath="Name" 
-                    Canvas.Left="10" Canvas.Top="215" 
+                    Canvas.Left="16" Canvas.Top="215" 
                     telerik:StyleManager.Theme="Fluent" 
-                    HorizontalAlignment="Center" VerticalAlignment="Center" 
-                    Width="423" DropDownMinWidth="500" 
+                    HorizontalAlignment="Left" VerticalAlignment="Center" 
+                    Width="424" DropDownMinWidth="500" 
                     SelectionMode="Multiple"
-                    AutoCompleteMode="Search" MatchCase="False" SelectionChanged="addProductToCartEvent">
+                    AutoCompleteMode="Search" MatchCase="False" SelectionChanged="addProductToCartEvent" Height="50">
                     <telerik:RadMultiColumnComboBox.ItemsSourceProvider>
                         <telerik:GridViewItemsSourceProvider ItemsSource="{Binding listAllBook}" AutoGenerateColumns="false">
                             <telerik:GridViewItemsSourceProvider.RowStyle>
@@ -89,11 +90,12 @@
 
                 </telerik:RadMultiColumnComboBox>
                 <telerik:RadButton Click="AddNewCoupon" Content="Add Coupon" Height="28" Canvas.Left="353" Canvas.Top="164" Width="80" telerik:StyleManager.Theme="Office2019" CornerRadius="6,6,6,6"/>
+                <telerik:Label Name="currentDiscount" Content="{Binding newOrder.Coupon.DiscountPercent}" Canvas.Left="112" Canvas.Top="169" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="50" HorizontalContentAlignment="Center" IsEnabled="False" Visibility="Hidden"/>
             </Canvas>
         </GroupBox>
 
         <GroupBox Height="504" Canvas.Left="514" Canvas.Top="20
-                  " Width="430" HorizontalAlignment="Left" VerticalAlignment="Center">
+                  " Width="437" HorizontalAlignment="Center" VerticalAlignment="Center">
             <GroupBox.Header>
 
                 <TextBlock FontSize="16" FontWeight="Bold" >
@@ -101,8 +103,8 @@
                 </TextBlock>
             </GroupBox.Header>
             <Canvas>
-                <ListView  ItemsSource="{Binding newOrder.BookAndQuantity}"
-                    Height="458" Width="398" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                <ListView  ItemsSource="{Binding newOrder.DetailCart}"
+                    Height="458" Width="405" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
                             <Setter Property="Margin" Value="0, 5, 0, 2"/>
@@ -110,7 +112,7 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Canvas Height="142" Background="#F0F0F0" Width="384" Canvas.Left="60" Canvas.Top="402" HorizontalAlignment="Center" VerticalAlignment="Top">
+                            <Canvas Height="142" Background="#F0F0F0" Width="388" Canvas.Left="60" Canvas.Top="402" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <StackPanel DataContext="{Binding Book}" Orientation="Horizontal" Canvas.Left="102" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57"><Run Text="Name:"/></TextBlock>
                                     <TextBlock Canvas.Left="35" Canvas.Top="7" Width="167" TextTrimming="CharacterEllipsis" Text="{Binding Name}"/>
@@ -136,6 +138,7 @@
                                     <TextBlock VerticalAlignment="Center" Canvas.Left="243" Canvas.Top="125" RenderTransformOrigin="0.675,0.892" HorizontalAlignment="Center"  FontWeight="Bold" Margin="0 0 10 0" FontStyle="Italic" FontSize="11"><Run Text="Total:"/></TextBlock>
                                     <TextBlock Canvas.Left="280" Canvas.Top="118" RenderTransformOrigin="0.675,0.892" HorizontalAlignment="Right" VerticalAlignment="Center" FontWeight="Bold" d:Text="99.999.999đ" Text="{Binding TotalPrice, Converter={StaticResource priceConverter}}" Foreground="#FFEE4D2D" FontStyle="Italic" FontSize="14"/>
                                 </StackPanel>
+                                <telerik:RadButton Tag="{Binding Book._id}" Click="removeItemCartClick"  Content="X" Height="22" Width="22" telerik:StyleManager.Theme="Office2019" HorizontalAlignment="Left" CornerRadius="3,3,3,3" VerticalContentAlignment="Center" VerticalAlignment="Center"/>
                             </Canvas>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -143,9 +146,18 @@
 
             </Canvas>
         </GroupBox>
-        <StackPanel Orientation="Horizontal" Canvas.Left="309" Canvas.Top="323" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Canvas.Left="10" Canvas.Top="372"  VerticalAlignment="Top" Width="253">
             <telerik:Label VerticalAlignment="Center" Content="Total: " Canvas.Left="43" Canvas.Top="372" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman" FontWeight="Bold" FontSize="16"/>
-            <TextBlock Text="{Binding newOrder.TotalPriceOrder, Converter={StaticResource priceConverter}}" VerticalAlignment="Center" Canvas.Left="114" TextWrapping="Wrap" d:Text="1.500.000đ" Canvas.Top="378" FontSize="20" FontWeight="Bold"  Foreground="#FFEE4D2D" FontStyle="Italic"/>
+            <TextBlock Name="currentPrice" Margin="0 0 5 0" Text="{Binding newOrder.TotalPriceOrder, Converter={StaticResource priceConverter}}" VerticalAlignment="Center" Canvas.Left="114" TextWrapping="Wrap" d:Text="1.500.000đ" Canvas.Top="378" FontSize="20" FontWeight="Bold"  Foreground="#FFEE4D2D" FontStyle="Italic"/>
+            <TextBlock TextDecorations="Strikethrough" Margin="0 0 6 0" VerticalAlignment="Top" Canvas.Left="114" TextWrapping="Wrap" d:Text="200000đ" Canvas.Top="378" FontSize="14" FontWeight="Bold"  Foreground="#FFD68879" FontStyle="Italic">
+                <TextBlock.Text>
+                    <MultiBinding Converter="{StaticResource oldPriceConverter}">
+                        <Binding Path="Text" ElementName="currentPrice"/>
+                        <Binding Path="Content" ElementName="currentDiscount"/>
+
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
 
         </StackPanel>
         <telerik:RadBusyIndicator x:Name="isLoadingIndicator" IsBusy="False" Background="Transparent" Canvas.Left="642" Canvas.Top="15" telerik:StyleManager.Theme="Office2013" Height="36" Width="282" HorizontalAlignment="Center" VerticalAlignment="Top">
@@ -153,6 +165,9 @@
                 <TextBlock Foreground="#333" FontStyle="Italic"  Text="We are loading book info..." />
             </telerik:RadBusyIndicator.BusyContent>
         </telerik:RadBusyIndicator>
+
+
+
 
     </Canvas>
 
