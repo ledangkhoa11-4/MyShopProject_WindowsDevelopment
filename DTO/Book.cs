@@ -19,10 +19,26 @@ namespace MyShopProject.DTO
         public int SellingPrice { get; set; }
         public string Author { get; set; }
         public int PublishedYear { get; set; }
-        public int QuantityStock { get; set; }
+        private int _quantityStock;
+        public int QuantityStock
+        {
+            get
+            {
+                return _quantityStock;
+            }
+            set
+            {
+                _quantityStock= value;
+                if(QuantityStock == 0)
+                {
+                    isOnStock = false;
+                }
+            }
+        }
         public int QuantityOrder { get; set; } = 0;
         public long CatID { get; set; }
         public string Description { get; set; }
+        private bool isOnStock;
         public bool IsOnStock { get; set; } = true;
     }
 }

@@ -11,14 +11,9 @@ namespace MyShopProject.DAO
 {
     public class Category_DAO
     {
-        private API api;
-        public Category_DAO()
-        {
-            this.api = new API("http://127.0.0.1:5000");
-        }
         public async Task<List<Category>> getAll()
         {
-            var json = await api.getMethod("/category");
+            var json = await API.getMethod("/category");
             var categoryList = JsonConvert.DeserializeObject<List<Category>>(json);
             return categoryList;
         }

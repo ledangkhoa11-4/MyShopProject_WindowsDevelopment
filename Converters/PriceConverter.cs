@@ -9,9 +9,9 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
-namespace MyShopProject
+namespace MyShopProject.Converters
 {
-    public class PriceConverter:IValueConverter
+    public class PriceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

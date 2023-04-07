@@ -4,7 +4,7 @@
                 xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
                 Title="MainWindow" Height="750
         " Width="1198"
-                xmlns:local="clr-namespace:MyShopProject"
+                xmlns:local="clr-namespace:MyShopProject.Converters"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
         Loaded="windowLoaded">
