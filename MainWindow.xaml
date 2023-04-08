@@ -51,7 +51,7 @@
                         telerik:StyleManager.Theme="Material" 
                         HorizontalAlignment="Center" Canvas.Top="10" 
                         VerticalAlignment="Top" Width="1178" Height="318" 
-                        Canvas.Left="11" RowHeight="35"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent"/>
+                        Canvas.Left="11" RowHeight="40"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent"/>
                     <telerik:HtmlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
                     <telerik:XamlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
                     <Grid x:Name="radRichTextBoxParent">
@@ -106,8 +106,8 @@
                         telerik:StyleManager.Theme="Office2019" Grid.ColumnSpan="4" Width="1178" Height="596" Margin="11,76,0,0" Filtering="prepareFilter" MouseDoubleClick="editBookEvent">
                         <telerik:RadContextMenu.ContextMenu >
                             <telerik:RadContextMenu telerik:StyleManager.Theme="Crystal" x:Name="contextMenu" MinWidth="120">
-                                <telerik:RadMenuItem Header="Edit"/>
-                                <telerik:RadMenuItem Header="Delete" />
+                                <telerik:RadMenuItem Header="Edit" Click="editBookClick"/>
+                                <telerik:RadMenuItem Header="Delete" Click="deleteBookClick"/>
                             </telerik:RadContextMenu>
                         </telerik:RadContextMenu.ContextMenu>
 
@@ -143,6 +143,7 @@
                                     </DataTemplate>
                                 </telerik:CardDataFieldDescriptor.ReadOnlyTemplate>
                             </telerik:CardDataFieldDescriptor>
+
                         </telerik:RadCardView.DataFieldDescriptors>
 
                         <telerik:RadCardView.CardHeaderTemplate>
@@ -203,11 +204,53 @@
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Orders</TextBlock>
                 </telerik:RadTabItem.Header>
                 <Canvas>
-                    <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="1010" Canvas.Top="20" VerticalAlignment="Top"/>
+                    <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="1010" Canvas.Top="64" VerticalAlignment="Top" CornerRadius="8,8,8,8" HorizontalAlignment="Center"/>
+                    <telerik:RadGridView x:Name="listOrderGridView"   
+                     ItemsSource="{Binding listOrder}"  
+                     AutoGenerateColumns="False" RowHeight="50" telerik:StyleManager.Theme="VisualStudio2019" Canvas.Left="10" Canvas.Top="119" ShowGroupPanel="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178" Height="481" EnableStickyGroupHeaders="True" IsReadOnly="True" CanUserResizeColumns="False" MouseDoubleClick="viewDetailOrderEvent" >
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Width="100" DataMemberBinding="{Binding _id}" >
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Padding="8 0 8 0" Name="quantity" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding _id}" VerticalAlignment="Center"   />
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                                <telerik:GridViewDataColumn.Header>
+                                    <TextBlock TextAlignment="Center" Text="ID" />
+                                </telerik:GridViewDataColumn.Header>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Customer}" >
+                                <telerik:GridViewDataColumn.Header>
+                                    <TextBlock TextAlignment="Center" Text="Customer" />
+                                </telerik:GridViewDataColumn.Header>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding PurchaseDate}">
+                                <telerik:GridViewDataColumn.Header>
+                                    <TextBlock TextAlignment="Center" Text="Purchase Date" />
+                                </telerik:GridViewDataColumn.Header>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Coupon.DiscountPercentm}">
+                                <telerik:GridViewDataColumn.Header>
+                                    <TextBlock TextAlignment="Center" Text="Discount" />
+                                </telerik:GridViewDataColumn.Header>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding TotalPriceOrder}">
+                                <telerik:GridViewDataColumn.Header>
+                                    <TextBlock TextAlignment="Center" Text="Purchase Amount" />
+                                </telerik:GridViewDataColumn.Header>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding TotalPriceOrder, Converter={StaticResource priceConverter}}">
+                                <telerik:GridViewDataColumn.Header>
+                                    <TextBlock TextAlignment="Center" Text="Order Price" />
+                                </telerik:GridViewDataColumn.Header>
+                            </telerik:GridViewDataColumn>
+                        </telerik:RadGridView.Columns>
+                    </telerik:RadGridView>
+                    <telerik:RadDataPager Canvas.Left="11" Canvas.Top="605" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178"/>
+
                 </Canvas>
             </telerik:RadTabItem>
 
         </telerik:RadTabControl>
-
     </Canvas>
 </Window>

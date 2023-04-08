@@ -27,5 +27,15 @@ namespace MyShopProject.DAO
             var json = await API.postMethod("/product", content);
             return json;
         }
+        public async Task<String> editProduct(string content, string id)
+        {
+            var json = await API.postMethod($"/product?id={id}", content);
+            return json;
+        }
+        public async Task<String> delProduct(string content, string id)
+        {
+            var json = await API.postMethod($"/product/delete?id={id}", content);
+            return json;
+        }
     }
 }

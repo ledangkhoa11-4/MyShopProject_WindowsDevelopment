@@ -30,12 +30,18 @@
   <Page Include="AddProductWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
+  <Page Include="EditProductWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="LoginWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
   <Page Include="MainWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
+  </Page>
+  <Page Include="OrderDetailWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
   </Page>
   <Page Include="SignUpWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
@@ -48,16 +54,20 @@
     <SubType>Code</SubType>
   </Compile>
   <Compile Include="BUS\Coupon_BUS.cs" />
+  <Compile Include="BUS\Order_BUS.cs" />
   <Compile Include="Converters\Base64ToBitmapConverter.cs" />
   <Compile Include="BUS\Book_BUS.cs" /> 
   <Compile Include="BUS\Account_BUS.cs" />
   <Compile Include="BUS\Category_BUS.cs" />
+  <Compile Include="Converters\IDToStringConverter.cs" />
+  <Compile Include="Converters\OldDiscountPriceConverter.cs" />
   <Compile Include="DAO\Account_DAO.cs" />
   <Compile Include="BUS\Product_BUS.cs" />
   <Compile Include="DAO\API.cs" />
   <Compile Include="DAO\Book_DAO.cs" />
   <Compile Include="DAO\Category_DAO.cs" />
   <Compile Include="DAO\Coupon_DAO.cs" />
+  <Compile Include="DAO\Order_DAO.cs" />
   <Compile Include="DTO\Account.cs" />
   <Compile Include="DAO\Product_DAO.cs" />
   <Compile Include="DTO\Book.cs" />
@@ -65,6 +75,7 @@
   <Compile Include="DTO\DetailOrder.cs" />
   <Compile Include="DTO\Coupon.cs" />
   <Compile Include="DTO\Order.cs" />
+  <Compile Include="EditProductWindow.xaml.cs" />
   <Compile Include="LoginWindow.xaml.cs" />
   <Compile Include="MainWindow.xaml.cs">
     <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -72,8 +83,13 @@
   </Compile>
   <Compile Include="Converters\PercentConverter.cs" />
   <Compile Include="Converters\PriceConverter.cs" />
+  <Compile Include="OrderDetailWindow.xaml.cs" />
   <Compile Include="SignUpWindow.xaml.cs" />
 </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Images\design_book.jpg" />
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Images\gift.png" />
@@ -86,7 +102,6 @@
   
   <ItemGroup>
     <Folder Include="Fonts\" />
-     <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>
