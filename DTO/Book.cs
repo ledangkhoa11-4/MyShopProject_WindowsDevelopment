@@ -39,6 +39,20 @@ namespace MyShopProject.DTO
         public string CatID { get; set; }
         public string Description { get; set; }
         private bool isOnStock;
-        public bool IsOnStock { get; set; } = true;
+        public bool IsOnStock
+        {
+            get
+            {
+                return isOnStock;
+            }
+            set
+            {
+                isOnStock = value;
+                if (QuantityStock == 0)
+                {
+                    isOnStock = false;
+                }
+            }
+        } 
     }
 }

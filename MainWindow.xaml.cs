@@ -325,8 +325,15 @@ namespace MyShopProject
 
         private void viewDetailOrderEvent(object sender, MouseButtonEventArgs e)
         {
-            var detailOrder = new OrderDetailWindow(modelBinding.listOrder[0]);
-            detailOrder.Show();
+           
+            var selectedItem = listOrderGridView.SelectedItem as Order;
+            if(selectedItem != null)
+            {
+                var detailOrder = new OrderDetailWindow(selectedItem);
+                detailOrder.Show();
+            }
+           
+            
         }
     }
 }

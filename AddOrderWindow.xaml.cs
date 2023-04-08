@@ -144,6 +144,8 @@ namespace MyShopProject
                 string result = await _orderBus.AddOrder(modelBinding.newOrder);
                 if(result.Length>0)
                 {
+                    modelBinding.newOrder._id = result;
+                    MainWindow.modelBinding.listOrder.Add(modelBinding.newOrder);
                     alert.Header = "CREATE NEW ORDER SUCCESSFULLY";
                     alert.Content = "Your new order was uploaded!!!";
                     alert.ShowDuration = 3000;
