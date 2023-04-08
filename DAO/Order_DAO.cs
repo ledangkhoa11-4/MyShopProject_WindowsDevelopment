@@ -16,9 +16,19 @@ namespace MyShopProject.DAO
             var orderList = JsonConvert.DeserializeObject<List<Order>>(json);
             return orderList;
         }
+        public async Task<String> getTotal()
+        {
+            var json = await API.getMethod($"/order/count");
+            return json;
+        }
         public async Task<String> addNewOrder(string content)
         {
             var json = await API.postMethod("/order", content);
+            return json;
+        }
+        public async Task<String> updateOrder(string id, string content)
+        {
+            var json = await API.postMethod($"/order/update/{id}", content);
             return json;
         }
     }

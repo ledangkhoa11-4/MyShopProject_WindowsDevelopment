@@ -35,18 +35,6 @@ namespace MyShopProject
         {
             InitializeComponent();
             model = new DetailViewModel(order);
-            if (model.order.Coupon!=null && model.order.Coupon._id != null)
-                model.order.Coupon = MainWindow.modelBinding.listCoupon.FirstOrDefault(cp => cp._id == model.order.Coupon._id);
-            else
-            {
-                
-                model.order.Coupon = new Coupon
-                {
-                    DiscountPercent = 0,
-                    _id = "No coupon applied"
-                };
-            }
-               
             foreach (DetailOrder cart in model.order.DetailCart)
             {
                 model.subTotal += cart.TotalPrice;

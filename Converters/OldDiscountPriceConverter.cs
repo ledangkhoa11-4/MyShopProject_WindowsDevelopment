@@ -17,7 +17,7 @@ namespace MyShopProject.Converters
             try
             {
                 var currentPriceStr = values[0] as String;
-                if (values[1] == null) return "";
+                if (values[1] == null || values[1].ToString() == "0") return "";
                 var currentDiscountStr = values[1].ToString();
                 currentPriceStr = currentPriceStr.Remove(currentPriceStr.Length - 1);
                 currentPriceStr = currentPriceStr.Replace(".", "");
