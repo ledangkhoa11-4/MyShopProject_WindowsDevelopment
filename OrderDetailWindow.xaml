@@ -1,0 +1,92 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyShopProject.Converters"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.OrderDetailWindow"
+        mc:Ignorable="d"
+        Title="OrderDetailWindow" Height="690" Width="998">
+    <Window.Resources>
+        <local:Base64ToBitmapConverter x:Key="bitmapConverter"/>
+        <local:PriceConverter x:Key="priceConverter"/>
+    </Window.Resources>
+    <Canvas>
+
+        <StackPanel Orientation="Horizontal" Canvas.Left="10" Canvas.Top="10">
+            <telerik:Label VerticalAlignment="Center" Content="Order Number:" Canvas.Left="10" Canvas.Top="10" telerik:StyleManager.Theme="Material" FontFamily="Arial" FontWeight="Bold" FontSize="25"/>
+            <telerik:Label Content="{Binding order._id}" d:Content="#642da016d0ce5f4ffac734be" Canvas.Left="209" Canvas.Top="14" telerik:StyleManager.Theme="Material" FontFamily="Arial" FontSize="18" VerticalAlignment="Center" FontWeight="Bold" Foreground="#FFEF2929" Height="35"/>
+        </StackPanel>
+
+
+        <GroupBox Height="399" Canvas.Left="10" Canvas.Top="65" Width="978" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <GroupBox.Header>
+                <TextBlock FontSize="16" FontWeight="Bold" >
+                    Product Summary
+                </TextBlock>
+            </GroupBox.Header>
+            <Canvas>
+                <telerik:RadGridView x:Name="listOrderGridView"   
+                     ItemsSource="{Binding order.DetailCart}" 
+                     RowIndicatorVisibility="Collapsed"
+                     AutoGenerateColumns="False" RowHeight="50" telerik:StyleManager.Theme="VisualStudio2019" Canvas.Left="10" Canvas.Top="10" ShowGroupPanel="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="946" Height="353" EnableStickyGroupHeaders="True" IsReadOnly="True" CanUserResizeColumns="False" GridLinesVisibility="Horizontal" >
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Width="1.5*">
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock TextAlignment="Center" Text="Book" />
+                            </telerik:GridViewDataColumn.Header>
+                            <telerik:GridViewDataColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal"  VerticalAlignment="Top">
+                                        <Image Margin="8 8 0 8" Stretch="Fill" Source="Images/design_book.jpg" Height="100" Width="60" VerticalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Book.Name}" d:Text="Harry Potter" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="17" FontWeight="Bold" Margin="15,0,0,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </telerik:GridViewDataColumn.CellTemplate>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="0.5*" >
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock TextAlignment="Center" Text="QTY" />
+                            </telerik:GridViewDataColumn.Header>
+                            <telerik:GridViewDataColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Name="quantity" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding QuantityBuy}" d:Text="Harry Potter" VerticalAlignment="Center"  FontSize="15"  />
+                                </DataTemplate>
+                            </telerik:GridViewDataColumn.CellTemplate>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="0.75*" >
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock TextAlignment="Center" Text="Unit Price" />
+                            </telerik:GridViewDataColumn.Header>
+                            <telerik:GridViewDataColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock TextAlignment="Center" HorizontalAlignment="Center"  d:Text="Harry Potter" VerticalAlignment="Center" Text="{Binding Price, Converter={StaticResource priceConverter}}"  FontSize="15">
+                                    </TextBlock>
+                                </DataTemplate>
+                            </telerik:GridViewDataColumn.CellTemplate>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="0.75*" >
+                            <telerik:GridViewDataColumn.Header>
+                                <TextBlock TextAlignment="Center" Text="Total Price" />
+                            </telerik:GridViewDataColumn.Header>
+                            <telerik:GridViewDataColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Name="totalPrice" TextAlignment="Center" HorizontalAlignment="Center" Text="{Binding TotalPrice, Converter={StaticResource priceConverter}}" d:Text="Harry Potter" VerticalAlignment="Center"  FontSize="15"  />
+                                </DataTemplate>
+                            </telerik:GridViewDataColumn.CellTemplate>
+                        </telerik:GridViewDataColumn>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+
+
+            </Canvas>
+        </GroupBox>
+        <Button Content="Button" Height="1" Width="220" Canvas.Left="748" Canvas.Top="463"/>
+        <telerik:Label VerticalAlignment="Top" Content="Subtotal" Canvas.Left="748" Canvas.Top="469" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman" FontSize="16" RenderTransformOrigin="-0.015,0.001"/>
+        <telerik:Label Content="Discount: " Canvas.Left="748" Canvas.Top="512" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman"  FontSize="16" RenderTransformOrigin="-0.015,0.001" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+        <telerik:Label Content="Total" Canvas.Left="748" Canvas.Top="555" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman"  FontSize="16" RenderTransformOrigin="-0.015,0.001" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+
+    </Canvas>
+</Window>

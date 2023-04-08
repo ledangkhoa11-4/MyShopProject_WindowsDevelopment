@@ -40,6 +40,9 @@
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
   </Page>
+  <Page Include="OrderDetailWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="SignUpWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
@@ -79,8 +82,13 @@
   </Compile>
   <Compile Include="Converters\PercentConverter.cs" />
   <Compile Include="Converters\PriceConverter.cs" />
+  <Compile Include="OrderDetailWindow.xaml.cs" />
   <Compile Include="SignUpWindow.xaml.cs" />
 </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Images\design_book.jpg" />
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Images\gift.png" />
@@ -93,7 +101,6 @@
   
   <ItemGroup>
     <Folder Include="Fonts\" />
-     <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>

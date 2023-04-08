@@ -57,8 +57,6 @@ namespace MyShopProject.BUS
             {
                 //ignore
             }
-            
-
             JArray jsonArray = (JArray)jsonObj["DetailCart"];
             foreach (JObject item in jsonArray)
             {
