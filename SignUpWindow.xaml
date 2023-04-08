@@ -3,15 +3,33 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
         xmlns:local="clr-namespace:MyShopProject"
         mc:Ignorable="d"
         Title="SignUpWindow" Height="450" Width="800">
     <Canvas>
-        <Button Name="signupButton"  Width="80" Height="35" Content="Sign up" Click="signupButton_Click" Canvas.Left="405" Canvas.Top="249" HorizontalAlignment="Left" VerticalAlignment="Top"></Button>
-        <TextBlock Text="Username:" Canvas.Left="298" Canvas.Top="152"/>
-        <TextBox Name="usernameTextBox" Width="150" Height="35" Canvas.Left="370" Canvas.Top="142"/>
-        <TextBlock Text="Password:" Canvas.Left="302" Canvas.Top="192"/>
-        <PasswordBox PasswordChar="*" x:Name="passwordBox" Width="150" Height="35" Canvas.Left="370" Canvas.Top="182"/>
-
+        <Border CornerRadius="10" Background="#e3e3e3" BorderThickness="1" BorderBrush="Gray" Canvas.Left="150" Canvas.Top="67">
+            <Canvas Width="500" Height="300" Canvas.Left="150" Canvas.Top="67">
+                <Button Name="signupButton"  Width="80" Height="35" Click="signupButton_Click" Canvas.Left="239" Canvas.Top="184" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="Border" CornerRadius="5" BorderBrush="Gray" BorderThickness="1" Background="#f3f3f3">
+                                <ContentPresenter Content="Sign up" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="#2898ac" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <TextBlock Text="Username:" Canvas.Left="129" Canvas.Top="88"/>
+                <TextBox Name="usernameTextBox" VerticalContentAlignment="Center" Width="150" Height="35" Canvas.Left="204" Canvas.Top="78"/>
+                <TextBlock Text="Password:" Canvas.Left="129" Canvas.Top="136"/>
+                <!--<PasswordBox PasswordChar="*" x:Name="passwordBox" Width="150" Height="35" Canvas.Left="370" Canvas.Top="182"/>-->
+                <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="150" Height="35" Canvas.Left="204" Canvas.Top="126" Password="password" TextWrapping="Wrap" WatermarkContent="Enter password"/>
+            </Canvas>
+        </Border>
     </Canvas>
 </Window>
