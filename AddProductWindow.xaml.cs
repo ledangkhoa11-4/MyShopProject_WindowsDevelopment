@@ -111,6 +111,7 @@ namespace MyShopProject
                     alert.Content = "Congratulation, your book was added!!!";
                     alert.ShowDuration = 3000;
                     this.DialogResult = true;
+                    MainWindow.modelBinding.totalProduct++;
                 }
                 else
                 {

@@ -48,8 +48,9 @@ namespace MyShopProject
             sellingPrice.Text = _book.SellingPrice.ToString();
             publishedYear.Text = _book.PublishedYear.ToString();
             quantity.Value = _book.QuantityStock;
-            //var selectedItem = _listCat.FirstOrDefault(c => c._id == _book.CatID).Name;
-            //cateChoosingBox.SelectedItem = selectedItem;
+            var selectedItem = _listCat.FirstOrDefault(c => c._id == _book.CatID);
+            
+            if (selectedItem != null) cateChoosingBox.SelectedItem = selectedItem;
             var converter = new Base64ToBitmapConverter();
             var bitmap = (BitmapImage)converter.Convert(_book.ImageBase64, null, null, null);
             CoverImage.Source = bitmap;

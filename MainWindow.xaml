@@ -14,6 +14,7 @@
         <local:PriceConverter x:Key="priceConverter"/>
         <local:PercentConverter x:Key="percentConverter"/>
         <local:CalculateAmountPurchaseConverter x:Key="amountConverter"/>
+        <local:CategoryNameConverter x:Key="catNameConverter"/>
     </Window.Resources>
     <Canvas Width="1198" Height="740" >
         <telerik:RadTabControl Height="730" Width="1199" SelectionChanged="tabChanged" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" >
@@ -91,6 +92,7 @@
                         <ColumnDefinition Width="98*"/>
                         <ColumnDefinition Width="911*"/>
                     </Grid.ColumnDefinitions>
+
                     <telerik:RadCardView 
                         
                         IsHitTestVisible="True"
@@ -113,7 +115,7 @@
                                 <telerik:RadMenuItem Header="Delete" Click="deleteBookClick"/>
                             </telerik:RadContextMenu>
                         </telerik:RadContextMenu.ContextMenu>
-
+                        
                         <telerik:RadCardView.DataFieldDescriptors>
                             <telerik:CardDataFieldDescriptor Header="Book cover:" DataMemberBinding="{Binding ImageBase64}">
                                 <telerik:CardDataFieldDescriptor.ReadOnlyTemplate>
@@ -130,7 +132,7 @@
                             </telerik:CardDataFieldDescriptor>
                             <telerik:CardDataFieldDescriptor Header="ID: "  DataMemberBinding="{Binding _id}" />
                             <telerik:CardDataFieldDescriptor Header="Book name: " DataMemberBinding="{Binding Name}" />
-                            <telerik:CardDataFieldDescriptor Header="Category: " DataMemberBinding="{Binding Name}" />
+                            <telerik:CardDataFieldDescriptor Header="Category: " DataMemberBinding="{Binding CatID,Converter={StaticResource catNameConverter}}" />
                             <telerik:CardDataFieldDescriptor Header="Author: " DataMemberBinding="{Binding Author}" />
                             <telerik:CardDataFieldDescriptor Header="Published year: " DataMemberBinding="{Binding PublishedYear}"/>
                             <telerik:CardDataFieldDescriptor Header="Purchase price: " DataMemberBinding="{Binding PurchasePrice , Converter={StaticResource priceConverter}}"/>
@@ -156,9 +158,11 @@
                         </telerik:RadCardView.CardHeaderTemplate>
 
                     </telerik:RadCardView>
+                    <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="productBusyIndicator"  BusyContent="Product is currently loading..."  Canvas.Left="510" Canvas.Top="46" telerik:StyleManager.Theme="Office2013" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42" Grid.Column="3" Margin="222,280,0,0"/>
+
                     <telerik:RadDataPager x:Name="productPager" 
-                        
-                        DisplayMode="All" HorizontalAlignment="Left" Margin="319,10,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="403" PageSize="1" Grid.Column="3"/>
+                        PageIndexChanged="changeProductPage" PageSize="{Binding productPerPage}" ItemCount="{Binding totalProduct}"
+                        DisplayMode="All" HorizontalAlignment="Left" Margin="142,10,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="580" Grid.Column="3"/>
                     <telerik:RadRibbonDropDownButton KeepOpen="True" Grid.Column="3" Height="28" IsOpen="False" Margin="798,76,11,0" Text="Filter by: 
                                                      " VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5">
 
@@ -195,8 +199,8 @@
                             </ListBox>
                         </telerik:RadRibbonDropDownButton.DropDownContent>
                     </telerik:RadRibbonDropDownButton>
-                    <telerik:RadWatermarkTextBox HorizontalAlignment="Left" Margin="10,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" WatermarkContent="Search by name" Width="522" telerik:StyleManager.Theme="Material" Grid.ColumnSpan="4"/>
-                    <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="249,20,0,0" Text="Search" VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5"/>
+                    <telerik:RadWatermarkTextBox HorizontalAlignment="Left" Margin="10,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" WatermarkContent="Search by name" Width="341" telerik:StyleManager.Theme="Material" Grid.ColumnSpan="4"/>
+                    <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="67,20,0,0" Text="Search" VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5"/>
                     <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="722,20,0,0" Text="Add new product" VerticalAlignment="Top" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newProductBtnClick"/>
 
 
