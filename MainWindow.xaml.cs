@@ -15,18 +15,24 @@ using MyShopProject.BUS;
 using MyShopProject.DTO;
 using MyShopProject.DAO;
 using Telerik.Windows.Persistence.Core;
+using System.ComponentModel;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
 namespace MyShopProject
 {
-    public class MainViewModel
+ 
+    public class MainViewModel:INotifyPropertyChanged
     {
        public ObservableCollection<Category> listCat { get; set; } 
        public ObservableCollection<Book> listBook { get; set; } 
-       public ObservableCollection<Order> listOrder { get; set; }
+       
        public ObservableCollection<Coupon> listCoupon { get; set; }
-        
-        public static int ordersPerPage = 6;
+
+        public ObservableCollection<Order> listOrder { get; set; }
+
+        public  int orderPerPage { get; set; } = 9;
+        public  int totalOrder { get; set; } = 0;
+
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
@@ -34,6 +40,8 @@ namespace MyShopProject
             listOrder = new ObservableCollection<Order>();
             listCoupon = new ObservableCollection<Coupon>();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     public partial class MainWindow : Window
@@ -295,6 +303,9 @@ namespace MyShopProject
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
         {
+            //hiện loading lúc đang query db cho đỡ trống trãi
+            orderBusyIndicator.IsBusy = true;
+
             var testConn = await API.testConnection();
             if (testConn.Item1 == false)
             {
@@ -312,8 +323,15 @@ namespace MyShopProject
             modelBinding.listBook = await product_BUS.getProductWithPagination(0);
          
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-            modelBinding.listOrder =  await order_BUS.getAllOrder();
+            modelBinding.listOrder =  await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
+
+            modelBinding.totalOrder = await order_BUS.getCountOrder();
             this.DataContext = modelBinding;
+           
+ 
+
+            //tắt loading
+            orderBusyIndicator.IsBusy = false;
         }
         
 
@@ -330,8 +348,44 @@ namespace MyShopProject
 
         private void viewDetailOrderEvent(object sender, MouseButtonEventArgs e)
         {
-            //var detailOrder = new OrderDetailWindow(modelBinding.listOrder[0]);
-            //detailOrder.Show();
+           
+            var selectedItem = listOrderGridView.SelectedItem as Order;
+            if(selectedItem != null)
+            {
+                var detailOrder = new OrderDetailWindow(selectedItem);
+                detailOrder.Show();
+            }
+           
+            
+        }
+
+        private async void changeOrderPage(object sender, PageIndexChangedEventArgs e)
+        {
+            int pageIndex = e.NewPageIndex; //start at 0
+            int limit = modelBinding.orderPerPage;
+            int skip = pageIndex * limit;
+            orderBusyIndicator.IsBusy = true;
+            var listOrder = await order_BUS.getAllOrder(limit, skip);
+            modelBinding.listOrder.Clear();
+            modelBinding.listOrder.AddRange(listOrder);
+
+            foreach (Order order in modelBinding.listOrder)
+            {
+                if (order.Coupon != null && order.Coupon._id != null)
+                    order.Coupon = modelBinding.listCoupon.FirstOrDefault(cp => cp._id == order.Coupon._id);
+            }
+
+            orderBusyIndicator.IsBusy = false;
+        }
+
+        private void EditOrderClick(object sender, RoutedEventArgs e)
+        {
+            var buttonClicked = sender as RadRibbonButton;
+            var orderEditing = modelBinding.listOrder.FirstOrDefault(order => order._id == buttonClicked.Tag.ToString());
+
+            var cloneNewOrder = (Order)orderEditing.Clone();
+            var editScreen = new EditOrderWindow(cloneNewOrder);
+            editScreen.ShowDialog();
         }
     }
 }

@@ -30,6 +30,9 @@
   <Page Include="AddProductWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
+  <Page Include="EditOrderWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="EditProductWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
@@ -39,6 +42,9 @@
   <Page Include="MainWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
     <SubType>Designer</SubType>
+  </Page>
+  <Page Include="OrderDetailWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
   </Page>
   <Page Include="SignUpWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
@@ -56,6 +62,9 @@
   <Compile Include="BUS\Book_BUS.cs" /> 
   <Compile Include="BUS\Account_BUS.cs" />
   <Compile Include="BUS\Category_BUS.cs" />
+  <Compile Include="Converters\CalculateAmountPurchaseConverter.cs" />
+  <Compile Include="Converters\CalculateQuantityOrderEdit.cs" />
+  <Compile Include="Converters\IDToStringConverter.cs" />
   <Compile Include="Converters\OldDiscountPriceConverter.cs" />
   <Compile Include="DAO\Account_DAO.cs" />
   <Compile Include="BUS\Product_BUS.cs" />
@@ -71,6 +80,7 @@
   <Compile Include="DTO\DetailOrder.cs" />
   <Compile Include="DTO\Coupon.cs" />
   <Compile Include="DTO\Order.cs" />
+  <Compile Include="EditOrderWindow.xaml.cs" />
   <Compile Include="EditProductWindow.xaml.cs" />
   <Compile Include="LoginWindow.xaml.cs" />
   <Compile Include="MainWindow.xaml.cs">
@@ -79,8 +89,13 @@
   </Compile>
   <Compile Include="Converters\PercentConverter.cs" />
   <Compile Include="Converters\PriceConverter.cs" />
+  <Compile Include="OrderDetailWindow.xaml.cs" />
   <Compile Include="SignUpWindow.xaml.cs" />
 </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Images\design_book.jpg" />
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Images\gift.png" />
@@ -93,7 +108,6 @@
   
   <ItemGroup>
     <Folder Include="Fonts\" />
-     <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>

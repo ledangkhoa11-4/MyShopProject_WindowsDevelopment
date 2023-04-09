@@ -13,7 +13,7 @@ using Telerik.Windows.Rendering;
 
 namespace MyShopProject.DTO
 {
-    public class Order: INotifyPropertyChanged
+    public class Order: INotifyPropertyChanged, ICloneable
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -96,6 +96,28 @@ namespace MyShopProject.DTO
                 total = total - Convert.ToInt32(discountPrice);
             }
             TotalPriceOrder = total;
+        }
+
+        public object Clone()
+        {
+            Coupon coupon = null;
+            if(this.Coupon!= null && this.Coupon._id != null) {
+                coupon = new Coupon
+                {
+                    _id = this.Coupon._id,
+                    Name = this.Coupon.Name,
+                    DateAdd = this.Coupon.DateAdd,
+                    DiscountPercent = this.Coupon.DiscountPercent,
+                };
+            }
+            return new Order
+            {
+                _id = _id,
+                _bookAndQuantity = new ObservableCollection<DetailOrder>(_bookAndQuantity.ToList()),
+                PurchaseDate = this.PurchaseDate,
+                Customer = this.Customer,
+                Coupon = coupon
+            };
         }
     }
 }
