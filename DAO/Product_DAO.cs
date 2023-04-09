@@ -17,9 +17,9 @@ namespace MyShopProject.DAO
             var productList = JsonConvert.DeserializeObject<List<Book>>(json);
             return productList;
         }
-        public async Task<List<Book>> getWithPagination(int pageIndex)
+        public async Task<List<Book>> getWithPagination(int pageIndex, int limit)
         {
-            var json = await API.getMethod($"/product?brief=false&pgIdx={pageIndex}");
+            var json = await API.getMethod($"/product?brief=false&pgIdx={pageIndex}&limit={limit}");
             var productList = JsonConvert.DeserializeObject<List<Book>>(json);
             return productList;
         }
@@ -43,7 +43,7 @@ namespace MyShopProject.DAO
         }
         public async Task<String> editProduct(string content, string id)
         {
-            var json = await API.postMethod($"/product?id={id}", content);
+            var json = await API.postMethod($"/product/edit?id={id}", content);
             return json;
         }
         public async Task<String> delProduct(string content, string id)

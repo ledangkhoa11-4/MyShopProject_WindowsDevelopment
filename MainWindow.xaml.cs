@@ -33,6 +33,9 @@ namespace MyShopProject
         public  int orderPerPage { get; set; } = 9;
         public  int totalOrder { get; set; } = 0;
 
+        public int productPerPage { get; set; } = 6;
+        public int totalProduct { get; set; } = 0;
+
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
@@ -116,7 +119,12 @@ namespace MyShopProject
         }
         private async void productLoaded()
         {
-            modelBinding.listBook = await product_BUS.getAllProduct();
+            modelBinding.listBook.Clear();
+
+  
+            var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage);;
+
+            modelBinding.listBook.AddRange(listProduct);
         }
         private void categoryGenerated2(object sender, Telerik.Windows.Controls.Data.DataForm.AutoGeneratingFieldEventArgs e)
         {
@@ -188,11 +196,11 @@ namespace MyShopProject
 
                 var tmp = new EditProductWindow(modelBinding.listCat, bookSelected);
                 tmp.ShowDialog();
-                if (tmp.DialogResult == true)
-                {
-                    productLoaded();
-                    this.DataContext = modelBinding;
-                }
+                //if (tmp.DialogResult == true)
+                //{
+                //    productLoaded();
+                //    this.DataContext = modelBinding;
+                //}
             }
             catch (Exception ex)
             {
@@ -224,7 +232,7 @@ namespace MyShopProject
         {
             try
             {
-            
+               
                 var bookSelected = bookCardView.SelectedItem as Book;
                 var product_BUS = new Product_BUS();
                 Debug.WriteLine(bookSelected.ToString());
@@ -232,10 +240,12 @@ namespace MyShopProject
                 var alert = new RadDesktopAlert();
                 if (result.Length != 0)
                 {
-                    alert.Header = "UPDATE BOOK SUCCESSFULLy";
+                    alert.Header = "DELETE BOOK SUCCESSFULLy";
                     alert.Content = "Congratulation, your book was deleted!!!";
+                   
                     alert.ShowDuration = 3000;
                     this.DialogResult = true;
+                    modelBinding.totalProduct = modelBinding.totalProduct - 1;
                 }
                 else
                 {
@@ -320,7 +330,9 @@ namespace MyShopProject
             }
             
             modelBinding.listCat = await category_BUS.getAllCategory();
-            modelBinding.listBook = await product_BUS.getProductWithPagination(0);
+
+            modelBinding.totalProduct = await product_BUS.getSize();
+            
          
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
             modelBinding.listOrder =  await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
@@ -386,6 +398,19 @@ namespace MyShopProject
             var cloneNewOrder = (Order)orderEditing.Clone();
             var editScreen = new EditOrderWindow(cloneNewOrder);
             editScreen.ShowDialog();
+        }
+
+        private async void changeProductPage(object sender, PageIndexChangedEventArgs e)
+        {
+            int pageIndex = e.NewPageIndex; //start at 0
+            modelBinding.listBook.Clear();
+
+            productBusyIndicator.IsBusy = true;
+            var listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
+            productBusyIndicator.IsBusy = false;
+            
+            modelBinding.listBook.AddRange(listProduct);
+            
         }
     }
 }
