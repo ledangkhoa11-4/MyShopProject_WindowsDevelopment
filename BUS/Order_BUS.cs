@@ -22,9 +22,9 @@ namespace MyShopProject.BUS
             order_DAO = new Order_DAO();
             book_DAO = new Book_DAO();
         }
-        public async Task<ObservableCollection<Order>> getAllOrder(int limit = 6, int offset = 0)
+        public async Task<ObservableCollection<Order>> getAllOrder(int limit = 6, int skip = 0)
         {
-            var listOrder = await order_DAO.getAll(limit,offset);
+            var listOrder = await order_DAO.getAll(limit,skip);
             foreach(Order order in listOrder)
             {
                 var listCart = order.DetailCart;
@@ -36,6 +36,11 @@ namespace MyShopProject.BUS
                 }
             }
             return new ObservableCollection<Order>(listOrder);
+        }
+        public async Task<int> getCountOrder()
+        {
+            string json = await order_DAO.getTotal();
+            return int.Parse(json);
         }
         public async Task<String> AddOrder(Order newOrder)
         {
@@ -68,6 +73,39 @@ namespace MyShopProject.BUS
             jsonObj["DetailCart"] = jsonArray;
             string newJsonString = jsonObj.ToString();
             return await order_DAO.addNewOrder(newJsonString);
+        }
+        public async Task<String> UpdateOrder(Order newOrder)
+        {
+            string id = newOrder._id;
+            var jsonData = JsonConvert.SerializeObject(newOrder);
+            JObject jsonObj = JObject.Parse(jsonData);
+            jsonObj.Remove("_id");
+            try
+            {
+                JObject couponInfo = jsonObj["Coupon"].ToObject<JObject>();
+                if (couponInfo != null)
+                {
+                    couponInfo.Remove("DateAdd");
+                    couponInfo.Remove("Name");
+                    couponInfo.Remove("DiscountPercent");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //ignore
+            }
+            JArray jsonArray = (JArray)jsonObj["DetailCart"];
+            foreach (JObject item in jsonArray)
+            {
+                JObject bookInfo = item["Book"].ToObject<JObject>();
+                string bookId = (string)bookInfo["_id"];
+                JObject newBookObj = new JObject(new JProperty("_id", bookId));
+                item["Book"].Replace(newBookObj);
+            }
+            jsonObj["DetailCart"] = jsonArray;
+            string newJsonString = jsonObj.ToString();
+            return await order_DAO.updateOrder(id,newJsonString);
         }
     }
 }

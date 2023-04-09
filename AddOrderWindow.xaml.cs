@@ -142,10 +142,16 @@ namespace MyShopProject
             else
             {
                 string result = await _orderBus.AddOrder(modelBinding.newOrder);
+                result = result.Replace("\"", "");
+                Debug.WriteLine(result);
                 if(result.Length>0)
                 {
                     modelBinding.newOrder._id = result;
-                    MainWindow.modelBinding.listOrder.Add(modelBinding.newOrder);
+                    MainWindow.modelBinding.totalOrder = await _orderBus.getCountOrder();
+                    if (MainWindow.modelBinding.listOrder.Count < MainWindow.modelBinding.orderPerPage)
+                    {
+                        MainWindow.modelBinding.listOrder.Add(modelBinding.newOrder);
+                    }
                     alert.Header = "CREATE NEW ORDER SUCCESSFULLY";
                     alert.Content = "Your new order was uploaded!!!";
                     alert.ShowDuration = 3000;

@@ -21,7 +21,7 @@ namespace MyShopProject.DTO
 
             set { 
                 _book = value;
-                Price = _book.PurchasePrice;
+                Price = _book.SellingPrice;
             } 
         }
         public int Price { get; set; } 

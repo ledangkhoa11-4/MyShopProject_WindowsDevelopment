@@ -24,6 +24,16 @@ namespace MyShopProject.BUS
             List<Book> res = await product_DAO.getAll();
             return new ObservableCollection<Book>(res);
         }
+        public async Task<ObservableCollection<Book>> getProductWithPagination(int pageIndex)
+        {
+            List<Book> res = await product_DAO.getWithPagination(pageIndex);
+            return new ObservableCollection<Book>(res);
+        }
+        public async Task<int> getSize()
+        {
+            int res = await product_DAO.getSize();
+            return res;
+        }
         public async Task<String> AddProduct(Book newBook)
         {
             var jsonData = JsonConvert.SerializeObject(newBook);
