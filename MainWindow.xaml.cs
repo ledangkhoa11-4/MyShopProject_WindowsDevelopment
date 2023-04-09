@@ -15,6 +15,7 @@ using MyShopProject.BUS;
 using MyShopProject.DTO;
 using MyShopProject.DAO;
 using Telerik.Windows.Persistence.Core;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
 namespace MyShopProject
 {
@@ -51,7 +52,7 @@ namespace MyShopProject
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
 
-
+            modelBinding = new MainViewModel();
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -108,7 +109,6 @@ namespace MyShopProject
         private async void productLoaded()
         {
             modelBinding.listBook = await product_BUS.getAllProduct();
-            this.DataContext = modelBinding;
         }
         private void categoryGenerated2(object sender, Telerik.Windows.Controls.Data.DataForm.AutoGeneratingFieldEventArgs e)
         {
@@ -183,6 +183,7 @@ namespace MyShopProject
                 if (tmp.DialogResult == true)
                 {
                     productLoaded();
+                    this.DataContext = modelBinding;
                 }
             }
             catch (Exception ex)
@@ -203,6 +204,7 @@ namespace MyShopProject
                 if (tmp.DialogResult == true)
                 {
                     productLoaded();
+                    this.DataContext = modelBinding;
                 }
             }
             catch (Exception ex)
@@ -236,6 +238,7 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
                 productLoaded();
+                this.DataContext = modelBinding;
 
             }
             catch (Exception ex)
@@ -304,13 +307,15 @@ namespace MyShopProject
                 currentUser = login.currentAccount;
                 
             }
-            modelBinding = new MainViewModel();
+            
             modelBinding.listCat = await category_BUS.getAllCategory();
-            modelBinding.listBook = await product_BUS.getAllProduct();
+            modelBinding.listBook = await product_BUS.getProductWithPagination(0);
+         
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
             modelBinding.listOrder =  await order_BUS.getAllOrder();
             this.DataContext = modelBinding;
         }
+        
 
         private void newOrderBtnClick(object sender, RoutedEventArgs e)
         {
@@ -325,8 +330,8 @@ namespace MyShopProject
 
         private void viewDetailOrderEvent(object sender, MouseButtonEventArgs e)
         {
-            var detailOrder = new OrderDetailWindow(modelBinding.listOrder[0]);
-            detailOrder.Show();
+            //var detailOrder = new OrderDetailWindow(modelBinding.listOrder[0]);
+            //detailOrder.Show();
         }
     }
 }

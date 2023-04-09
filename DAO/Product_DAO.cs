@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace MyShopProject.DAO
 {
@@ -15,6 +16,19 @@ namespace MyShopProject.DAO
             var json = await API.getMethod("/product?brief=false");
             var productList = JsonConvert.DeserializeObject<List<Book>>(json);
             return productList;
+        }
+        public async Task<List<Book>> getWithPagination(int pageIndex)
+        {
+            var json = await API.getMethod($"/product?brief=false&pgIdx={pageIndex}");
+            var productList = JsonConvert.DeserializeObject<List<Book>>(json);
+            return productList;
+        }
+        public async Task<int> getSize()
+        {
+            var json = await API.getMethod($"/product/count");
+            //Debug.WriteLine( json );
+            var size = JsonConvert.DeserializeObject<int>(json);
+            return size;
         }
         public async Task<Book> getById(string id)
         {
