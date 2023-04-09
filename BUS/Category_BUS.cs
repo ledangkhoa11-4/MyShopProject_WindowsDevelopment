@@ -1,4 +1,6 @@
 ﻿using MyShopProject.DAO;
+using MyShopProject.DTO;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +27,21 @@ namespace MyShopProject.BUS
         public async Task<bool> checkExist(Category category)
         {
             return await category_DAO.checkExist(category._id);
+        }
+        public async Task<String> addCategory (Category category)
+        {
+            var jsonData = JsonConvert.SerializeObject(category);
+            return await category_DAO.addCategory(jsonData);
+        }
+        public async Task<String> editCategory(Category category)
+        {
+            var jsonData = JsonConvert.SerializeObject(category);
+            return await category_DAO.editCategory(jsonData, category._id);
+        }
+        public async Task<String> deleteCate(Category category)
+        {
+            var jsonData = JsonConvert.SerializeObject(category);
+            return await category_DAO.deleteCategory(jsonData, category._id);
         }
     }
 }

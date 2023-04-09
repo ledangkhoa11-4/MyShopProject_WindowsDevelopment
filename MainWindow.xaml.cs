@@ -139,25 +139,88 @@ namespace MyShopProject
             currentCat.CurrentItem = currentItem;
         }
 
-        private void beforeDelCat(object sender, System.ComponentModel.CancelEventArgs e)
+        private async void beforeDelCat(object sender, System.ComponentModel.CancelEventArgs e)
         {
             string messageBoxText = "This action cannot be undone. Are you sure to delete this category?";
             string caption = "Delete Confirmation";
             MessageBoxButton button = MessageBoxButton.YesNo;
             MessageBoxImage icon = MessageBoxImage.Warning;
             MessageBoxResult result;
+            var alert = new RadDesktopAlert();
 
             result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
-            if (result == MessageBoxResult.Yes)
+            if (result == MessageBoxResult.Yes) {
                 e.Cancel = false;
+                var currentItem = listCategory.SelectedItem as Category;
+                var ans = await category_BUS.deleteCate(currentItem);
+                if (ans.Length != 0)
+                {
+                    alert.Header = "Success";
+                    alert.Content = "Category delete successfully!!!";
+                    alert.ShowDuration = 3000;
+                    RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                    manager.ShowAlert(alert);
+                }
+                else
+                {
+                    alert.Header = "Error";
+                    alert.Content = "Error occurred, please try again!!!";
+                    alert.ShowDuration = 3000;
+                    RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                    manager.ShowAlert(alert);
+                }
+            }
             else
                 e.Cancel = true;
 
         }
 
-        private void afterEditCat(object sender, Telerik.Windows.Controls.Data.DataForm.EditEndedEventArgs e)
+        private async void afterEditCat(object sender, Telerik.Windows.Controls.Data.DataForm.EditEndedEventArgs e)
         {
-            
+            var currentItem = listCategory.SelectedItem as Category;
+            var alert = new RadDesktopAlert();
+            if (currentItem == null)
+            {
+                var latestItem = listCategory.Items[listCategory.Items.Count - 1] as Category;
+                var result = await category_BUS.addCategory(latestItem);
+                if(result.Length != 0)
+                {
+                    alert.Header = "Success";
+                    alert.Content = "Category insert successfully!!!";
+                    alert.ShowDuration = 3000;
+                    RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                    manager.ShowAlert(alert);
+                }
+            }
+            else
+            {
+                var latestItem = listCategory.Items[listCategory.Items.Count - 1] as Category;
+                bool isExist = await category_BUS.checkExist(latestItem);
+                if (!isExist && latestItem.Name != "")
+                {
+                    var result = await category_BUS.addCategory(latestItem);
+                    if (result.Length != 0)
+                    {
+                        alert.Header = "Success";
+                        alert.Content = "Category insert successfully!!!";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                    }
+                }
+                else if(isExist)
+                {
+                    var result = await category_BUS.editCategory(currentItem);
+                    if (result.Length != 0)
+                    {
+                        alert.Header = "Success";
+                        alert.Content = "Category update successfully!!!";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                    }
+                }
+            }
         }
 
         private void CateTableLoaded(object sender, Telerik.Windows.Controls.GridView.RowLoadedEventArgs e)

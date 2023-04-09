@@ -43,7 +43,7 @@
                         ItemsSource="{Binding listCat}"
                         x:Name ="currentCat"
                         telerik:StyleManager.Theme="Material" 
-                        Height="324" Width="1178" Canvas.Top="348" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" ValidatingItem="validating" EditEnded="afterEditCat" DeletingItem="beforeDelCat" Canvas.Left="10"/>
+                        Height="324" Width="1178" Canvas.Top="348" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" EditEnded="afterEditCat" DeletingItem="beforeDelCat" Canvas.Left="10"/>
 
                     <telerik:RadGridView 
 
