@@ -17,5 +17,12 @@ namespace MyShopProject.DAO
             var categoryList = JsonConvert.DeserializeObject<List<Category>>(json);
             return categoryList;
         }
+        public async Task<bool> checkExist(string categoryId)
+        {
+            var json = await API.getMethod($"/category/id={categoryId}");
+            var category = JsonConvert.DeserializeObject<Account>(json);
+            if (category == null) return false;
+            return true;
+        }
     }
 }

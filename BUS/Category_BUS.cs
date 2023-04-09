@@ -22,5 +22,9 @@ namespace MyShopProject.BUS
             List<Category> res = await category_DAO.getAll();
             return new ObservableCollection<Category>(res);
         }
+        public async Task<bool> checkExist(Category category)
+        {
+            return await category_DAO.checkExist(category._id);
+        }
     }
 }

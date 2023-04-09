@@ -146,6 +146,12 @@ namespace MyShopProject
                 e.Cancel = true;
 
         }
+
+        private void afterEditCat(object sender, Telerik.Windows.Controls.Data.DataForm.EditEndedEventArgs e)
+        {
+            
+        }
+
         private void CateTableLoaded(object sender, Telerik.Windows.Controls.GridView.RowLoadedEventArgs e)
         {
             try
