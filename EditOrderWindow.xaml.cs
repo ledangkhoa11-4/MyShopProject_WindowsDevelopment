@@ -37,15 +37,17 @@ namespace MyShopProject
         public EditOrderScreenModel modelBinding { get; set; }      
         private Book_BUS _bookBus { get; set; }
         private Order_BUS _orderBus { get; set; }
+        private Product_BUS _productBus { get; set; }
         private List<bool> isStillLoading = new List<bool>();
         public Order oldOrder { get; set; }
-        public EditOrderWindow(Order currentOrder)
+        public EditOrderWindow(Order cloneOrder)
         {
             InitializeComponent();
             modelBinding = new EditOrderScreenModel();
             _bookBus = new Book_BUS();
             _orderBus = new Order_BUS();
-            oldOrder = currentOrder;
+            _productBus = new Product_BUS();
+            oldOrder = cloneOrder;
         }
 
         private async void SaveOrderClick(object sender, RoutedEventArgs e)
@@ -91,8 +93,14 @@ namespace MyShopProject
 
             foreach(var cart in oldOrder.DetailCart)
             {
-                modelBinding.currentOrder.DetailCart.Add(cart);
-                var book = modelBinding.listAllBook.FirstOrDefault(book => book._id == cart.Book._id);
+                var book = modelBinding.listAllBook.FirstOrDefault(book=> book._id == cart.Book._id);
+                var newCart = new DetailOrder
+                {
+                    Book = book,
+                    Price = cart.Price,
+                    QuantityBuy = cart.QuantityBuy,
+                };
+                modelBinding.currentOrder.DetailCart.Add(newCart);
                 cartCombobox.SelectedItems.Add(book);
             }
             if (oldOrder.Coupon != null && oldOrder.Coupon._id != null)
@@ -139,7 +147,9 @@ namespace MyShopProject
                 this.modelBinding.currentOrder.DetailCart.Add(new DetailOrder
                 {
                     Book = product,
-                    QuantityBuy = 1
+                    Price = product.SellingPrice,
+                    QuantityBuy = 1,
+                   
                 });
                 isLoadingIndicator.IsBusy = true;
                 isStillLoading.Add(true);
@@ -196,6 +206,11 @@ namespace MyShopProject
                 }
 
             }
+        }
+
+        private void RadNumericUpDown_ValueChanged(object sender, RadRangeBaseValueChangedEventArgs e)
+        {
+            Debug.WriteLine(oldOrder.DetailCart[0].QuantityBuy);
         }
     }
 }

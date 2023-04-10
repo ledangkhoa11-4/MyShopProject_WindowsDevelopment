@@ -88,6 +88,7 @@ namespace MyShopProject
             {
                 _book.QuantityStock = 1;
             }
+            
             try
             {
                 DTO.Category selectedCategory = (DTO.Category)cateChoosingBox.SelectedItem;

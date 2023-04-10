@@ -29,9 +29,13 @@ namespace MyShopProject.DTO
             set
             {
                 _quantityStock= value;
-                if(QuantityStock == 0)
+                if(QuantityStock <= 0)
                 {
                     isOnStock = false;
+                }
+                else
+                {
+                    isOnStock = true;
                 }
             }
         }

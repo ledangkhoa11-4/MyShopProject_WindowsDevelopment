@@ -17,6 +17,8 @@ using MyShopProject.DAO;
 using Telerik.Windows.Persistence.Core;
 using System.ComponentModel;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
+using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace MyShopProject
 {
@@ -53,7 +55,7 @@ namespace MyShopProject
         public Coupon_BUS coupon_BUS { get; set; }
         public Product_BUS product_BUS { get; set; }
         public Order_BUS order_BUS { get; set; }
-        public static MainViewModel modelBinding { get; set; }
+        public static MainViewModel modelBinding { get; set; } = new MainViewModel();
         public Account currentUser = null;
         public MainWindow()
         {
@@ -62,8 +64,6 @@ namespace MyShopProject
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
-
-            modelBinding = new MainViewModel();
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -92,8 +92,7 @@ namespace MyShopProject
         private void tabChanged(object sender, Telerik.Windows.Controls.RadSelectionChangedEventArgs e)
         {
 
-            string tabItem = ((sender as RadTabControl).SelectedItem as RadTabItem).Header as string;
-
+            string tabItem = (((sender as RadTabControl).SelectedItem as RadTabItem).Header as TextBlock).Text;
             switch (tabItem)
             {
                 case "Dasboard":
@@ -103,27 +102,32 @@ namespace MyShopProject
                     cateLoaded();
                     break;
 
-                case "Product":
+                case "Products":
                     productLoaded();
                     break;
-
+                case "Orders":
+                    orderTabLoaded();
+                    break;
                 default:
                     return;
             }
-
-
         }
         private void cateLoaded()
         {
 
         }
+        private async void orderTabLoaded()
+        {
+            orderBusyIndicator.IsBusy = true;
+            modelBinding.listOrder = await order_BUS.getAllOrder(modelBinding.orderPerPage, orderPager.PageIndex);
+            orderBusyIndicator.IsBusy = false;
+        }
         private async void productLoaded()
         {
             modelBinding.listBook.Clear();
-
-  
+            productBusyIndicator.IsBusy = true;
             var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage);;
-
+            productBusyIndicator.IsBusy = false;
             modelBinding.listBook.AddRange(listProduct);
         }
         private void categoryGenerated2(object sender, Telerik.Windows.Controls.Data.DataForm.AutoGeneratingFieldEventArgs e)
@@ -261,7 +265,6 @@ namespace MyShopProject
             try
             {
                 var bookSelected = bookCardView.SelectedItem as Book;
-                Debug.WriteLine(bookSelected._id);
 
                 var tmp = new EditProductWindow(modelBinding.listCat, bookSelected);
                 tmp.ShowDialog();
@@ -399,22 +402,55 @@ namespace MyShopProject
             }
             
             modelBinding.listCat = await category_BUS.getAllCategory();
-
             modelBinding.totalProduct = await product_BUS.getSize();
-            
-         
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-            modelBinding.listOrder =  await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
+            
 
             modelBinding.totalOrder = await order_BUS.getCountOrder();
             this.DataContext = modelBinding;
            
- 
-
             //tắt loading
             orderBusyIndicator.IsBusy = false;
+
+             
         }
-        
+
+        private void GetAllCheckBoxes()
+        {
+            List<CheckBox> checkBoxList = new List<CheckBox>();
+            for (int i = 0; i < listCateFilter.ItemContainerGenerator.Items.Count; i++)
+            {
+                var item = listCateFilter.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+                if (item != null)
+                {
+                    var checkBox = FindVisualChild<CheckBox>(item);
+                    if (checkBox != null)
+                    {
+                        Debug.WriteLine(checkBox.Content);
+                    }
+                }
+            }
+        }
+
+
+        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child != null && child is T)
+                {
+                    return (T)child;
+                }
+                else
+                {
+                    var result = FindVisualChild<T>(child);
+                    if (result != null)
+                        return result;
+                }
+            }
+            return null;
+        }
 
         private void newOrderBtnClick(object sender, RoutedEventArgs e)
         {
@@ -422,14 +458,9 @@ namespace MyShopProject
             newOrderScreen.ShowDialog();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void viewDetailOrderEvent(object sender, MouseButtonEventArgs e)
         {
-           
             var selectedItem = listOrderGridView.SelectedItem as Order;
             if(selectedItem != null)
             {
@@ -471,15 +502,28 @@ namespace MyShopProject
 
         private async void changeProductPage(object sender, PageIndexChangedEventArgs e)
         {
-            int pageIndex = e.NewPageIndex; //start at 0
-            modelBinding.listBook.Clear();
+            try
+            {
+                int pageIndex = e.NewPageIndex; //start at 0
+                if (pageIndex < 0) return;
+                modelBinding.listBook.Clear();
 
-            productBusyIndicator.IsBusy = true;
-            var listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
-            productBusyIndicator.IsBusy = false;
-            
-            modelBinding.listBook.AddRange(listProduct);
-            
+                productBusyIndicator.IsBusy = true;
+                var listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
+                productBusyIndicator.IsBusy = false;
+
+                modelBinding.listBook = listProduct;
+
+
+
+            }
+            catch(Exception ex) { }
+
+        }
+
+        private void ListBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetAllCheckBoxes();
         }
     }
 }
