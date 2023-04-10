@@ -22,7 +22,6 @@ namespace MyShopProject.DAO
         {
             var query = isBrief == true ? $"/{_id}?brief=true" : $"/{_id}";
             var json = await API.getMethod($"/product{query}");
-            Debug.WriteLine(json);
             var book = JsonConvert.DeserializeObject<Book>(json);
             return book;
         }

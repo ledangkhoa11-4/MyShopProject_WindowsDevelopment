@@ -36,7 +36,24 @@ namespace MyShopProject
         public EditProductWindow(ObservableCollection<DTO.Category> listCat, Book book)
         {
             InitializeComponent();
-            _book = book;
+            // _book = book;  Để v nó sẽ bị Binding về book gốc mặc dù không bấm submit
+
+            _book = new Book
+            {
+                _id = book._id,
+                Name = book.Name,
+                ImageBase64 = book.ImageBase64,
+                PurchasePrice = book.PurchasePrice,
+                SellingPrice = book.SellingPrice,
+                Author = book.Author,
+                PublishedYear = book.PublishedYear,
+                QuantityStock = book.QuantityStock,
+                QuantityOrder = book.QuantityOrder,
+                CatID = book.CatID,
+                Description = book.Description,
+                IsOnStock = book.IsOnStock,
+
+            };
             _listCat = listCat;
             DataContext = this;
         }
@@ -88,6 +105,7 @@ namespace MyShopProject
             {
                 _book.QuantityStock = 1;
             }
+            
             try
             {
                 DTO.Category selectedCategory = (DTO.Category)cateChoosingBox.SelectedItem;
@@ -166,7 +184,6 @@ namespace MyShopProject
 
                 var converter = new Base64ToBitmapConverter();
                 string base64String = (string)converter.ConvertBack(bitmap, null, null, null);
-                MessageBox.Show(base64String);
                 _book.ImageBase64 = base64String;
             }
         }

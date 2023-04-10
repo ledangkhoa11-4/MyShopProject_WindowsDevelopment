@@ -107,7 +107,7 @@
                 </TextBlock>
             </GroupBox.Header>
             <Canvas>
-                <ListView  ItemsSource="{Binding currentOrder.DetailCart}"
+                <ListView ItemsSource="{Binding currentOrder.DetailCart}"
                     Height="458" Width="405" d:ItemsSource="{d:SampleData ItemCount=5}" Canvas.Left="10" Canvas.Top="10" HorizontalAlignment="Center" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="{x:Type ListViewItem}">
@@ -131,9 +131,9 @@
                                 </StackPanel>
                                 <StackPanel  Orientation="Horizontal" Canvas.Left="102" Canvas.Top="87" HorizontalAlignment="Center" VerticalAlignment="Top">
                                     <TextBlock Margin="0 0 15 0" Canvas.Top="13" VerticalAlignment="Top" Width="57"><Run Text="Price:"/></TextBlock>
-                                    <TextBlock Canvas.Left="35" Canvas.Top="7" d:Text="500.000đ"  Text="{Binding Book.SellingPrice, Converter={StaticResource priceConverter}}"/>
+                                    <TextBlock Canvas.Left="35" Canvas.Top="7" d:Text="500.000đ"  Text="{Binding Price, Converter={StaticResource priceConverter}}"/>
                                 </StackPanel>
-                                <telerik:RadNumericUpDown Value="{Binding QuantityBuy}" Minimum="1" Maximum="{Binding Converter={StaticResource calculateQuantityConverter}}" Canvas.Left="177" Canvas.Top="111" Width="53" HorizontalAlignment="Left" VerticalAlignment="Center" telerik:StyleManager.Theme="Windows8" Background="#FFE8E5E5" Height="6" IsInteger="True" />
+                                <telerik:RadNumericUpDown ValueChanged="RadNumericUpDown_ValueChanged" Value="{Binding QuantityBuy}" Minimum="1" Maximum="{Binding Converter={StaticResource calculateQuantityConverter}}" Canvas.Left="177" Canvas.Top="111" Width="53" HorizontalAlignment="Left" VerticalAlignment="Center" telerik:StyleManager.Theme="Windows8" Background="#FFE8E5E5" Height="6" IsInteger="True" />
                                 <TextBlock Canvas.Left="102" Canvas.Top="115" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.675,0.892"><Run Text="Quantity:"/></TextBlock>
                                 <StackPanel DataContext="{Binding Book}" HorizontalAlignment="Center" Canvas.Left="5" Canvas.Top="5" VerticalAlignment="Center" Height="132">
                                     <Image Stretch="Fill" d:Source="Images/design_book.jpg" Source="{Binding ImageBase64, Converter={StaticResource bitmapConverter}}" Height="132" Width="86"/>

@@ -24,6 +24,11 @@ namespace MyShopProject.BUS
             List<Book> res = await product_DAO.getAll();
             return new ObservableCollection<Book>(res);
         }
+        public async Task<Book> getProduct(string id, bool isBrief)
+        {
+            var res = await product_DAO.getById(id, isBrief);
+            return res;
+        }
         public async Task<ObservableCollection<Book>> getProductWithPagination(int pageIndex, int limit)
         {
             List<Book> res = await product_DAO.getWithPagination(pageIndex, limit);

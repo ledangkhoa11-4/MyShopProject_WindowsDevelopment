@@ -68,7 +68,9 @@ namespace MyShopProject
                 this.modelBinding.newOrder.DetailCart.Add(new DetailOrder
                 {
                     Book = product,
-                    QuantityBuy = 1
+                    QuantityBuy = 1,
+                    Price = product.SellingPrice,
+                    TotalPrice = product.SellingPrice
                 });
                 isLoadingIndicator.IsBusy = true;
                 isStillLoading.Add(true);
@@ -161,5 +163,7 @@ namespace MyShopProject
             RadDesktopAlertManager manager = new RadDesktopAlertManager();
             manager.ShowAlert(alert);
         }
+
+
     }
 }
