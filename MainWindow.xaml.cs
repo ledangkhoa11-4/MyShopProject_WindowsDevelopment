@@ -22,18 +22,18 @@ using System.Collections.Generic;
 
 namespace MyShopProject
 {
- 
-    public class MainViewModel:INotifyPropertyChanged
+
+    public class MainViewModel : INotifyPropertyChanged
     {
-       public ObservableCollection<Category> listCat { get; set; } 
-       public ObservableCollection<Book> listBook { get; set; } 
-       
-       public ObservableCollection<Coupon> listCoupon { get; set; }
+        public ObservableCollection<Category> listCat { get; set; }
+        public ObservableCollection<Book> listBook { get; set; }
+
+        public ObservableCollection<Coupon> listCoupon { get; set; }
 
         public ObservableCollection<Order> listOrder { get; set; }
 
-        public  int orderPerPage { get; set; } = 9;
-        public  int totalOrder { get; set; } = 0;
+        public int orderPerPage { get; set; } = 9;
+        public int totalOrder { get; set; } = 0;
 
         public int productPerPage { get; set; } = 6;
         public int totalProduct { get; set; } = 0;
@@ -61,7 +61,6 @@ namespace MyShopProject
         public MainWindow()
         {
             InitializeComponent();
-
             product_BUS = new Product_BUS();
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
@@ -129,7 +128,7 @@ namespace MyShopProject
         {
             modelBinding.listBook.Clear();
             productBusyIndicator.IsBusy = true;
-            var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage);;
+            var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage); ;
             productBusyIndicator.IsBusy = false;
             modelBinding.listBook.AddRange(listProduct);
             imageLoading.IsBusy = true;
@@ -145,13 +144,13 @@ namespace MyShopProject
             if (e.PropertyName == "_id")
             {
                 e.DataField.IsEnabled = false;
-   
+
             }
             if (e.PropertyName == "Description")
             {
                 e.DataField.MaxWidth = 1300;
-                
-                
+
+
             }
         }
 
@@ -171,7 +170,8 @@ namespace MyShopProject
             var alert = new RadDesktopAlert();
 
             result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
-            if (result == MessageBoxResult.Yes) {
+            if (result == MessageBoxResult.Yes)
+            {
                 e.Cancel = false;
                 var currentItem = listCategory.SelectedItem as Category;
                 var ans = await category_BUS.deleteCate(currentItem);
@@ -205,7 +205,7 @@ namespace MyShopProject
             {
                 var latestItem = listCategory.Items[listCategory.Items.Count - 1] as Category;
                 var result = await category_BUS.addCategory(latestItem);
-                if(result.Length != 0)
+                if (result.Length != 0)
                 {
                     alert.Header = "Success";
                     alert.Content = "Category insert successfully!!!";
@@ -230,7 +230,7 @@ namespace MyShopProject
                         manager.ShowAlert(alert);
                     }
                 }
-                else if(isExist)
+                else if (isExist)
                 {
                     var result = await category_BUS.editCategory(currentItem);
                     if (result.Length != 0)
@@ -314,17 +314,18 @@ namespace MyShopProject
         {
             try
             {
-               
+
                 var bookSelected = bookCardView.SelectedItem as Book;
                 var product_BUS = new Product_BUS();
                 Debug.WriteLine(bookSelected.ToString());
                 var result = await product_BUS.DelProduct(bookSelected);
                 var alert = new RadDesktopAlert();
-                if (result.Length != 0)
+                Debug.WriteLine(result.ToString().Length);
+                if (result.ToString().Length != 0)
                 {
                     alert.Header = "DELETE BOOK SUCCESSFULLy";
                     alert.Content = "Congratulation, your book was deleted!!!";
-                   
+
                     alert.ShowDuration = 3000;
                     this.DialogResult = true;
                     modelBinding.totalProduct = modelBinding.totalProduct - 1;
@@ -338,7 +339,6 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
                 productLoaded();
-                this.DataContext = modelBinding;
 
             }
             catch (Exception ex)
@@ -372,18 +372,19 @@ namespace MyShopProject
                 foreach (var tb in allTextBlockChild)
                 {
                     var ID = tb.Text;
-                    
+
                     var bookSelected = modelBinding.listBook.FirstOrDefault(book => book._id == ID);
-                    if(bookSelected!= null)
+                    if (bookSelected != null)
                     {
                         bookCardView.SelectedItem = 0;
                         bookCardView.SelectedItem = bookSelected;
                         return;
                     }
-                } 
-            }catch(Exception ex)
+                }
+            }
+            catch (Exception ex)
             {
-               contextMenu.Visibility= Visibility.Collapsed;               
+                contextMenu.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -408,26 +409,21 @@ namespace MyShopProject
             if (login.ShowDialog() == true)
             {
                 currentUser = login.currentAccount;
-                
+
             }
-            
+
             modelBinding.listCat = await category_BUS.getAllCategory();
-
             modelBinding.totalProduct = await product_BUS.getSize();
-            
-         
-            modelBinding.listOrder =  await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
-
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-            
+
 
             modelBinding.totalOrder = await order_BUS.getCountOrder();
             this.DataContext = modelBinding;
-           
+
             //tắt loading
             orderBusyIndicator.IsBusy = false;
 
-             
+
         }
 
         private void GetAllCheckBoxes()
@@ -470,29 +466,24 @@ namespace MyShopProject
         private void newOrderBtnClick(object sender, RoutedEventArgs e)
         {
             var newOrderScreen = new AddOrderWindow();
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
             newOrderScreen.ShowDialog();
         }
 
-           
 
         private void viewDetailOrderEvent(object sender, MouseButtonEventArgs e)
         {
             var selectedItem = listOrderGridView.SelectedItem as Order;
-            if(selectedItem != null)
+            if (selectedItem != null)
             {
-           
-            
+                var detailOrder = new OrderDetailWindow(selectedItem);
                 detailOrder.Show();
             }
 
         }
+
         private async void changeOrderPage(object sender, PageIndexChangedEventArgs e)
         {
-       
+
             int pageIndex = e.NewPageIndex; //start at 0
             int limit = modelBinding.orderPerPage;
             int skip = pageIndex * limit;
@@ -519,6 +510,9 @@ namespace MyShopProject
             var editScreen = new EditOrderWindow(cloneNewOrder);
             editScreen.ShowDialog();
         }
+
+        private async void changeProductPage(object sender, PageIndexChangedEventArgs e)
+        {
             try
             {
                 int pageIndex = e.NewPageIndex; //start at 0
@@ -538,7 +532,7 @@ namespace MyShopProject
                 }
                 imageLoading.IsBusy = false;
             }
-            catch(Exception ex) { }
+            catch (Exception ex) { }
         }
         private void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
@@ -578,10 +572,6 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
             }
-            
-            modelBinding.listBook.AddRange(listProduct);
-            
         }
-
     }
 }
