@@ -58,13 +58,17 @@ namespace MyShopProject
         public MainWindow()
         {
             InitializeComponent();
+
             product_BUS = new Product_BUS();
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
 
             modelBinding = new MainViewModel();
+
+            DataContext = modelBinding;
         }
+
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
         {
@@ -332,7 +336,6 @@ namespace MyShopProject
             modelBinding.listCat = await category_BUS.getAllCategory();
 
             modelBinding.totalProduct = await product_BUS.getSize();
-            
          
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
             modelBinding.listOrder =  await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
@@ -403,14 +406,13 @@ namespace MyShopProject
         private async void changeProductPage(object sender, PageIndexChangedEventArgs e)
         {
             int pageIndex = e.NewPageIndex; //start at 0
-            modelBinding.listBook.Clear();
-
             productBusyIndicator.IsBusy = true;
             var listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
             productBusyIndicator.IsBusy = false;
-            
-            modelBinding.listBook.AddRange(listProduct);
+            var newBookList = new ObservableCollection<Book>(listProduct);
+            modelBinding.listBook = newBookList;
             
         }
+
     }
 }
