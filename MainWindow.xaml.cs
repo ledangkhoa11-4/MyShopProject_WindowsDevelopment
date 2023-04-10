@@ -320,14 +320,16 @@ namespace MyShopProject
                 Debug.WriteLine(bookSelected.ToString());
                 var result = await product_BUS.DelProduct(bookSelected);
                 var alert = new RadDesktopAlert();
+                
                 Debug.WriteLine(result.ToString().Length);
                 if (result.ToString().Length != 0)
                 {
+                    
                     alert.Header = "DELETE BOOK SUCCESSFULLy";
                     alert.Content = "Congratulation, your book was deleted!!!";
 
                     alert.ShowDuration = 3000;
-                    this.DialogResult = true;
+                    
                     modelBinding.totalProduct = modelBinding.totalProduct - 1;
                 }
                 else
