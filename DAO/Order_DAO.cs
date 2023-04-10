@@ -31,5 +31,10 @@ namespace MyShopProject.DAO
             var json = await API.postMethod($"/order/update/{id}", content);
             return json;
         }
+        public async Task<String> deleteOrder(string id)
+        {
+            var json = await API.getMethod($"/order/delete/{id}");
+            return json;
+        }
     }
 }

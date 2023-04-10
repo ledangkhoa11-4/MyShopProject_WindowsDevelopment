@@ -13,6 +13,7 @@
         <local:PriceConverter x:Key="priceConverter"/>
         <local:IDToStringConverter x:Key="idConverter"/>
         <local:PercentConverter x:Key="percentConverter"/>
+        <local:CheckApplyCoupon x:Key="checkCouponConverter"/>
     </Window.Resources>
     <Canvas>
 
@@ -112,6 +113,7 @@
                 <telerik:Label HorizontalContentAlignment="Right" Content="{Binding order.Coupon._id, Converter={StaticResource idConverter}}" Canvas.Left="160" Canvas.Top="174" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman" FontSize="16" RenderTransformOrigin="-0.015,0.001" Width="244" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <telerik:Label HorizontalContentAlignment="Right" Content="{Binding order.Coupon.Name}" Canvas.Left="160" Canvas.Top="217" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman" FontSize="16" RenderTransformOrigin="-0.015,0.001" Width="244" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <telerik:Label HorizontalContentAlignment="Right" Content="{Binding order.Coupon.DiscountPercent, Converter={StaticResource percentConverter}}" Canvas.Left="233" Canvas.Top="260" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman" FontSize="16" RenderTransformOrigin="-0.015,0.001" Width="171" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <telerik:Label  FontWeight="SemiBold" Content="{Binding order.Coupon, Converter={StaticResource checkCouponConverter}}" d:Content="Not apply Coupon" FontStyle="Italic" Canvas.Left="192" Canvas.Top="131" telerik:StyleManager.Theme="Material" FontFamily="Times New Roman" FontSize="16" RenderTransformOrigin="-0.015,0.001" Width="212" HorizontalAlignment="Right" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
 
             </Canvas>
         </GroupBox>

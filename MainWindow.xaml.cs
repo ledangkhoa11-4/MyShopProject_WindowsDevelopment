@@ -55,6 +55,7 @@ namespace MyShopProject
         public Coupon_BUS coupon_BUS { get; set; }
         public Product_BUS product_BUS { get; set; }
         public Order_BUS order_BUS { get; set; }
+        public Book_BUS book_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; } = new MainViewModel();
         public Account currentUser = null;
         public MainWindow()
@@ -64,6 +65,7 @@ namespace MyShopProject
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
+            book_BUS = new Book_BUS();
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -129,6 +131,13 @@ namespace MyShopProject
             var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage);;
             productBusyIndicator.IsBusy = false;
             modelBinding.listBook.AddRange(listProduct);
+            imageLoading.IsBusy = true;
+            foreach (Book b in listProduct)
+            {
+                string imageBase64 = await book_BUS.getImageBook(b._id);
+                b.ImageBase64 = imageBase64;
+            }
+            imageLoading.IsBusy = false;
         }
         private void categoryGenerated2(object sender, Telerik.Windows.Controls.Data.DataForm.AutoGeneratingFieldEventArgs e)
         {
@@ -328,7 +337,6 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
                 productLoaded();
-                this.DataContext = modelBinding;
 
             }
             catch (Exception ex)
@@ -467,12 +475,12 @@ namespace MyShopProject
                 var detailOrder = new OrderDetailWindow(selectedItem);
                 detailOrder.Show();
             }
-           
-            
+
         }
 
         private async void changeOrderPage(object sender, PageIndexChangedEventArgs e)
         {
+       
             int pageIndex = e.NewPageIndex; //start at 0
             int limit = modelBinding.orderPerPage;
             int skip = pageIndex * limit;
@@ -513,17 +521,54 @@ namespace MyShopProject
                 productBusyIndicator.IsBusy = false;
 
                 modelBinding.listBook = listProduct;
-
-
-
+                imageLoading.IsBusy = true;
+                foreach (Book b in listProduct)
+                {
+                    string imageBase64 = await book_BUS.getImageBook(b._id);
+                    b.ImageBase64 = imageBase64;
+                }
+                imageLoading.IsBusy = false;
             }
             catch(Exception ex) { }
-
         }
-
         private void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
             GetAllCheckBoxes();
+        }
+
+        private async void DeleteOrderClick(object sender, RoutedEventArgs e)
+        {
+            var buttonClicked = sender as RadRibbonButton;
+            var orderDeltele = modelBinding.listOrder.FirstOrDefault(order => order._id == buttonClicked.Tag.ToString());
+
+            string messageBoxText = "This action cannot be undone. Are you sure to delete this order?";
+            string caption = "Delete Confirmation";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Warning;
+            MessageBoxResult result;
+            result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+            var alert = new RadDesktopAlert();
+            if (result == MessageBoxResult.Yes)
+            {
+                var rs = await order_BUS.deletetOrder(orderDeltele);
+                if (rs.Length != 0)
+                {
+                    alert.Header = "DELETE ORDER SUCCESSFULLy";
+                    alert.Content = "Congratulation, your order was deleted!!!";
+
+                    alert.ShowDuration = 3000;
+                    modelBinding.totalOrder--;
+                    modelBinding.listOrder.Remove(orderDeltele);
+                }
+                else
+                {
+                    alert.Header = "ERROR";
+                    alert.Content = "There was an error on update database, please try again!!!";
+                    alert.ShowDuration = 3000;
+                }
+                RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                manager.ShowAlert(alert);
+            }
         }
     }
 }
