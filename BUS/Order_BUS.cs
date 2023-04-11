@@ -25,14 +25,20 @@ namespace MyShopProject.BUS
         public async Task<ObservableCollection<Order>> getAllOrder(int limit = 6, int skip = 0)
         {
             var listOrder = await order_DAO.getAll(limit,skip);
+            if (listOrder == null) return new ObservableCollection<Order>();
             foreach(Order order in listOrder)
             {
                 var listCart = order.DetailCart;
+                if (order.Coupon != null && order.Coupon._id != null)
+                    order.Coupon = MainWindow.modelBinding.listCoupon.FirstOrDefault(coupon => coupon._id == order.Coupon._id);
+                else
+                    order.Coupon = null;
                 foreach(DetailOrder cart in listCart)
                 {
                     string id = cart.Book._id;
                     var book = await book_DAO.get(id, true);
                     cart.Book = book;
+
                 }
             }
             return new ObservableCollection<Order>(listOrder);
@@ -41,6 +47,11 @@ namespace MyShopProject.BUS
         {
             string json = await order_DAO.getTotal();
             return int.Parse(json);
+        }
+        public async Task<String> deletetOrder(Order order)
+        {
+            string json = await order_DAO.deleteOrder(order._id);
+            return json;
         }
         public async Task<String> AddOrder(Order newOrder)
         {

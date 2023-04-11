@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Windows;
 
 namespace MyShopProject.DAO
 {
@@ -49,6 +50,11 @@ namespace MyShopProject.DAO
         public async Task<String> delProduct(string content, string id)
         {
             var json = await API.postMethod($"/product/delete?id={id}", content);
+            return json;
+        }
+        public async Task<String> countStock()
+        {
+            var json = await API.getMethod("/product/stock");
             return json;
         }
     }

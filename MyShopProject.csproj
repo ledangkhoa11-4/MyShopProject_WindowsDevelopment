@@ -65,6 +65,7 @@
   <Compile Include="Converters\CalculateAmountPurchaseConverter.cs" />
   <Compile Include="Converters\CalculateQuantityOrderEdit.cs" />
   <Compile Include="Converters\CategoryNameConverter.cs" />
+  <Compile Include="Converters\CheckApplyCoupon.cs" />
   <Compile Include="Converters\IDToStringConverter.cs" />
   <Compile Include="Converters\OldDiscountPriceConverter.cs" />
   <Compile Include="DAO\Account_DAO.cs" />

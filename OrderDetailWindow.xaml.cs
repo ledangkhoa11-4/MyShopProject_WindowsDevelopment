@@ -48,8 +48,12 @@ namespace MyShopProject
             radBusyIndicator.IsBusy = true;
             foreach (DetailOrder cart in model.order.DetailCart)
             {
-                string base64Img = await bookBus.getImageBook(cart.Book._id);
-                cart.Book.ImageBase64 = base64Img;
+                if (cart.Book != null)
+                {
+                    string base64Img = await bookBus.getImageBook(cart.Book._id);
+                    cart.Book.ImageBase64 = base64Img;
+                }
+                
             }
             radBusyIndicator.IsBusy = false;
         }

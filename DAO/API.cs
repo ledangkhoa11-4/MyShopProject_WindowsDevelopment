@@ -29,9 +29,16 @@ namespace MyShopProject.DAO
 
         public static async Task<String> getMethod(string path)
         {
-            var response = await _httpClient.GetAsync(path); //GET 127.0.0.1:5000/category
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+            try
+            {
+                var response = await _httpClient.GetAsync(path); //GET 127.0.0.1:5000/category
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsStringAsync();
+            }catch(Exception ex)
+            {
+                return "";
+            }
+            
         }
         public static async Task<String> postMethod(string path, string content)
         {
