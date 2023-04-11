@@ -153,7 +153,7 @@ namespace MyShopProject
 
                 var converter = new Base64ToBitmapConverter();
                 string base64String = (string)converter.ConvertBack(bitmap, null, null, null);
-                MessageBox.Show(base64String);
+                
                 _book.ImageBase64= base64String;
             }
         }
