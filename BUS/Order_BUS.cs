@@ -38,6 +38,7 @@ namespace MyShopProject.BUS
                     string id = cart.Book._id;
                     var book = await book_DAO.get(id, true);
                     cart.Book = book;
+
                 }
             }
             return new ObservableCollection<Order>(listOrder);
