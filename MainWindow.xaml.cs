@@ -37,7 +37,7 @@ namespace MyShopProject
 
         public int productPerPage { get; set; } = 6;
         public int totalProduct { get; set; } = 0;
-
+        public int countStock { get; set; } = 0;
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
@@ -421,7 +421,7 @@ namespace MyShopProject
 
             modelBinding.totalOrder = await order_BUS.getCountOrder();
             this.DataContext = modelBinding;
-
+            modelBinding.countStock = await product_BUS.CountStock();
             //tắt loading
             orderBusyIndicator.IsBusy = false;
 

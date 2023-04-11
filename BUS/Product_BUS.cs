@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using MyShopProject.DTO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Telerik.Windows.Controls.GridView;
 
 namespace MyShopProject.BUS
 {
@@ -57,7 +59,11 @@ namespace MyShopProject.BUS
 
         public async Task<int> CountStock()
         {
-            return await product_DAO.countStock();
+            var result = await product_DAO.countStock();
+            JObject jsonObject = JObject.Parse(result);
+            jsonObject.Remove("_id");
+            string stock = (string)jsonObject["totalQty"];
+            return int.Parse(stock);
         }
     }
 }

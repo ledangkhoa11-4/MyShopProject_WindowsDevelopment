@@ -39,7 +39,7 @@
                         </Grid.ColumnDefinitions>
                         <Canvas Background="White" Grid.Column="0">
                             <TextBlock Text="Books On Stock:" FontSize="20" Canvas.Left="10" Canvas.Top="10"></TextBlock>
-                            <TextBlock x:Name="ProductQuantity" Foreground="#39b60f" d:Text="Hello" FontSize="40" Canvas.Left="89" Canvas.Top="76" HorizontalAlignment="Center" VerticalAlignment="Top"></TextBlock>
+                            <TextBlock x:Name="ProductQuantity" Foreground="#39b60f" d:Text="Hello" Text="{Binding countStock}" FontSize="40" Canvas.Left="89" Canvas.Top="76" HorizontalAlignment="Center" VerticalAlignment="Top"></TextBlock>
                         </Canvas>
                         <Canvas Background="White" Grid.Column="1"></Canvas>
                         <Canvas Background="White" Grid.Column="2"></Canvas>
