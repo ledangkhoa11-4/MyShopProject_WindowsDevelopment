@@ -30,5 +30,18 @@ namespace MyShopProject.DAO
             var str = await API.getMethod($"/product/image/{id}");
             return str;
         }
+        public async Task<List<Book>> getBookByCat(List<String> selectedItems)
+        {
+            String content = new String(" ");
+            foreach(var item in selectedItems)
+            {
+                content = content + item+",";
+            }
+            var res = await API.getMethod($"/search/category?cats={content}");
+            Debug.WriteLine(res);
+            var bookList = JsonConvert.DeserializeObject<List<Book>>(res);
+            return bookList;
+            
+        }
     }
 }

@@ -57,6 +57,7 @@ namespace MyShopProject.DTO
                     isOnStock = false;
                 }
             }
-        } 
+        }
+        
     }
 }

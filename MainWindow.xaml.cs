@@ -55,6 +55,7 @@ namespace MyShopProject
         public Coupon_BUS coupon_BUS { get; set; }
         public Product_BUS product_BUS { get; set; }
         public Order_BUS order_BUS { get; set; }
+        public Book_BUS book_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; } = new MainViewModel();
         public Account currentUser = null;
         public MainWindow()
@@ -64,6 +65,7 @@ namespace MyShopProject
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
+            book_BUS = new Book_BUS(); 
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -415,9 +417,9 @@ namespace MyShopProject
              
         }
 
-        private void GetAllCheckBoxes()
+        private ObservableCollection<CheckBox> GetAllCheckBoxes()
         {
-            List<CheckBox> checkBoxList = new List<CheckBox>();
+            ObservableCollection<CheckBox> checkBoxList = new ObservableCollection<CheckBox>();
             for (int i = 0; i < listCateFilter.ItemContainerGenerator.Items.Count; i++)
             {
                 var item = listCateFilter.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
@@ -426,10 +428,12 @@ namespace MyShopProject
                     var checkBox = FindVisualChild<CheckBox>(item);
                     if (checkBox != null)
                     {
+                        checkBoxList.Add(checkBox);
                         Debug.WriteLine(checkBox.Content);
                     }
                 }
             }
+            return checkBoxList;
         }
 
 
@@ -520,10 +524,27 @@ namespace MyShopProject
             catch(Exception ex) { }
 
         }
-
+        List<String>  selectedItems = new List<String>();
+        ObservableCollection<CheckBox> checkedCatListFilter = new ObservableCollection<CheckBox>();
         private void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
-            GetAllCheckBoxes();
+            checkedCatListFilter = GetAllCheckBoxes();
+            
+        }
+     
+        private async void ApplyFilterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            selectedItems.Clear();
+            foreach (CheckBox checkbox in checkedCatListFilter)
+            {
+                if (checkbox.IsChecked == true)
+                {
+                    selectedItems.Add(checkbox.Content.ToString());
+                }
+            }
+            modelBinding.listBook = await book_BUS.getBookByCategory(selectedItems);
+            this.DataContext = modelBinding;
+
         }
     }
 }
