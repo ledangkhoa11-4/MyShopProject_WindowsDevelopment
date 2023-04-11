@@ -2,9 +2,11 @@
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                 xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-                Title="MainWindow" Height="750
-        " Width="1198"
+                Title="MainWindow" Height="750" Width="1198"
                 xmlns:local="clr-namespace:MyShopProject.Converters"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterScreen"
         Loaded="windowLoaded">
@@ -22,10 +24,30 @@
                 <telerik:RadTabItem.Header>
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Dashboard</TextBlock>
                 </telerik:RadTabItem.Header>
-                <Canvas >
+                <DockPanel Background="#e3e3e3" LastChildFill="True">
+                    <Grid Height="200" DockPanel.Dock="Top" Margin="20,20">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Canvas}">
+                                <Setter Property="Margin" Value="10,0,10,0" />
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Canvas Background="White" Grid.Column="0">
+                            <TextBlock Text="Books On Stock:" FontSize="20" Canvas.Left="10" Canvas.Top="10"></TextBlock>
+                            <TextBlock x:Name="ProductQuantity" Foreground="#39b60f" d:Text="Hello" FontSize="40" Canvas.Left="89" Canvas.Top="76" HorizontalAlignment="Center" VerticalAlignment="Top"></TextBlock>
+                        </Canvas>
+                        <Canvas Background="White" Grid.Column="1"></Canvas>
+                        <Canvas Background="White" Grid.Column="2"></Canvas>
+                        <Canvas Background="White" Grid.Column="3"></Canvas>
+                    </Grid>
+                    <Canvas Background="White" DockPanel.Dock="Top" Margin="30,0,30,10"></Canvas>
 
-
-                </Canvas>
+                </DockPanel>
             </telerik:RadTabItem>
             <telerik:RadTabItem x:Name="RadTabItem5" >
                 <telerik:RadTabItem.Header>
@@ -115,7 +137,7 @@
                                 <telerik:RadMenuItem Header="Delete" Click="deleteBookClick"/>
                             </telerik:RadContextMenu>
                         </telerik:RadContextMenu.ContextMenu>
-                        
+
                         <telerik:RadCardView.DataFieldDescriptors>
                             <telerik:CardDataFieldDescriptor Header="Book cover:" DataMemberBinding="{Binding ImageBase64}">
                                 <telerik:CardDataFieldDescriptor.ReadOnlyTemplate>

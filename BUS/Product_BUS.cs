@@ -49,5 +49,10 @@ namespace MyShopProject.BUS
             var jsonData = JsonConvert.SerializeObject(book);
             return await product_DAO.delProduct(jsonData, book._id);
         }
+
+        public async Task<int> CountStock()
+        {
+            return await product_DAO.countStock();
+        }
     }
 }
