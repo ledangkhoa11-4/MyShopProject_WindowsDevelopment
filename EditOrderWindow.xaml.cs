@@ -93,15 +93,18 @@ namespace MyShopProject
 
             foreach(var cart in oldOrder.DetailCart)
             {
-                var book = modelBinding.listAllBook.FirstOrDefault(book=> book._id == cart.Book._id);
-                var newCart = new DetailOrder
+                if(cart.Book != null && cart.Book._id != null)
                 {
-                    Book = book,
-                    Price = cart.Price,
-                    QuantityBuy = cart.QuantityBuy,
-                };
-                modelBinding.currentOrder.DetailCart.Add(newCart);
-                cartCombobox.SelectedItems.Add(book);
+                    var book = modelBinding.listAllBook.FirstOrDefault(book=> book._id == cart.Book._id);
+                    var newCart = new DetailOrder
+                    {
+                        Book = book,
+                        Price = cart.Price,
+                        QuantityBuy = cart.QuantityBuy,
+                    };
+                    modelBinding.currentOrder.DetailCart.Add(newCart);
+                    cartCombobox.SelectedItems.Add(book);
+                }
             }
             if (oldOrder.Coupon != null && oldOrder.Coupon._id != null)
             {
