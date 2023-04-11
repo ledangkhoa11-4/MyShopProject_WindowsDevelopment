@@ -31,9 +31,9 @@ namespace MyShopProject.DAO
             var size = JsonConvert.DeserializeObject<int>(json);
             return size;
         }
-        public async Task<Book> getById(string id)
+        public async Task<Book> getById(string id, bool isBrief)
         {
-            var json = await API.getMethod($"/product?id={id}");
+            var json = await API.getMethod($"/product/{id}?brief={isBrief}");
             var res = JsonConvert.DeserializeObject<Book>(json);
             return res;
         }

@@ -12,18 +12,7 @@ namespace MyShopProject.DTO
     public class DetailOrder: INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private Book _book;
-        public Book Book 
-        { get
-            {
-                return _book;
-            }
-
-            set { 
-                _book = value;
-                Price = _book.SellingPrice;
-            } 
-        }
+        public Book Book { get; set; }
         public int Price { get; set; } 
         private int quantityBuy;
         public int QuantityBuy {

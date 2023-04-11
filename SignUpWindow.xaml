@@ -28,7 +28,7 @@
                 <TextBox Name="usernameTextBox" VerticalContentAlignment="Center" Width="150" Height="35" Canvas.Left="204" Canvas.Top="78"/>
                 <TextBlock Text="Password:" Canvas.Left="129" Canvas.Top="136"/>
                 <!--<PasswordBox PasswordChar="*" x:Name="passwordBox" Width="150" Height="35" Canvas.Left="370" Canvas.Top="182"/>-->
-                <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="150" Height="35" Canvas.Left="204" Canvas.Top="126" Password="password" TextWrapping="Wrap" WatermarkContent="Enter password"/>
+                <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="150" Height="35" Canvas.Left="204" Canvas.Top="126"  TextWrapping="Wrap" WatermarkContent="Enter password" telerik:StyleManager.Theme="Fluent"/>
             </Canvas>
         </Border>
     </Canvas>

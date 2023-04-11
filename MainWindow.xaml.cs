@@ -17,21 +17,23 @@ using MyShopProject.DAO;
 using Telerik.Windows.Persistence.Core;
 using System.ComponentModel;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
+using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace MyShopProject
 {
- 
-    public class MainViewModel:INotifyPropertyChanged
+
+    public class MainViewModel : INotifyPropertyChanged
     {
-       public ObservableCollection<Category> listCat { get; set; } 
-       public ObservableCollection<Book> listBook { get; set; } 
-       
-       public ObservableCollection<Coupon> listCoupon { get; set; }
+        public ObservableCollection<Category> listCat { get; set; }
+        public ObservableCollection<Book> listBook { get; set; }
+
+        public ObservableCollection<Coupon> listCoupon { get; set; }
 
         public ObservableCollection<Order> listOrder { get; set; }
 
-        public  int orderPerPage { get; set; } = 9;
-        public  int totalOrder { get; set; } = 0;
+        public int orderPerPage { get; set; } = 9;
+        public int totalOrder { get; set; } = 0;
 
         public int productPerPage { get; set; } = 6;
         public int totalProduct { get; set; } = 0;
@@ -53,7 +55,8 @@ namespace MyShopProject
         public Coupon_BUS coupon_BUS { get; set; }
         public Product_BUS product_BUS { get; set; }
         public Order_BUS order_BUS { get; set; }
-        public static MainViewModel modelBinding { get; set; }
+        public Book_BUS book_BUS { get; set; }
+        public static MainViewModel modelBinding { get; set; } = new MainViewModel();
         public Account currentUser = null;
         public MainWindow()
         {
@@ -62,8 +65,7 @@ namespace MyShopProject
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
-
-            modelBinding = new MainViewModel();
+            book_BUS = new Book_BUS();
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -92,8 +94,7 @@ namespace MyShopProject
         private void tabChanged(object sender, Telerik.Windows.Controls.RadSelectionChangedEventArgs e)
         {
 
-            string tabItem = ((sender as RadTabControl).SelectedItem as RadTabItem).Header as string;
-
+            string tabItem = (((sender as RadTabControl).SelectedItem as RadTabItem).Header as TextBlock).Text;
             switch (tabItem)
             {
                 case "Dasboard":
@@ -103,41 +104,53 @@ namespace MyShopProject
                     cateLoaded();
                     break;
 
-                case "Product":
+                case "Products":
                     productLoaded();
                     break;
-
+                case "Orders":
+                    orderTabLoaded();
+                    break;
                 default:
                     return;
             }
-
-
         }
         private void cateLoaded()
         {
 
         }
+        private async void orderTabLoaded()
+        {
+            orderBusyIndicator.IsBusy = true;
+            modelBinding.listOrder = await order_BUS.getAllOrder(modelBinding.orderPerPage, orderPager.PageIndex);
+            orderBusyIndicator.IsBusy = false;
+        }
         private async void productLoaded()
         {
             modelBinding.listBook.Clear();
-
-  
-            var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage);;
-
+            productBusyIndicator.IsBusy = true;
+            var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage); ;
+            productBusyIndicator.IsBusy = false;
             modelBinding.listBook.AddRange(listProduct);
+            imageLoading.IsBusy = true;
+            foreach (Book b in listProduct)
+            {
+                string imageBase64 = await book_BUS.getImageBook(b._id);
+                b.ImageBase64 = imageBase64;
+            }
+            imageLoading.IsBusy = false;
         }
         private void categoryGenerated2(object sender, Telerik.Windows.Controls.Data.DataForm.AutoGeneratingFieldEventArgs e)
         {
             if (e.PropertyName == "_id")
             {
                 e.DataField.IsEnabled = false;
-   
+
             }
             if (e.PropertyName == "Description")
             {
                 e.DataField.MaxWidth = 1300;
-                
-                
+
+
             }
         }
 
@@ -157,7 +170,8 @@ namespace MyShopProject
             var alert = new RadDesktopAlert();
 
             result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
-            if (result == MessageBoxResult.Yes) {
+            if (result == MessageBoxResult.Yes)
+            {
                 e.Cancel = false;
                 var currentItem = listCategory.SelectedItem as Category;
                 var ans = await category_BUS.deleteCate(currentItem);
@@ -191,7 +205,7 @@ namespace MyShopProject
             {
                 var latestItem = listCategory.Items[listCategory.Items.Count - 1] as Category;
                 var result = await category_BUS.addCategory(latestItem);
-                if(result.Length != 0)
+                if (result.Length != 0)
                 {
                     alert.Header = "Success";
                     alert.Content = "Category insert successfully!!!";
@@ -216,7 +230,7 @@ namespace MyShopProject
                         manager.ShowAlert(alert);
                     }
                 }
-                else if(isExist)
+                else if (isExist)
                 {
                     var result = await category_BUS.editCategory(currentItem);
                     if (result.Length != 0)
@@ -261,7 +275,6 @@ namespace MyShopProject
             try
             {
                 var bookSelected = bookCardView.SelectedItem as Book;
-                Debug.WriteLine(bookSelected._id);
 
                 var tmp = new EditProductWindow(modelBinding.listCat, bookSelected);
                 tmp.ShowDialog();
@@ -301,19 +314,22 @@ namespace MyShopProject
         {
             try
             {
-               
+
                 var bookSelected = bookCardView.SelectedItem as Book;
                 var product_BUS = new Product_BUS();
                 Debug.WriteLine(bookSelected.ToString());
                 var result = await product_BUS.DelProduct(bookSelected);
                 var alert = new RadDesktopAlert();
-                if (result.Length != 0)
+                
+                Debug.WriteLine(result.ToString().Length);
+                if (result.ToString().Length != 0)
                 {
+                    
                     alert.Header = "DELETE BOOK SUCCESSFULLy";
                     alert.Content = "Congratulation, your book was deleted!!!";
-                   
+
                     alert.ShowDuration = 3000;
-                    this.DialogResult = true;
+                    
                     modelBinding.totalProduct = modelBinding.totalProduct - 1;
                 }
                 else
@@ -325,7 +341,6 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
                 productLoaded();
-                this.DataContext = modelBinding;
 
             }
             catch (Exception ex)
@@ -359,18 +374,19 @@ namespace MyShopProject
                 foreach (var tb in allTextBlockChild)
                 {
                     var ID = tb.Text;
-                    
+
                     var bookSelected = modelBinding.listBook.FirstOrDefault(book => book._id == ID);
-                    if(bookSelected!= null)
+                    if (bookSelected != null)
                     {
                         bookCardView.SelectedItem = 0;
                         bookCardView.SelectedItem = bookSelected;
                         return;
                     }
-                } 
-            }catch(Exception ex)
+                }
+            }
+            catch (Exception ex)
             {
-               contextMenu.Visibility= Visibility.Collapsed;               
+                contextMenu.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -395,26 +411,59 @@ namespace MyShopProject
             if (login.ShowDialog() == true)
             {
                 currentUser = login.currentAccount;
-                
-            }
-            
-            modelBinding.listCat = await category_BUS.getAllCategory();
 
+            }
+
+            modelBinding.listCat = await category_BUS.getAllCategory();
             modelBinding.totalProduct = await product_BUS.getSize();
-            
-         
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-            modelBinding.listOrder =  await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
+
 
             modelBinding.totalOrder = await order_BUS.getCountOrder();
             this.DataContext = modelBinding;
-           
- 
 
             //tắt loading
             orderBusyIndicator.IsBusy = false;
+
+
         }
-        
+
+        private void GetAllCheckBoxes()
+        {
+            List<CheckBox> checkBoxList = new List<CheckBox>();
+            for (int i = 0; i < listCateFilter.ItemContainerGenerator.Items.Count; i++)
+            {
+                var item = listCateFilter.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
+                if (item != null)
+                {
+                    var checkBox = FindVisualChild<CheckBox>(item);
+                    if (checkBox != null)
+                    {
+                        Debug.WriteLine(checkBox.Content);
+                    }
+                }
+            }
+        }
+
+
+        private T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child != null && child is T)
+                {
+                    return (T)child;
+                }
+                else
+                {
+                    var result = FindVisualChild<T>(child);
+                    if (result != null)
+                        return result;
+                }
+            }
+            return null;
+        }
 
         private void newOrderBtnClick(object sender, RoutedEventArgs e)
         {
@@ -422,26 +471,21 @@ namespace MyShopProject
             newOrderScreen.ShowDialog();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void viewDetailOrderEvent(object sender, MouseButtonEventArgs e)
         {
-           
             var selectedItem = listOrderGridView.SelectedItem as Order;
-            if(selectedItem != null)
+            if (selectedItem != null)
             {
                 var detailOrder = new OrderDetailWindow(selectedItem);
                 detailOrder.Show();
             }
-           
-            
+
         }
 
         private async void changeOrderPage(object sender, PageIndexChangedEventArgs e)
         {
+
             int pageIndex = e.NewPageIndex; //start at 0
             int limit = modelBinding.orderPerPage;
             int skip = pageIndex * limit;
@@ -471,15 +515,65 @@ namespace MyShopProject
 
         private async void changeProductPage(object sender, PageIndexChangedEventArgs e)
         {
-            int pageIndex = e.NewPageIndex; //start at 0
-            modelBinding.listBook.Clear();
+            try
+            {
+                int pageIndex = e.NewPageIndex; //start at 0
+                if (pageIndex < 0) return;
+                modelBinding.listBook.Clear();
 
-            productBusyIndicator.IsBusy = true;
-            var listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
-            productBusyIndicator.IsBusy = false;
-            
-            modelBinding.listBook.AddRange(listProduct);
-            
+                productBusyIndicator.IsBusy = true;
+                var listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
+                productBusyIndicator.IsBusy = false;
+
+                modelBinding.listBook = listProduct;
+                imageLoading.IsBusy = true;
+                foreach (Book b in listProduct)
+                {
+                    string imageBase64 = await book_BUS.getImageBook(b._id);
+                    b.ImageBase64 = imageBase64;
+                }
+                imageLoading.IsBusy = false;
+            }
+            catch (Exception ex) { }
+        }
+        private void ListBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            GetAllCheckBoxes();
+        }
+
+        private async void DeleteOrderClick(object sender, RoutedEventArgs e)
+        {
+            var buttonClicked = sender as RadRibbonButton;
+            var orderDeltele = modelBinding.listOrder.FirstOrDefault(order => order._id == buttonClicked.Tag.ToString());
+
+            string messageBoxText = "This action cannot be undone. Are you sure to delete this order?";
+            string caption = "Delete Confirmation";
+            MessageBoxButton button = MessageBoxButton.YesNo;
+            MessageBoxImage icon = MessageBoxImage.Warning;
+            MessageBoxResult result;
+            result = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+            var alert = new RadDesktopAlert();
+            if (result == MessageBoxResult.Yes)
+            {
+                var rs = await order_BUS.deletetOrder(orderDeltele);
+                if (rs.Length != 0)
+                {
+                    alert.Header = "DELETE ORDER SUCCESSFULLy";
+                    alert.Content = "Congratulation, your order was deleted!!!";
+
+                    alert.ShowDuration = 3000;
+                    modelBinding.totalOrder--;
+                    modelBinding.listOrder.Remove(orderDeltele);
+                }
+                else
+                {
+                    alert.Header = "ERROR";
+                    alert.Content = "There was an error on update database, please try again!!!";
+                    alert.ShowDuration = 3000;
+                }
+                RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                manager.ShowAlert(alert);
+            }
         }
     }
 }
