@@ -543,10 +543,7 @@ namespace MyShopProject
             }
             catch (Exception ex) { }
         }
-        private void ListBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            GetAllCheckBoxes();
-        }
+       
 
         private async void DeleteOrderClick(object sender, RoutedEventArgs e)
         {

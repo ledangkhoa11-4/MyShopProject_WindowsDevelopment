@@ -185,8 +185,8 @@
 
                     <telerik:RadDataPager x:Name="productPager" 
                         PageIndexChanged="changeProductPage" PageSize="{Binding productPerPage}" ItemCount="{Binding totalProduct}" PageIndex="0"
-                        DisplayMode="All" HorizontalAlignment="Left" Margin="160,10,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="740" Grid.Column="3"/>
-                    <telerik:RadRibbonDropDownButton KeepOpen="True" Grid.Column="3" Height="28" IsOpen="False" Margin="798,76,11,0" Text="Filter by: 
+                        DisplayMode="All" HorizontalAlignment="Left" Margin="24,11,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="740" Grid.Column="4"/>
+                    <telerik:RadRibbonDropDownButton KeepOpen="True" Grid.Column="4" Height="28" IsOpen="False" Margin="661,76,10,0" Text="Filter by: 
                                                      " VerticalAlignment="Top" DropDownPlacement="Left" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5">
 
                         <telerik:RadRibbonDropDownButton.DropDownContent >
