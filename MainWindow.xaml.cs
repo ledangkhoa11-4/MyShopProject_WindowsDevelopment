@@ -650,7 +650,11 @@ namespace MyShopProject
         {
             startDatePicker.SelectedDate = null;
             endDatePicker.SelectedDate = null;
-            modelBinding.listOrder = await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
+            modelBinding.isOrderFilter= false;
+            ObservableCollection<Order> listOrder;
+            listOrder = await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
+            modelBinding.listOrder.Clear();
+            modelBinding.listOrder.AddRange(listOrder);
             modelBinding.totalOrder = await order_BUS.getCountOrder();
             orderPager.PageIndex = 0;
         }
