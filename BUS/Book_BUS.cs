@@ -45,9 +45,16 @@ namespace MyShopProject.BUS
         }
         public async Task<ObservableCollection<Book>> getBookByCategory(List<String> selectecCat)
         {
-
-            var res = await book_DAO.getBookByCat(selectecCat);
-            return new ObservableCollection<Book>(res);
+            if (selectecCat.Count > 0)
+            {
+                var res = await book_DAO.getBookByCat(selectecCat);
+                return new ObservableCollection<Book>(res);
+            }
+            else
+            {
+                return new ObservableCollection<Book>(await book_DAO.getAll());
+            }
+            
         }
     }
 }
