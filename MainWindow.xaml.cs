@@ -614,6 +614,10 @@ namespace MyShopProject
         private void UnApplyFilterBtn_Click(object sender, RoutedEventArgs e)
         {
             productLoaded();
+            foreach (CheckBox checkbox in checkedCatListFilter)
+            {
+                checkbox.IsChecked= false;
+            }
             FilterDropdown.IsOpen = false;
         }
     }
