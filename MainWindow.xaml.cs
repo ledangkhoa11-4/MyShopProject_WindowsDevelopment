@@ -68,7 +68,7 @@ namespace MyShopProject
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
-            book_BUS = new Book_BUS();
+            book_BUS = new Book_BUS(); 
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -283,11 +283,11 @@ namespace MyShopProject
 
                 var tmp = new EditProductWindow(modelBinding.listCat, bookSelected);
                 tmp.ShowDialog();
-                //if (tmp.DialogResult == true)
-                //{
-                //    productLoaded();
-                //    this.DataContext = modelBinding;
-                //}
+                if (tmp.DialogResult == true)
+                {
+                    productLoaded();
+                    this.DataContext = modelBinding;
+                }
             }
             catch (Exception ex)
             {
@@ -398,7 +398,12 @@ namespace MyShopProject
         private void newProductBtnClick(object sender, RoutedEventArgs e)
         {
             var tmp = new AddProductWindow(modelBinding.listCat);
-            tmp.ShowDialog();
+            if (tmp.ShowDialog()== true)
+            {
+                productLoaded();
+                this.DataContext = modelBinding;
+            }
+            
         }
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
@@ -433,9 +438,9 @@ namespace MyShopProject
 
         }
 
-        private void GetAllCheckBoxes()
+        private ObservableCollection<CheckBox> GetAllCheckBoxes()
         {
-            List<CheckBox> checkBoxList = new List<CheckBox>();
+            ObservableCollection<CheckBox> checkBoxList = new ObservableCollection<CheckBox>();
             for (int i = 0; i < listCateFilter.ItemContainerGenerator.Items.Count; i++)
             {
                 var item = listCateFilter.ItemContainerGenerator.ContainerFromIndex(i) as ListBoxItem;
@@ -444,10 +449,12 @@ namespace MyShopProject
                     var checkBox = FindVisualChild<CheckBox>(item);
                     if (checkBox != null)
                     {
+                        checkBoxList.Add(checkBox);
                         Debug.WriteLine(checkBox.Content);
                     }
                 }
             }
+            return checkBoxList;
         }
 
 
@@ -542,10 +549,7 @@ namespace MyShopProject
             }
             catch (Exception ex) { }
         }
-        private void ListBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            GetAllCheckBoxes();
-        }
+       
 
         private async void DeleteOrderClick(object sender, RoutedEventArgs e)
         {
@@ -580,6 +584,47 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
             }
+        }
+        List<String>  selectedItems = new List<String>();
+        ObservableCollection<CheckBox> checkedCatListFilter = new ObservableCollection<CheckBox>();
+        private void ListBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            checkedCatListFilter = GetAllCheckBoxes();
+            
+        }
+        
+        private async void ApplyFilterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            selectedItems.Clear();
+            foreach (CheckBox checkbox in checkedCatListFilter)
+            {
+                if (checkbox.IsChecked == true)
+                {
+                    selectedItems.Add(checkbox.Content.ToString());
+                }
+            }
+            var seletedRange = new List<int>
+            {
+                (int)PriceFilter.RangeStart,
+                (int)PriceFilter.RangeEnd
+            };
+            Debug.WriteLine(seletedRange[0].ToString() + seletedRange[1].ToString());
+            filterIndicator.IsBusy = true;
+            modelBinding.listBook = await book_BUS.getBookByCategoryAndPrice(selectedItems, seletedRange);
+            filterIndicator.IsBusy = false;
+            this.DataContext = modelBinding;
+            
+
+        }
+
+        private void UnApplyFilterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            productLoaded();
+            foreach (CheckBox checkbox in checkedCatListFilter)
+            {
+                checkbox.IsChecked= false;
+            }
+            FilterDropdown.IsOpen = false;
         }
 
         private async void filterByDayButton(object sender, RoutedEventArgs e)

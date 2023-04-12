@@ -184,23 +184,33 @@
                     <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="productBusyIndicator"  BusyContent="Product is currently loading..." telerik:StyleManager.Theme="Office2013" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42" Grid.Column="4" Margin="86,280,0,0"/>
 
                     <telerik:RadDataPager x:Name="productPager" 
-                        PageIndexChanged="changeProductPage" PageSize="{Binding productPerPage}" ItemCount="{Binding totalProduct}" 
-                        DisplayMode="All" HorizontalAlignment="Left" Margin="24,10,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="740" Grid.Column="4"/>
-                    <telerik:RadRibbonDropDownButton KeepOpen="True" Grid.Column="4" Height="28" IsOpen="False" Margin="662,76,11,0" Text="Filter by: 
-                                                     " VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5">
+                        PageIndexChanged="changeProductPage" PageSize="{Binding productPerPage}" ItemCount="{Binding totalProduct}" PageIndex="0"
+                        DisplayMode="All" HorizontalAlignment="Left" Margin="24,11,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="740" Grid.Column="4"/>
+                    <telerik:RadRibbonDropDownButton Name="FilterDropdown"  KeepOpen="True" Grid.Column="4" Height="28" IsOpen="False" Margin="661,76,10,0" Text="Filter by: 
+                                                     " VerticalAlignment="Top" DropDownPlacement="Left" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5">
 
                         <telerik:RadRibbonDropDownButton.DropDownContent >
-                            <ListBox telerik:StyleManager.Theme="Material" >
+                            <ListBox telerik:StyleManager.Theme="Material"  >
                                 <ListBoxItem >
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                         <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Price:</TextBlock>
-                                        <telerik:RadSlider  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" telerik:StyleManager.Theme="Material" Minimum="0" Maximum="300">
-                                            <telerik:RadSlider.Thumbs>
-                                                <telerik:RangeSliderThumb RangeStart="0" RangeEnd="100" />
+                                        <telerik:RadSlider  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"
+                                                            telerik:StyleManager.Theme="Material" Minimum="0" Maximum="500000"
+                                                              MinimumRangeSpan="50000" >
+                                            <telerik:RadSlider.Thumbs >
+                                                <telerik:RangeSliderThumb  x:Name="PriceFilter"   MinimumRangeSpan="10000" RangeStart="50000" RangeEnd="150000" />
                                             </telerik:RadSlider.Thumbs>
+                                            <telerik:RadSlider.AutoToolTipContentTemplate>
+                                                <DataTemplate>
+                                                    <telerik:RadCallout  Margin="5 5 5 10" >
+                                                        <TextBlock Text="{Binding .,  StringFormat=N2}" />
+                                                    </telerik:RadCallout>
+                                                </DataTemplate>
+                                            </telerik:RadSlider.AutoToolTipContentTemplate>
                                         </telerik:RadSlider>
                                     </StackPanel>
                                 </ListBoxItem>
+                                
                                 <ListBoxItem>
                                     <telerik:RadRibbonDropDownButton Margin="-18 0 0 0" telerik:StyleManager.Theme="Material"  Text="Category name" HorizontalAlignment="Left" VerticalAlignment="Top">
                                         <telerik:RadRibbonDropDownButton.DropDownContent>
@@ -215,7 +225,14 @@
                                     </telerik:RadRibbonDropDownButton>
                                 </ListBoxItem>
                                 <ListBoxItem>
-                                    <telerik:RadButton Grid.Column="2" Content="Apply" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
+                                    <StackPanel Orientation="Horizontal" >
+                                        <telerik:RadButton x:Name="ApplyFilterBtn" Click="ApplyFilterBtn_Click" Grid.Column="2" Content="Apply" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
+                                        <telerik:RadButton x:Name="UnApplyFilterBtn" Click="UnApplyFilterBtn_Click" Grid.Column="2" Content="Cancel" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material" Margin="100,0,0,0"/>
+                                    </StackPanel>
+                                    
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <telerik:RadBusyIndicator IsBusy="False" Background="Transparent" x:Name="filterIndicator"  BusyContent="Product is currently loading..." telerik:StyleManager.Theme="Office2013" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42" />
                                 </ListBoxItem>
                             </ListBox>
                         </telerik:RadRibbonDropDownButton.DropDownContent>
