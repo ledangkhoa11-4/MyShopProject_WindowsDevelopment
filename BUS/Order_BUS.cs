@@ -118,5 +118,30 @@ namespace MyShopProject.BUS
             string newJsonString = jsonObj.ToString();
             return await order_DAO.updateOrder(id,newJsonString);
         }
+        public async Task<ObservableCollection<Order>> GetOrderByDate(string startDay, string endDay,int limit = 6, int skip = 0)
+        {
+            var listOrder = await order_DAO.getWithDate(startDay,endDay,limit, skip);
+            if (listOrder == null) return new ObservableCollection<Order>();
+            foreach (Order order in listOrder)
+            {
+                var listCart = order.DetailCart;
+                if (order.Coupon != null && order.Coupon._id != null)
+                    order.Coupon = MainWindow.modelBinding.listCoupon.FirstOrDefault(coupon => coupon._id == order.Coupon._id);
+                else
+                    order.Coupon = null;
+                foreach (DetailOrder cart in listCart)
+                {
+                    string id = cart.Book._id;
+                    var book = await book_DAO.get(id, true);
+                    cart.Book = book;
+
+                }
+            }
+            return new ObservableCollection<Order>(listOrder);
+        }
+        public async Task<int> getCountFilter(string start,string end)
+        {
+            return await order_DAO.countWithDate(start,end);
+        }
     }
 }

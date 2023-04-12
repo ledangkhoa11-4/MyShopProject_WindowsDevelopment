@@ -64,6 +64,11 @@ namespace MyShopProject
 
                 if (result.Length != 0)
                 {
+                    alert.Header = "Success";
+                    alert.Content = "Sign up successfully!!!";
+                    alert.ShowDuration = 3000;
+                    RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                    manager.ShowAlert(alert);
                     this.DialogResult = true;
                     this.Close();
                 }

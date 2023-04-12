@@ -32,8 +32,11 @@ namespace MyShopProject
 
         public ObservableCollection<Order> listOrder { get; set; }
 
-        public int orderPerPage { get; set; } = 9;
+        public int orderPerPage { get; set; } = 3;
         public int totalOrder { get; set; } = 0;
+        public bool isOrderFilter { get; set; } = false;
+        public string startDay { get; set; } = "";
+        public string endDay { get; set; } = "";
 
         public int productPerPage { get; set; } = 6;
         public int totalProduct { get; set; } = 0;
@@ -207,6 +210,7 @@ namespace MyShopProject
                 var result = await category_BUS.addCategory(latestItem);
                 if (result.Length != 0)
                 {
+                    latestItem._id = await category_BUS.getNewestId();
                     alert.Header = "Success";
                     alert.Content = "Category insert successfully!!!";
                     alert.ShowDuration = 3000;
@@ -223,6 +227,7 @@ namespace MyShopProject
                     var result = await category_BUS.addCategory(latestItem);
                     if (result.Length != 0)
                     {
+                        latestItem._id = await category_BUS.getNewestId();
                         alert.Header = "Success";
                         alert.Content = "Category insert successfully!!!";
                         alert.ShowDuration = 3000;
@@ -485,12 +490,13 @@ namespace MyShopProject
 
         private async void changeOrderPage(object sender, PageIndexChangedEventArgs e)
         {
-
             int pageIndex = e.NewPageIndex; //start at 0
             int limit = modelBinding.orderPerPage;
             int skip = pageIndex * limit;
             orderBusyIndicator.IsBusy = true;
-            var listOrder = await order_BUS.getAllOrder(limit, skip);
+            ObservableCollection<Order> listOrder;
+            if (!modelBinding.isOrderFilter) listOrder = await order_BUS.getAllOrder(limit, skip);
+            else listOrder = await order_BUS.GetOrderByDate(modelBinding.startDay,modelBinding.endDay,limit, skip);
             modelBinding.listOrder.Clear();
             modelBinding.listOrder.AddRange(listOrder);
 
@@ -574,6 +580,34 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
             }
+        }
+
+        private async void filterByDayButton(object sender, RoutedEventArgs e)
+        {
+            try {
+                modelBinding.isOrderFilter= true;
+                modelBinding.startDay = startDatePicker.SelectedDate.Value.ToString("yyyy-MM-dd");
+                modelBinding.endDay = endDatePicker.SelectedDate.Value.ToString("yyyy-MM-dd");
+                //orderBusyIndicator.IsBusy = true;
+                modelBinding.listOrder = await order_BUS.GetOrderByDate(modelBinding.startDay, modelBinding.endDay,modelBinding.orderPerPage, 0);
+                //modelBinding.totalOrder = modelBinding.listOrder.Count;
+                modelBinding.totalOrder = await order_BUS.getCountFilter(modelBinding.startDay, modelBinding.endDay);
+                orderPager.PageIndex = 0;
+                //orderBusyIndicator.IsBusy = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private async void removeFilterButton(object sender, RoutedEventArgs e)
+        {
+            startDatePicker.SelectedDate = null;
+            endDatePicker.SelectedDate = null;
+            modelBinding.listOrder = await order_BUS.getAllOrder(modelBinding.orderPerPage,0);
+            modelBinding.totalOrder = await order_BUS.getCountOrder();
+            orderPager.PageIndex = 0;
         }
     }
 }

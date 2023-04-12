@@ -311,8 +311,48 @@
                     </telerik:RadGridView>
                     <telerik:RadDataPager x:Name="orderPager" PageSize="{Binding orderPerPage}" ItemCount="{Binding totalOrder}"  Canvas.Left="11" Canvas.Top="579" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178" PageIndexChanged="changeOrderPage" />
                     <telerik:RadBusyIndicator IsBusy="False"  Background="Transparent" x:Name="orderBusyIndicator"  BusyContent="Order is currently loading..."  Canvas.Left="510" Canvas.Top="46" telerik:StyleManager.Theme="Office2013" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42"/>
-
-
+                    <telerik:RadRibbonDropDownButton Background="#FFE5E5E5" KeepOpen="True" Height="33" Canvas.Left="789" Canvas.Top="45" IsOpen="False" Text="Filter by: " 
+                                                     VerticalAlignment="Top" Width="178" telerik:StyleManager.Theme="Office2019" 
+                                                     HorizontalAlignment="Left">
+                        <telerik:RadRibbonDropDownButton.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="8" />
+                            </Style>
+                        </telerik:RadRibbonDropDownButton.Resources>
+                        <telerik:RadRibbonDropDownButton.DropDownContent >
+                            <ListBox telerik:StyleManager.Theme="Material" >
+                                <ListBoxItem >
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Start Day:</TextBlock>
+                                        <telerik:RadDatePicker x:Name="startDatePicker"></telerik:RadDatePicker>
+                                    </StackPanel>
+                                </ListBoxItem>
+                                <ListBoxItem >
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">End Day:</TextBlock>
+                                        <telerik:RadDatePicker x:Name="endDatePicker"></telerik:RadDatePicker>
+                                    </StackPanel>
+                                </ListBoxItem>
+                                <ListBoxItem>
+                                    <telerik:RadButton Content="Apply" Click="filterByDayButton" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
+                                </ListBoxItem>
+                            </ListBox>
+                        </telerik:RadRibbonDropDownButton.DropDownContent>
+                    </telerik:RadRibbonDropDownButton>
+                    <Button Click="removeFilterButton"  Height="34" Width="182" Canvas.Left="565" Canvas.Top="44" telerik:StyleManager.Theme="Material">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Name="Border" CornerRadius="8" BorderBrush="Gray"  Background="#FFE5E5E5">
+                                    <ContentPresenter Content="Remove Filter" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="#B22222" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
                 </Canvas>
 
             </telerik:RadTabItem>

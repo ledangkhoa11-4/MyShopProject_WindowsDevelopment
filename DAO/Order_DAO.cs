@@ -36,5 +36,16 @@ namespace MyShopProject.DAO
             var json = await API.getMethod($"/order/delete/{id}");
             return json;
         }
+        public async Task<List<Order>> getWithDate(string start,string end,int limit,int offset)
+        {
+            var json = await API.getMethod($"/order/search?start={start}&end={end}&limit={limit}&offset={offset}");
+            var orderList = JsonConvert.DeserializeObject<List<Order>>(json);
+            return orderList;
+        }
+        public async Task<int> countWithDate(string start, string end)
+        {
+            var json = await API.getMethod($"/order/filtercount?start={start}&end={end}");
+            return int.Parse(json);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MyShopProject.DAO;
 using MyShopProject.DTO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,6 +43,13 @@ namespace MyShopProject.BUS
         {
             var jsonData = JsonConvert.SerializeObject(category);
             return await category_DAO.deleteCategory(jsonData, category._id);
+        }
+        public async Task<String> getNewestId()
+        {
+            var json = await category_DAO.getNewestId();
+            JObject jsonObject = JObject.Parse(json);
+            string ans = (string)jsonObject["_id"];
+            return ans;
         }
     }
 }

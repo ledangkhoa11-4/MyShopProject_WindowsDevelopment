@@ -40,5 +40,11 @@ namespace MyShopProject.DAO
             var json = await API.postMethod($"/category/delete?id={id}", category);
             return json;
         }
+
+        public async Task<String> getNewestId()
+        {
+            var json = await API.getMethod("/category/newestId");
+            return json;
+        }
     }
 }
