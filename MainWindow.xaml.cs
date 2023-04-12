@@ -393,7 +393,12 @@ namespace MyShopProject
         private void newProductBtnClick(object sender, RoutedEventArgs e)
         {
             var tmp = new AddProductWindow(modelBinding.listCat);
-            tmp.ShowDialog();
+            if (tmp.ShowDialog()== true)
+            {
+                productLoaded();
+                this.DataContext = modelBinding;
+            }
+            
         }
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
