@@ -278,11 +278,11 @@ namespace MyShopProject
 
                 var tmp = new EditProductWindow(modelBinding.listCat, bookSelected);
                 tmp.ShowDialog();
-                //if (tmp.DialogResult == true)
-                //{
-                //    productLoaded();
-                //    this.DataContext = modelBinding;
-                //}
+                if (tmp.DialogResult == true)
+                {
+                    productLoaded();
+                    this.DataContext = modelBinding;
+                }
             }
             catch (Exception ex)
             {
@@ -586,7 +586,7 @@ namespace MyShopProject
             checkedCatListFilter = GetAllCheckBoxes();
             
         }
-     
+        
         private async void ApplyFilterBtn_Click(object sender, RoutedEventArgs e)
         {
             selectedItems.Clear();
@@ -597,9 +597,24 @@ namespace MyShopProject
                     selectedItems.Add(checkbox.Content.ToString());
                 }
             }
-            modelBinding.listBook = await book_BUS.getBookByCategory(selectedItems);
+            var seletedRange = new List<int>
+            {
+                (int)PriceFilter.RangeStart,
+                (int)PriceFilter.RangeEnd
+            };
+            Debug.WriteLine(seletedRange[0].ToString() + seletedRange[1].ToString());
+            filterIndicator.IsBusy = true;
+            modelBinding.listBook = await book_BUS.getBookByCategoryAndPrice(selectedItems, seletedRange);
+            filterIndicator.IsBusy = false;
             this.DataContext = modelBinding;
+            
 
+        }
+
+        private void UnApplyFilterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            productLoaded();
+            FilterDropdown.IsOpen = false;
         }
     }
 }
