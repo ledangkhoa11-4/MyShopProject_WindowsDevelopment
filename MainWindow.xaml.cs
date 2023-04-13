@@ -27,9 +27,7 @@ namespace MyShopProject
     {
         public ObservableCollection<Category> listCat { get; set; }
         public ObservableCollection<Book> listBook { get; set; }
-
         public ObservableCollection<Coupon> listCoupon { get; set; }
-
         public ObservableCollection<Order> listOrder { get; set; }
 
         public int orderPerPage { get; set; } = 3;
@@ -41,12 +39,15 @@ namespace MyShopProject
         public int productPerPage { get; set; } = 6;
         public int totalProduct { get; set; } = 0;
         public int countStock { get; set; } = 0;
+        public int countTitles { get; set; } = 0;
+        public ObservableCollection<Book> bestSaleBook { get; set; }
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
             listBook = new ObservableCollection<Book>();
             listOrder = new ObservableCollection<Order>();
             listCoupon = new ObservableCollection<Coupon>();
+            bestSaleBook = new ObservableCollection<Book>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -408,9 +409,6 @@ namespace MyShopProject
 
         private async void windowLoaded(object sender, RoutedEventArgs e)
         {
-            //hiện loading lúc đang query db cho đỡ trống trãi
-            orderBusyIndicator.IsBusy = true;
-
             var testConn = await API.testConnection();
             if (testConn.Item1 == false)
             {
@@ -427,14 +425,12 @@ namespace MyShopProject
             modelBinding.listCat = await category_BUS.getAllCategory();
             modelBinding.totalProduct = await product_BUS.getSize();
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-
-
             modelBinding.totalOrder = await order_BUS.getCountOrder();
-            this.DataContext = modelBinding;
-            modelBinding.countStock = await product_BUS.CountStock();
-            //tắt loading
-            orderBusyIndicator.IsBusy = false;
 
+            this.DataContext = modelBinding;
+            var stockInfo = await product_BUS.CountStock();
+            modelBinding.countStock = stockInfo.Item1;
+            modelBinding.countTitles = stockInfo.Item2;
 
         }
 
@@ -639,6 +635,7 @@ namespace MyShopProject
                 modelBinding.totalOrder = await order_BUS.getCountFilter(modelBinding.startDay, modelBinding.endDay);
                 orderPager.PageIndex = 0;
                 //orderBusyIndicator.IsBusy = false;
+                filterDropDownButton.IsOpen = false;
             }
             catch (Exception ex)
             {
@@ -658,5 +655,29 @@ namespace MyShopProject
             modelBinding.totalOrder = await order_BUS.getCountOrder();
             orderPager.PageIndex = 0;
         }
+
+        private async void selectFieldBestSaleDashboard(object sender, MouseButtonEventArgs e)
+        {
+            var filterBy =  (sender as ListBoxItem).Content as string;
+            bestSellDropdown.Content = filterBy;
+            bestSellDropdown.IsOpen = false;
+            var bestSale = new ObservableCollection<Book>();
+            if(filterBy == "By week")
+                bestSale = await product_BUS.getBestSellingProducts("week");
+            if(filterBy == "By month")  
+                bestSale = await product_BUS.getBestSellingProducts("month");
+            if (filterBy == "By year")
+                bestSale = await product_BUS.getBestSellingProducts("year");
+            modelBinding.bestSaleBook.Clear();
+            modelBinding.bestSaleBook.AddRange(bestSale);
+            var panel = bestSaleCarousel.FindCarouselPanel();
+            panel.MoveBy(bestSale.Count);
+            foreach (Book b in bestSale)
+            {
+                string imageBase64 = await book_BUS.getImageBook(b._id);
+                b.ImageBase64 = imageBase64;
+            }
+        }
+
     }
 }

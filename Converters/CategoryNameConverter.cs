@@ -1,6 +1,7 @@
 ﻿using MyShopProject.DTO;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -13,11 +14,14 @@ namespace MyShopProject.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+
             if (value != null)
             {
                 string catIdStr = value.ToString();
-                var name = MainWindow.modelBinding.listCat.FirstOrDefault(c => c._id == catIdStr).Name;
-                return name;
+                var name = MainWindow.modelBinding.listCat.FirstOrDefault(c => c._id == catIdStr);
+                if(name != null)
+                 return name.Name;
+                return "Null";
             }
             else return "Null";
             

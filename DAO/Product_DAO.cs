@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows;
+using Telerik.Windows.Documents.Lists;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
 namespace MyShopProject.DAO
 {
@@ -56,6 +58,12 @@ namespace MyShopProject.DAO
         {
             var json = await API.getMethod("/product/stock");
             return json;
+        }
+        public async Task<List<Book>> getBestSellingProducts(string filterby)
+        {
+            var json = await API.getMethod($"/product/best-sale?filterby={filterby}");
+            var res = JsonConvert.DeserializeObject<List<Book>>(json);
+            return res;
         }
     }
 }

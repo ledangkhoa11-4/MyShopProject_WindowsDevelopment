@@ -44,7 +44,7 @@
                 <!--<PasswordBox PasswordChar="*" x:Name="passwordBox" Width="150" Height="35" Canvas.Left="177" Canvas.Top="79"/>-->
 
                 <CheckBox x:Name="rememberCheckBox" Content="Remember me" Canvas.Left="168" Canvas.Top="141" />
-                <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="150" Height="35" Canvas.Left="177" Canvas.Top="79" Password="password" TextWrapping="Wrap" Text="RadPasswordBox" WatermarkContent="Enter password"/>
+                <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="150" Height="35" Canvas.Left="177" Canvas.Top="79"  TextWrapping="Wrap" Text="RadPasswordBox" WatermarkContent="Enter password"/>
             </Canvas>
         </Border>
     </Canvas>

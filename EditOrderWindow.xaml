@@ -14,8 +14,8 @@
         <local:PriceConverter x:Key="priceConverter"/>
         <local:PercentConverter x:Key="percentConverter"/>
         <local:OldDiscountPriceConverter x:Key="oldPriceConverter"/>
-        <local:IDToStringConverter x:Key="idConverter"/> 
-        <local:CalculateQuantityOrderEdit x:Key="calculateQuantityConverter"/> 
+        <local:IDToStringConverter x:Key="idConverter"/>
+        <local:CalculateQuantityOrderEdit x:Key="calculateQuantityConverter"/>
 
     </Window.Resources>
     <Canvas>
@@ -170,5 +170,18 @@
             </telerik:RadBusyIndicator.BusyContent>
         </telerik:RadBusyIndicator>
 
+        <Canvas Height="192" Width="125" Canvas.Left="-514" Canvas.Top="-24" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel Orientation="Vertical">
+                <Rectangle RadiusX="15" RadiusY="15"
+                    Width="122"
+                    Height="164" Canvas.Left="10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Images/design_book.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Margin="0 4 0 0"  Text="Harry Potter" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontStyle="Italic" FontSize="14"></TextBlock>
+            </StackPanel>
+
+        </Canvas>
     </Canvas>
 </Window>

@@ -57,13 +57,19 @@ namespace MyShopProject.BUS
             return await product_DAO.delProduct(jsonData, book._id);
         }
 
-        public async Task<int> CountStock()
+        public async Task<Tuple<int,int>> CountStock()
         {
             var result = await product_DAO.countStock();
             JObject jsonObject = JObject.Parse(result);
             jsonObject.Remove("_id");
-            string stock = (string)jsonObject["totalQty"];
-            return int.Parse(stock);
+            var stock = int.Parse((string)jsonObject["totalQty"]);
+            var tls =  int.Parse((string)jsonObject["totalTls"]);
+            return Tuple.Create(stock, tls);
+        }
+        public async Task<ObservableCollection<Book>> getBestSellingProducts(string filterby)
+        {
+            var listBook = await product_DAO.getBestSellingProducts(filterby);
+            return new ObservableCollection<Book>(listBook);
         }
     }
 }

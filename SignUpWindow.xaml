@@ -6,6 +6,7 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
         xmlns:local="clr-namespace:MyShopProject"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="SignUpWindow" Height="450" Width="800">
     <Canvas>
         <Border CornerRadius="10" Background="#e3e3e3" BorderThickness="1" BorderBrush="Gray" Canvas.Left="150" Canvas.Top="67">
