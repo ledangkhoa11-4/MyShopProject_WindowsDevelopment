@@ -30,7 +30,20 @@ namespace MyShopProject.DAO
             var str = await API.getMethod($"/product/image/{id}");
             return str;
         }
-        public async Task<List<Book>> getBookByCatAndPrice(List<String> selectedItems,List<int> selectedPrice)
+        public async Task<int> getSizeofBooksByCatAndPrice(List<String> selectedItems, List<int> selectedPrice)
+        {
+            String content = new String(" ");
+            foreach (var item in selectedItems)
+            {
+                content = content + item + ",";
+            }
+            var res = await API.getMethod($"/search/category/count?cats={content}" +
+                $"&pricestart={selectedPrice[0]}&priceend={selectedPrice[1]}");
+            Debug.WriteLine(res);
+            var size = JsonConvert.DeserializeObject<int>(res);
+            return size;
+        }
+        public async Task<List<Book>> getBookByCatAndPricePagination(List<String> selectedItems,List<int> selectedPrice,int pageIndex,int limit)
         {
             String content = new String(" ");
             foreach(var item in selectedItems)
@@ -38,7 +51,8 @@ namespace MyShopProject.DAO
                 content = content + item+",";
             }
             var res = await API.getMethod($"/search/category?cats={content}" +
-                $"&pricestart={selectedPrice[0]}&priceend={selectedPrice[1]}");
+                $"&pricestart={selectedPrice[0]}&priceend={selectedPrice[1]}"+
+                $"&pageIndex={pageIndex}&limit={limit}");
             Debug.WriteLine(res);
             var bookList = JsonConvert.DeserializeObject<List<Book>>(res);
             return bookList;

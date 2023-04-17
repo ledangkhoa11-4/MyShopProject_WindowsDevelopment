@@ -252,34 +252,38 @@
                         PageIndexChanged="changeProductPage" PageSize="{Binding productPerPage}" ItemCount="{Binding totalProduct}" PageIndex="0"
                         DisplayMode="All" HorizontalAlignment="Left" Margin="24,11,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="740" Grid.Column="4"/>
                     <telerik:RadRibbonDropDownButton Name="FilterDropdown"  KeepOpen="True" Grid.Column="4" Height="28" IsOpen="False" Margin="661,76,10,0" Text="Filter by: 
-                                                     " VerticalAlignment="Top" DropDownPlacement="Left" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5">
+                                                     " VerticalAlignment="Top" DropDownPlacement="Left" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5" Click="FilterDropdown_Click">
 
                         <telerik:RadRibbonDropDownButton.DropDownContent >
                             <ListBox telerik:StyleManager.Theme="Material"  >
                                 <ListBoxItem >
-                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                        <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Price:</TextBlock>
-                                        <telerik:RadSlider  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"
+                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" >
+                                        <CheckBox x:Name="FilterByPrice" Margin="0 0 20 0" Content="Filter with price"></CheckBox>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                                            <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Price:</TextBlock>
+                                            <telerik:RadSlider  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"
                                                             telerik:StyleManager.Theme="Material" Minimum="0" Maximum="500000"
                                                               MinimumRangeSpan="50000" >
-                                            <telerik:RadSlider.Thumbs >
-                                                <telerik:RangeSliderThumb  x:Name="PriceFilter"   MinimumRangeSpan="10000" RangeStart="50000" RangeEnd="150000" />
-                                            </telerik:RadSlider.Thumbs>
-                                            <telerik:RadSlider.AutoToolTipContentTemplate>
-                                                <DataTemplate>
-                                                    <telerik:RadCallout  Margin="5 5 5 10" >
-                                                        <TextBlock Text="{Binding .,  StringFormat=N2}" />
-                                                    </telerik:RadCallout>
-                                                </DataTemplate>
-                                            </telerik:RadSlider.AutoToolTipContentTemplate>
-                                        </telerik:RadSlider>
+                                                <telerik:RadSlider.Thumbs >
+                                                    <telerik:RangeSliderThumb  x:Name="PriceFilter"   MinimumRangeSpan="10000" RangeStart="50000" RangeEnd="150000" />
+                                                </telerik:RadSlider.Thumbs>
+                                                <telerik:RadSlider.AutoToolTipContentTemplate>
+                                                    <DataTemplate>
+                                                        <telerik:RadCallout  Margin="5 5 5 10" >
+                                                            <TextBlock Text="{Binding .,  StringFormat=N2}" />
+                                                        </telerik:RadCallout>
+                                                    </DataTemplate>
+                                                </telerik:RadSlider.AutoToolTipContentTemplate>
+                                            </telerik:RadSlider>
+                                        </StackPanel>
                                     </StackPanel>
                                 </ListBoxItem>
 
                                 <ListBoxItem>
                                     <telerik:RadRibbonDropDownButton Margin="-18 0 0 0" telerik:StyleManager.Theme="Material"  Text="Category name" HorizontalAlignment="Left" VerticalAlignment="Top">
                                         <telerik:RadRibbonDropDownButton.DropDownContent>
-                                            <ListBox Loaded="ListBox_Loaded" x:Name="listCateFilter" ItemsSource="{Binding listCat}" telerik:StyleManager.Theme="Material" MinWidth="200" HorizontalAlignment="Right">
+                                            <ListBox Margin="0 0 20 0" Loaded="ListBox_Loaded" x:Name="listCateFilter" ItemsSource="{Binding listCat}" telerik:StyleManager.Theme="Material" MinWidth="200" HorizontalAlignment="Right">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <CheckBox Content="{Binding Name}"></CheckBox>

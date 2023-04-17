@@ -529,10 +529,30 @@ namespace MyShopProject
                 int pageIndex = e.NewPageIndex; //start at 0
                 if (pageIndex < 0) return;
                 modelBinding.listBook.Clear();
-
-                productBusyIndicator.IsBusy = true;
-                var listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
-                productBusyIndicator.IsBusy = false;
+                ObservableCollection<Book> listProduct=null;
+                if(isFilter()==true) {
+                    var seletedRange = new List<int>
+                    {
+                        (int)PriceFilter.RangeStart,
+                        (int)PriceFilter.RangeEnd
+                    };
+                    if (FilterByPrice.IsChecked == false)
+                    {
+                        seletedRange[0] = 0;
+                        seletedRange[1] = 0;
+                    }
+                    productBusyIndicator.IsBusy = true;
+                    
+                    listProduct = await book_BUS.getBookByCategoryAndPricePagination(selectedItems, seletedRange, pageIndex, modelBinding.productPerPage);
+                    productBusyIndicator.IsBusy = false;
+                }
+                else
+                {
+                    productBusyIndicator.IsBusy = true;
+                    listProduct = await product_BUS.getProductWithPagination(pageIndex, modelBinding.productPerPage);
+                    productBusyIndicator.IsBusy = false;
+                }
+                
 
                 modelBinding.listBook = listProduct;
                 imageLoading.IsBusy = true;
@@ -604,17 +624,34 @@ namespace MyShopProject
                 (int)PriceFilter.RangeStart,
                 (int)PriceFilter.RangeEnd
             };
-            Debug.WriteLine(seletedRange[0].ToString() + seletedRange[1].ToString());
+            if(FilterByPrice.IsChecked== false)
+            {
+                seletedRange[0] = 0;
+                seletedRange[1] = 0;
+            }
             filterIndicator.IsBusy = true;
-            modelBinding.listBook = await book_BUS.getBookByCategoryAndPrice(selectedItems, seletedRange);
+            modelBinding.totalProduct = await book_BUS.getSizeBookByCategoryAndPrice(selectedItems, seletedRange);
+            modelBinding.listBook = await book_BUS.getBookByCategoryAndPricePagination(selectedItems, seletedRange,0,modelBinding.productPerPage);
             filterIndicator.IsBusy = false;
             this.DataContext = modelBinding;
             
 
         }
-
-        private void UnApplyFilterBtn_Click(object sender, RoutedEventArgs e)
+        private Boolean isFilter()
         {
+            foreach (CheckBox checkbox in checkedCatListFilter)
+            {
+                if (checkbox.IsChecked == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private async void UnApplyFilterBtn_Click(object sender, RoutedEventArgs e)
+        {
+            modelBinding.totalProduct = await product_BUS.getSize();
             productLoaded();
             foreach (CheckBox checkbox in checkedCatListFilter)
             {
@@ -679,5 +716,9 @@ namespace MyShopProject
             }
         }
 
+        private void FilterDropdown_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
