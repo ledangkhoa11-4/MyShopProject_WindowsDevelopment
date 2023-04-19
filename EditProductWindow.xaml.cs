@@ -54,6 +54,7 @@ namespace MyShopProject
                 IsOnStock = book.IsOnStock,
 
             };
+    
             _listCat = listCat;
             DataContext = this;
         }
@@ -71,6 +72,10 @@ namespace MyShopProject
             var converter = new Base64ToBitmapConverter();
             var bitmap = (BitmapImage)converter.Convert(_book.ImageBase64, null, null, null);
             CoverImage.Source = bitmap;
+
+            description.Text = _book.Description;
+            
+            updateBookLoading.IsBusy = false;
         }
 
         private void RadRibbonButton_Click(object sender, RoutedEventArgs e)
@@ -80,6 +85,7 @@ namespace MyShopProject
 
         private async void Save_Product_Btn(object sender, RoutedEventArgs e)
         {
+            updateBookLoading.IsBusy = true;
             _book.Name = name.Text;
             _book.Author = author.Text;
             int _purchasePrice;
@@ -158,6 +164,7 @@ namespace MyShopProject
 
                 this.Close();
             }
+            updateBookLoading.IsBusy = false;
 
         }
 

@@ -7,7 +7,7 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.AddProductWindow"
         mc:Ignorable="d"
         Title="Create a New Product" Height="558" Width="662" Loaded="Window_Loaded">
-    
+
     <Canvas>
 
         <GroupBox Height="497" Canvas.Left="10" Canvas.Top="10" Width="427" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -39,7 +39,7 @@
 
                 </telerik:RadComboBox>
                 <telerik:Label FontSize="14" Content="Description:" Canvas.Left="25" Canvas.Top="347" Height="36" Width="102" HorizontalAlignment="Center" VerticalAlignment="Top" />
-                <TextBox x:Name="description" HorizontalScrollBarVisibility="Hidden" Height="103"  Canvas.Left="132" Padding="4" Canvas.Top="352" VerticalScrollBarVisibility="Hidden" Width="264" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBox x:Name="description" TextWrapping="Wrap" HorizontalScrollBarVisibility="Hidden" Height="103"  Canvas.Left="132" Padding="4" Canvas.Top="352" VerticalScrollBarVisibility="Hidden" Width="264" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <telerik:TxtDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
 
 
@@ -60,5 +60,7 @@
             </Canvas>
         </GroupBox>
         <telerik:RadRibbonButton Height="1" Canvas.Left="464" Text="Submit" Canvas.Top="271" Width="160" Background="#FFD0CCCC" telerik:StyleManager.Theme="Material" VerticalAlignment="Top" IsAutoSize="False" FontStyle="Italic" FontWeight="Bold" Click="Save_Product_Btn"/>
+        <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="addBookLoading"  BusyContent="Book is currently loading..." telerik:StyleManager.Theme="Office2013" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42" Grid.Column="4" Canvas.Left="454" Canvas.Top="339"/>
+
     </Canvas>
 </Window>

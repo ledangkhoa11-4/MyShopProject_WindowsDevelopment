@@ -321,32 +321,43 @@ namespace MyShopProject
             try
             {
 
-                var bookSelected = bookCardView.SelectedItem as Book;
-                var product_BUS = new Product_BUS();
-                Debug.WriteLine(bookSelected.ToString());
-                var result = await product_BUS.DelProduct(bookSelected);
-                var alert = new RadDesktopAlert();
                 
-                Debug.WriteLine(result.ToString().Length);
-                if (result.ToString().Length != 0)
-                {
-                    
-                    alert.Header = "DELETE BOOK SUCCESSFULLy";
-                    alert.Content = "Congratulation, your book was deleted!!!";
 
-                    alert.ShowDuration = 3000;
-                    
-                    modelBinding.totalProduct = modelBinding.totalProduct - 1;
-                }
-                else
+                string messageBoxText = "This action cannot be undone. Are you sure to delete this book?";
+                string caption = "Delete Confirmation";
+                MessageBoxButton button = MessageBoxButton.YesNo;
+                MessageBoxImage icon = MessageBoxImage.Warning;
+                MessageBoxResult resultDel;
+                resultDel = MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+                var alertDel = new RadDesktopAlert();
+                if (resultDel == MessageBoxResult.Yes)
                 {
-                    alert.Header = "ERROR";
-                    alert.Content = "There was an error on update database, please try again!!!";
-                    alert.ShowDuration = 3000;
+                    var bookSelected = bookCardView.SelectedItem as Book;
+                    var product_BUS = new Product_BUS();
+                    Debug.WriteLine(bookSelected.ToString());
+                    var result = await product_BUS.DelProduct(bookSelected);
+                    var alert = new RadDesktopAlert();
+                    if (result.ToString().Length != 0)
+                    {
+
+                        alert.Header = "DELETE BOOK SUCCESSFULLy";
+                        alert.Content = "Congratulation, your book was deleted!!!";
+
+                        alert.ShowDuration = 3000;
+
+                        modelBinding.totalProduct = modelBinding.totalProduct - 1;
+                    }
+                    else
+                    {
+                        alert.Header = "ERROR";
+                        alert.Content = "There was an error on update database, please try again!!!";
+                        alert.ShowDuration = 3000;
+                    }
+                    RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                    manager.ShowAlert(alert);
+                    productLoaded();
                 }
-                RadDesktopAlertManager manager = new RadDesktopAlertManager();
-                manager.ShowAlert(alert);
-                productLoaded();
+                    
 
             }
             catch (Exception ex)

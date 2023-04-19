@@ -37,6 +37,7 @@ namespace MyShopProject
             _book= new Book();
             _listCat = listCat;
             DataContext = this;
+            addBookLoading.IsBusy = false;
         }
 
         private void RadRibbonButton_Click(object sender, RoutedEventArgs e)
@@ -46,6 +47,7 @@ namespace MyShopProject
 
         private async void Save_Product_Btn(object sender, RoutedEventArgs e)
         {
+            addBookLoading.IsBusy = true;
             _book.Name = name.Text;
             _book.Author = author.Text;
             int _purchasePrice;
@@ -124,6 +126,7 @@ namespace MyShopProject
 
                 this.Close();
             }
+            addBookLoading.IsBusy = false;
 
         }
 
