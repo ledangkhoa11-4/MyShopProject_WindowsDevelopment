@@ -56,5 +56,16 @@ namespace MyShopProject.BUS
            
             
         }
+        public async Task<int> countBookWithName(String content, List<int> selectedPrice)
+        {
+            var res = await book_DAO.countBookWithName(content, selectedPrice);
+            return res;
+        }
+        public async Task<ObservableCollection<Book>> findBookWithName(String content,List<int> selectedPrice, int pageIndex, int limit)
+        {
+            var res =await book_DAO.findBookWithName(content,selectedPrice,pageIndex,limit);
+            return new ObservableCollection<Book>(res);
+        }
+        
     }
 }

@@ -252,21 +252,21 @@
                         PageIndexChanged="changeProductPage" PageSize="{Binding productPerPage}" ItemCount="{Binding totalProduct}" PageIndex="0"
                         DisplayMode="All" HorizontalAlignment="Left" Margin="24,11,0,0" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Height="52" Width="740" Grid.Column="4"/>
                     <telerik:RadRibbonDropDownButton Name="FilterDropdown"  KeepOpen="True" Grid.Column="4" Height="28" IsOpen="False" Margin="661,76,10,0" Text="Filter by: 
-                                                     " VerticalAlignment="Top" DropDownPlacement="Left" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5" Click="FilterDropdown_Click">
+                                                     " VerticalAlignment="Top" DropDownPlacement="Left" Width="NaN" telerik:StyleManager.Theme="Office2019" Background="#FFE5E5E5">
 
                         <telerik:RadRibbonDropDownButton.DropDownContent >
                             <ListBox telerik:StyleManager.Theme="Material"  >
-                                <ListBoxItem >
+                                <ListBoxItem>
                                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" >
                                         <CheckBox x:Name="FilterByPrice" Margin="0 0 20 0" Content="Filter with price"></CheckBox>
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 
                                             <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Price:</TextBlock>
                                             <telerik:RadSlider  HorizontalAlignment="Left" VerticalAlignment="Top" Width="200"
-                                                            telerik:StyleManager.Theme="Material" Minimum="0" Maximum="500000"
-                                                              MinimumRangeSpan="50000" >
+                                                            telerik:StyleManager.Theme="Material" Minimum="10000" Maximum="500000"
+                                                              MinimumRangeSpan="50000" SmallChange="10000" >
                                                 <telerik:RadSlider.Thumbs >
-                                                    <telerik:RangeSliderThumb  x:Name="PriceFilter"   MinimumRangeSpan="10000" RangeStart="50000" RangeEnd="150000" />
+                                                    <telerik:RangeSliderThumb  x:Name="PriceFilter"    MinimumRangeSpan="10000" RangeStart="50000" RangeEnd="150000" />
                                                 </telerik:RadSlider.Thumbs>
                                                 <telerik:RadSlider.AutoToolTipContentTemplate>
                                                     <DataTemplate>
@@ -306,8 +306,8 @@
                             </ListBox>
                         </telerik:RadRibbonDropDownButton.DropDownContent>
                     </telerik:RadRibbonDropDownButton>
-                    <telerik:RadWatermarkTextBox HorizontalAlignment="Left" Margin="10,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" WatermarkContent="Search by name" Width="341" telerik:StyleManager.Theme="Material" Grid.ColumnSpan="4"/>
-                    <telerik:RadRibbonButton Grid.Column="3" Height="NaN" Margin="67,20,0,0" Text="Search" VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Grid.ColumnSpan="2"/>
+                    <telerik:RadWatermarkTextBox Name="SearchContent"  HorizontalAlignment="Left" Margin="10,19,0,0" TextWrapping="Wrap" VerticalAlignment="Top" WatermarkContent="Search by name" Width="341" telerik:StyleManager.Theme="Material" Grid.ColumnSpan="4"/>
+                    <telerik:RadRibbonButton Name="SeachBtn" Click="SeachBtn_Click"  Grid.Column="3" Height="NaN" Margin="67,20,0,0" Text="Search" VerticalAlignment="Top" Width="NaN" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Grid.ColumnSpan="2"/>
                     <telerik:RadRibbonButton Grid.Column="4" Height="NaN" Margin="586,636,0,0" Text="Add new product" VerticalAlignment="Top" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newProductBtnClick"/>
                     <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="imageLoading"  BusyContent="Cover is currently loading..." telerik:StyleManager.Theme="Office2013" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42" Grid.Column="4" Margin="86,639,0,0"/>
 

@@ -553,8 +553,23 @@ namespace MyShopProject
                         seletedRange[1] = 0;
                     }
                     productBusyIndicator.IsBusy = true;
-                    
                     listProduct = await book_BUS.getBookByCategoryAndPricePagination(selectedItems, seletedRange, pageIndex, modelBinding.productPerPage);
+                    productBusyIndicator.IsBusy = false;
+                }
+                else if (SearchContent.Text.Length>0)
+                {
+                    var seletedRange = new List<int>
+                    {
+                        (int)PriceFilter.RangeStart,
+                        (int)PriceFilter.RangeEnd
+                    };
+                    if (FilterByPrice.IsChecked == false)
+                    {
+                        seletedRange[0] = 0;
+                        seletedRange[1] = 0;
+                    }
+                    productBusyIndicator.IsBusy = true;
+                    listProduct = await book_BUS.findBookWithName(SearchContent.Text, seletedRange, pageIndex, modelBinding.productPerPage);
                     productBusyIndicator.IsBusy = false;
                 }
                 else
@@ -644,8 +659,15 @@ namespace MyShopProject
             modelBinding.totalProduct = await book_BUS.getSizeBookByCategoryAndPrice(selectedItems, seletedRange);
             modelBinding.listBook = await book_BUS.getBookByCategoryAndPricePagination(selectedItems, seletedRange,0,modelBinding.productPerPage);
             filterIndicator.IsBusy = false;
-            this.DataContext = modelBinding;
             
+            imageLoading.IsBusy = true;
+            foreach (Book b in modelBinding.listBook)
+            {
+                string imageBase64 = await book_BUS.getImageBook(b._id);
+                b.ImageBase64 = imageBase64;
+            }
+            imageLoading.IsBusy = false;
+
 
         }
         private Boolean isFilter()
@@ -669,6 +691,7 @@ namespace MyShopProject
                 checkbox.IsChecked= false;
             }
             FilterDropdown.IsOpen = false;
+            FilterByPrice.IsChecked= false;
         }
 
         private async void filterByDayButton(object sender, RoutedEventArgs e)
@@ -726,10 +749,34 @@ namespace MyShopProject
                 b.ImageBase64 = imageBase64;
             }
         }
-
-        private void FilterDropdown_Click(object sender, RoutedEventArgs e)
+        private async void SeachBtn_Click(object sender, RoutedEventArgs e)
         {
+            if(SearchContent.Text.Length > 0)
+            {
+                
+                var seletedRange = new List<int>
+                {
+                    (int)PriceFilter.RangeStart,
+                    (int)PriceFilter.RangeEnd
+                };
+                if (FilterByPrice.IsChecked == false)
+                {
+                    seletedRange[0] = 0;
+                    seletedRange[1] = 0;
+                }
+                productBusyIndicator.IsBusy= true;
+                modelBinding.totalProduct = await book_BUS.countBookWithName(SearchContent.Text, seletedRange);
+                modelBinding.listBook = await book_BUS.findBookWithName(SearchContent.Text, seletedRange, 0, modelBinding.productPerPage);
+                productBusyIndicator.IsBusy= false;
 
+                imageLoading.IsBusy = true;
+                foreach (Book b in modelBinding.listBook)
+                {
+                    string imageBase64 = await book_BUS.getImageBook(b._id);
+                    b.ImageBase64 = imageBase64;
+                }
+                imageLoading.IsBusy = false;
+            }
         }
     }
 }

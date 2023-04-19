@@ -58,5 +58,20 @@ namespace MyShopProject.DAO
             return bookList;
             
         }
+        public async Task<int>  countBookWithName(String content, List<int> selectedPrice)
+        {
+            var res = await API.getMethod($"/search/product/count?content={content}" +
+                $"&pricestart={selectedPrice[0]}&priceend={selectedPrice[1]}");
+            var size = JsonConvert.DeserializeObject<int>(res);
+            return size;
+        }
+        public async Task<List<Book>> findBookWithName(String content, List<int> selectedPrice, int pageIndex, int limit)
+        {
+            var res = await API.getMethod($"/search/product?content={content}" +
+                $"&pricestart={selectedPrice[0]}&priceend={selectedPrice[1]}" +
+                $"&pageIndex={pageIndex}&limit={limit}");
+            var bookList = JsonConvert.DeserializeObject<List<Book>>(res);
+            return bookList;
+        }
     }
 }
