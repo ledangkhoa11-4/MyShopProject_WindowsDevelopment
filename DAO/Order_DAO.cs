@@ -47,5 +47,15 @@ namespace MyShopProject.DAO
             var json = await API.getMethod($"/order/filtercount?start={start}&end={end}");
             return int.Parse(json);
         }
+        public async Task<int> countWithMonth()
+        {
+            var jsosn = await API.getMethod($"/order/count/month");
+            return int.Parse(jsosn);
+        }
+        public async Task<int> countWithWeek()
+        {
+            var jsosn = await API.getMethod($"/order/count/week");
+            return int.Parse(jsosn);
+        }
     }
 }

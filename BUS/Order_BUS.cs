@@ -143,5 +143,15 @@ namespace MyShopProject.BUS
         {
             return await order_DAO.countWithDate(start,end);
         }
+        public async Task<int> getCountByCurMonth()
+        {
+            int month = DateTime.Now.Month;
+            return await order_DAO.countWithMonth();
+        }
+        public async Task<int> getCountByCurWeek()
+        {
+            int month = DateTime.Now.Month;
+            return await order_DAO.countWithWeek();
+        }
     }
 }

@@ -40,7 +40,10 @@ namespace MyShopProject
         public int totalProduct { get; set; } = 0;
         public int countStock { get; set; } = 0;
         public int countTitles { get; set; } = 0;
-        public ObservableCollection<Book> bestSaleBook { get; set; }
+        public string CurrentMonth { get; set; }
+        public int AmountOfOrderByMonth { get; set; }
+        public int AmountOfOrderByWeek { get; set; }
+        public ObservableCollection<Book> bestSaleBook { get; set;}
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
@@ -135,6 +138,7 @@ namespace MyShopProject
             var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage); ;
             productBusyIndicator.IsBusy = false;
             modelBinding.listBook.AddRange(listProduct);
+            modelBinding.totalProduct= await product_BUS.getSize();
             imageLoading.IsBusy = true;
             foreach (Book b in listProduct)
             {
@@ -437,6 +441,10 @@ namespace MyShopProject
             modelBinding.totalProduct = await product_BUS.getSize();
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
             modelBinding.totalOrder = await order_BUS.getCountOrder();
+            DateTime dt= DateTime.Now;
+            modelBinding.CurrentMonth = "In "+dt.ToString("MMMM")+":";
+            modelBinding.AmountOfOrderByMonth=await order_BUS.getCountByCurMonth();
+            modelBinding.AmountOfOrderByWeek=await order_BUS.getCountByCurWeek();
 
             this.DataContext = modelBinding;
             var stockInfo = await product_BUS.CountStock();
@@ -645,28 +653,37 @@ namespace MyShopProject
                     selectedItems.Add(checkbox.Content.ToString());
                 }
             }
-            var seletedRange = new List<int>
+            if(selectedItems.Count > 0)
+            {
+                var seletedRange = new List<int>
             {
                 (int)PriceFilter.RangeStart,
                 (int)PriceFilter.RangeEnd
             };
-            if(FilterByPrice.IsChecked== false)
-            {
-                seletedRange[0] = 0;
-                seletedRange[1] = 0;
+                if (FilterByPrice.IsChecked == false)
+                {
+                    seletedRange[0] = 0;
+                    seletedRange[1] = 0;
+                }
+                filterIndicator.IsBusy = true;
+                modelBinding.totalProduct = await book_BUS.getSizeBookByCategoryAndPrice(selectedItems, seletedRange);
+                modelBinding.listBook = await book_BUS.getBookByCategoryAndPricePagination(selectedItems, seletedRange, 0, modelBinding.productPerPage);
+                filterIndicator.IsBusy = false;
+
+                imageLoading.IsBusy = true;
+                foreach (Book b in modelBinding.listBook)
+                {
+                    string imageBase64 = await book_BUS.getImageBook(b._id);
+                    b.ImageBase64 = imageBase64;
+                }
+
+                imageLoading.IsBusy = false;
             }
-            filterIndicator.IsBusy = true;
-            modelBinding.totalProduct = await book_BUS.getSizeBookByCategoryAndPrice(selectedItems, seletedRange);
-            modelBinding.listBook = await book_BUS.getBookByCategoryAndPricePagination(selectedItems, seletedRange,0,modelBinding.productPerPage);
-            filterIndicator.IsBusy = false;
+            else
+            {
+                productLoaded();
+            }
             
-            imageLoading.IsBusy = true;
-            foreach (Book b in modelBinding.listBook)
-            {
-                string imageBase64 = await book_BUS.getImageBook(b._id);
-                b.ImageBase64 = imageBase64;
-            }
-            imageLoading.IsBusy = false;
 
 
         }
@@ -776,6 +793,10 @@ namespace MyShopProject
                     b.ImageBase64 = imageBase64;
                 }
                 imageLoading.IsBusy = false;
+            }
+            else
+            {
+                productLoaded();
             }
         }
     }
