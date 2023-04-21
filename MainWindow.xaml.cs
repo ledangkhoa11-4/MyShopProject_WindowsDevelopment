@@ -119,6 +119,9 @@ namespace MyShopProject
                 case "Orders":
                     orderTabLoaded();
                     break;
+                case "Dashboard":
+                    dashboardTabLoaded();
+                    break;
                 default:
                     return;
             }
@@ -132,6 +135,13 @@ namespace MyShopProject
             orderBusyIndicator.IsBusy = true;
             modelBinding.listOrder = await order_BUS.getAllOrder(modelBinding.orderPerPage, orderPager.PageIndex);
             orderBusyIndicator.IsBusy = false;
+        }
+        private async void dashboardTabLoaded()
+        {
+            DateTime dt = DateTime.Now;
+            modelBinding.CurrentMonth = "In " + dt.ToString("MMMM") + ":";
+            modelBinding.AmountOfOrderByMonth = await order_BUS.getCountByCurMonth();
+            modelBinding.AmountOfOrderByWeek = await order_BUS.getCountByCurWeek();
         }
         private async void productLoaded()
         {
@@ -443,10 +453,8 @@ namespace MyShopProject
             modelBinding.totalProduct = await product_BUS.getSize();
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
             modelBinding.totalOrder = await order_BUS.getCountOrder();
-            DateTime dt= DateTime.Now;
-            modelBinding.CurrentMonth = "In "+dt.ToString("MMMM")+":";
-            modelBinding.AmountOfOrderByMonth=await order_BUS.getCountByCurMonth();
-            modelBinding.AmountOfOrderByWeek=await order_BUS.getCountByCurWeek();
+           
+            //Tab nào thì code ở tabloadded nhe, đừng code ở đây
 
             this.DataContext = modelBinding;
             var stockInfo = await product_BUS.CountStock();
