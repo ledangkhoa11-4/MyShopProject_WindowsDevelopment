@@ -19,6 +19,8 @@ using System.ComponentModel;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using System.Windows.Media;
 using System.Collections.Generic;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace MyShopProject
 {
@@ -798,6 +800,40 @@ namespace MyShopProject
             {
                 productLoaded();
             }
+        }
+        FileInfo _selectedFile;
+        private void ChooseFileBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var screen = new OpenFileDialog();
+            screen.Filter = "Files|*.xlsx";
+
+            if (screen.ShowDialog() == true)
+            {
+                _selectedFile = new FileInfo(screen.FileName);
+                TextChooseFileBtn.Text= _selectedFile.Name;
+                ImportDataBtn.IsEnabled= true;
+                Uri uri = new Uri("Images/export.png",UriKind.Relative);
+                IconChooseFileBtn.Source =new BitmapImage( uri);
+            }
+        }
+
+        private void ImportDataBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var filename = _selectedFile.FullName;
+            var document = SpreadsheetDocument.Open(filename, false);
+            var wbPart = document.WorkbookPart;
+            var sheets = wbPart.Workbook.Descendants<Sheet>();
+            var sheet = sheets.FirstOrDefault(s => s.Name == "Sheet1");
+            var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
+            var cells = wsPart.Worksheet.Descendants<Cell>();
+            int row = 2;
+            Cell nameCell = cells.FirstOrDefault(
+            c => c?.CellReference == $"A{row}"
+            );
+            string stringId = nameCell.InnerText;
+            var stringTable = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
+            string name = stringTable.SharedStringTable.ElementAt(int.Parse(stringId)).InnerText;
+            TextChooseFileBtn.Text = name;
         }
     }
 }

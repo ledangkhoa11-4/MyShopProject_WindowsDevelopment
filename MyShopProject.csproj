@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.20.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
@@ -94,6 +95,14 @@
   <Compile Include="OrderDetailWindow.xaml.cs" />
   <Compile Include="SignUpWindow.xaml.cs" />
 </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Images\export.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Images\import.png" />
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Images\design_book.jpg" />

@@ -450,7 +450,54 @@
 
             </telerik:RadTabItem>
 
+            <telerik:RadTabItem>
+                <telerik:RadTabItem.Header>
+                    <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Import Data</TextBlock>
+                </telerik:RadTabItem.Header>
+                <Canvas>
+                    <telerik:RadButton
+                        x:Name="ChooseFileBtn"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top"
+                        BorderBrush="#000000"
+                        BorderThickness="1"
+                        Foreground="#000000"
+                        Background="Transparent"
+                        Padding="10"
+                        FontSize="14"
+                        FontFamily="Segoe UI"
+                        Click="ChooseFileBtn_Click" Canvas.Left="438" Canvas.Top="95" Height="63" Width="323">
+                        <telerik:RadButton.Content>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image x:Name="IconChooseFileBtn" Source="Images/import.png" 
+                                   Width="30"
+                                   Height="30"
+                                   Margin="0,0,5,0"/>
+                                <!-- Replace with your desired icon image and update the image source accordingly -->
+                                <TextBlock x:Name="TextChooseFileBtn" Text="Choose a .xlsx file" VerticalAlignment="Center" FontSize="30"/>
 
+                            </StackPanel>
+                        </telerik:RadButton.Content>
+
+                    </telerik:RadButton>
+                    <telerik:RadButton
+                        x:Name="ImportDataBtn"
+                        Click="ImportDataBtn_Click"
+                        BorderBrush="#000000"
+                        BorderThickness="1"
+                        Foreground="#000000"
+                        
+                        CornerRadius="15"
+                        Padding="20"
+                        Background="#00ab66"
+                        Canvas.Left="513" Canvas.Top="178"
+                        IsEnabled="False">
+                        <telerik:RadButton.Content>
+                            <TextBlock VerticalAlignment="Center" FontSize="25">Import Data</TextBlock>
+                        </telerik:RadButton.Content>
+                    </telerik:RadButton>
+                </Canvas>
+            </telerik:RadTabItem>
         </telerik:RadTabControl>
     </Canvas>
 </Window>
