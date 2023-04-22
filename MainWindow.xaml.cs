@@ -14,13 +14,13 @@ using Book = MyShopProject.DTO.Book;
 using MyShopProject.BUS;
 using MyShopProject.DTO;
 using MyShopProject.DAO;
-using Telerik.Windows.Persistence.Core;
 using System.ComponentModel;
-using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using System.Windows.Media;
 using System.Collections.Generic;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Convert = System.Convert;
+using Sheet = DocumentFormat.OpenXml.Spreadsheet.Sheet;
 
 namespace MyShopProject
 {
@@ -65,6 +65,7 @@ namespace MyShopProject
         public Product_BUS product_BUS { get; set; }
         public Order_BUS order_BUS { get; set; }
         public Book_BUS book_BUS { get; set; }
+        public ImportData_BUS import_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; } = new MainViewModel();
         public Account currentUser = null;
         public MainWindow()
@@ -74,7 +75,8 @@ namespace MyShopProject
             category_BUS = new Category_BUS();
             coupon_BUS = new Coupon_BUS();
             order_BUS = new Order_BUS();
-            book_BUS = new Book_BUS(); 
+            book_BUS = new Book_BUS();
+            import_BUS = new ImportData_BUS();
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -818,30 +820,20 @@ namespace MyShopProject
             if (screen.ShowDialog() == true)
             {
                 _selectedFile = new FileInfo(screen.FileName);
-                TextChooseFileBtn.Text= _selectedFile.Name;
-                ImportDataBtn.IsEnabled= true;
-                Uri uri = new Uri("Images/export.png",UriKind.Relative);
-                IconChooseFileBtn.Source =new BitmapImage( uri);
+                TextChooseFileBtn.Text = _selectedFile.Name;
+                ImportDataBtn.IsEnabled = true;
+                Uri uri = new Uri("Images/export.png", UriKind.Relative);
+                IconChooseFileBtn.Source = new BitmapImage(uri);
             }
         }
-
-        private void ImportDataBtn_Click(object sender, RoutedEventArgs e)
+        
+        private  void ImportDataBtn_Click(object sender, RoutedEventArgs e)
         {
             var filename = _selectedFile.FullName;
-            var document = SpreadsheetDocument.Open(filename, false);
-            var wbPart = document.WorkbookPart;
-            var sheets = wbPart.Workbook.Descendants<Sheet>();
-            var sheet = sheets.FirstOrDefault(s => s.Name == "Sheet1");
-            var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
-            var cells = wsPart.Worksheet.Descendants<Cell>();
-            int row = 2;
-            Cell nameCell = cells.FirstOrDefault(
-            c => c?.CellReference == $"A{row}"
-            );
-            string stringId = nameCell.InnerText;
-            var stringTable = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
-            string name = stringTable.SharedStringTable.ElementAt(int.Parse(stringId)).InnerText;
-            TextChooseFileBtn.Text = name;
+            import_BUS.getProductFromExcelFile(filename);
+            import_BUS.getCategoryFromExcelFile(filename);
         }
+        
+
     }
 }
