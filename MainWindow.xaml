@@ -497,6 +497,55 @@
                     </telerik:RadButton>
                 </Canvas>
             </telerik:RadTabItem>
+
+            <telerik:RadTabItem>
+                <telerik:RadTabItem.Header>
+                    <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Report</TextBlock>
+                </telerik:RadTabItem.Header>
+                <Canvas>
+                    <TextBlock Text="Statistics by product:" FontSize="20" Canvas.Left="10" Canvas.Top="17" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top"></TextBlock>
+                    <telerik:RadMultiColumnComboBox 
+                        SelectionChanged='reportProductSelected'
+                    x:Name="productReportCombobox"
+                    DisplayMemberPath="Name" 
+                    Canvas.Left="222" Canvas.Top="9" 
+                    telerik:StyleManager.Theme="Fluent" 
+                    HorizontalAlignment="Left" VerticalAlignment="Top" 
+                    Width="453" DropDownMinWidth="500" 
+                    SelectionMode="Multiple"
+                    AutoCompleteMode="Search" MatchCase="False" Height="41">
+                        <telerik:RadMultiColumnComboBox.ItemsSourceProvider>
+                            <telerik:GridViewItemsSourceProvider ItemsSource="{Binding listAllBriefBook}" AutoGenerateColumns="false">
+                                <telerik:GridViewItemsSourceProvider.Columns>
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" IsReadOnly="True" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding PurchasePrice, Converter={StaticResource priceConverter}}" IsReadOnly="True" />
+                                    <telerik:GridViewDataColumn DataMemberBinding="{Binding SellingPrice, Converter={StaticResource priceConverter}}" IsReadOnly="True" />
+                                    <telerik:GridViewDataColumn>
+
+                                    </telerik:GridViewDataColumn>
+
+                                </telerik:GridViewItemsSourceProvider.Columns>
+                            </telerik:GridViewItemsSourceProvider>
+                        </telerik:RadMultiColumnComboBox.ItemsSourceProvider>
+
+
+                    </telerik:RadMultiColumnComboBox>
+                    <telerik:RadCartesianChart x:Name="chart" Canvas.Left="10" Canvas.Top="55" Height="286" Width="1179" HorizontalAlignment="Center" VerticalAlignment="Top" telerik:StyleManager.Theme="Material">
+                        <telerik:RadCartesianChart.Grid>
+                            <telerik:CartesianChartGrid MajorLinesVisibility="XY" />
+                        </telerik:RadCartesianChart.Grid>
+                    </telerik:RadCartesianChart>
+                    <telerik:RadLegend x:Name="legend" Canvas.Left="713" Canvas.Top="10" Height="50" Width="476" HorizontalAlignment="Left" VerticalAlignment="Center" telerik:StyleManager.Theme="Material">
+                        <telerik:RadLegend.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <telerik:RadWrapPanel Orientation="Vertical" ItemWidth="120" />
+                            </ItemsPanelTemplate>
+                        </telerik:RadLegend.ItemsPanel>
+
+                    </telerik:RadLegend>
+
+                </Canvas>
+            </telerik:RadTabItem>
         </telerik:RadTabControl>
     </Canvas>
 </Window>

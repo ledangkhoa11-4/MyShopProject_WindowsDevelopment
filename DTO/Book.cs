@@ -58,6 +58,16 @@ namespace MyShopProject.DTO
                 }
             }
         }
-        
+        public static string EllipsizeString(string input)
+        {
+            if (input.Length <= 12)
+            {
+                return input;
+            }
+            else
+            {
+                return input.Substring(0, 12) + "...";
+            }
+        }
     }
 }

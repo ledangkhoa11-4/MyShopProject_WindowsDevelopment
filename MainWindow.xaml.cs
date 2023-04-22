@@ -21,6 +21,10 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Convert = System.Convert;
 using Sheet = DocumentFormat.OpenXml.Spreadsheet.Sheet;
+using Telerik.Windows.Controls.ChartView;
+using Telerik.Charting;
+using Telerik.Windows.Controls.Legend;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
 namespace MyShopProject
 {
@@ -29,6 +33,7 @@ namespace MyShopProject
     {
         public ObservableCollection<Category> listCat { get; set; }
         public ObservableCollection<Book> listBook { get; set; }
+        public ObservableCollection<Book> listAllBriefBook { get; set; }
         public ObservableCollection<Coupon> listCoupon { get; set; }
         public ObservableCollection<Order> listOrder { get; set; }
 
@@ -45,6 +50,7 @@ namespace MyShopProject
         public string CurrentMonth { get; set; }
         public int AmountOfOrderByMonth { get; set; }
         public int AmountOfOrderByWeek { get; set; }
+        
         public ObservableCollection<Book> bestSaleBook { get; set;}
         public MainViewModel()
         {
@@ -53,6 +59,8 @@ namespace MyShopProject
             listOrder = new ObservableCollection<Order>();
             listCoupon = new ObservableCollection<Coupon>();
             bestSaleBook = new ObservableCollection<Book>();
+
+            listAllBriefBook = new ObservableCollection<Book>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -68,6 +76,13 @@ namespace MyShopProject
         public ImportData_BUS import_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; } = new MainViewModel();
         public Account currentUser = null;
+        private List<string> hexCodes = new List<string>{
+                "#FFD700", // Gold
+                "#DC143C", // Crimson
+                "#6A0DAD", // Royal Purple
+                "#228B22", // Forest Green
+                "#0066CC"  // Sapphire Blue
+            };
         public MainWindow()
         {
             InitializeComponent();
@@ -124,6 +139,9 @@ namespace MyShopProject
                 case "Dashboard":
                     dashboardTabLoaded();
                     break;
+                case "Report":
+                    reportTabLoaded();
+                    break;
                 default:
                     return;
             }
@@ -131,6 +149,65 @@ namespace MyShopProject
         private void cateLoaded()
         {
 
+        }
+        private async void reportTabLoaded()
+        {
+
+            modelBinding.listAllBriefBook = await book_BUS.getAllBriefBook();
+           
+            chart.HorizontalAxis = new CategoricalAxis();
+            chart.VerticalAxis = new LinearAxis() { Maximum = 100 };
+            SplineSeries line = new SplineSeries();
+            
+            line.Stroke = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#FFD700"));
+            line.StrokeThickness = 2;
+            line.DataPoints.Add(new CategoricalDataPoint() {Category="1/1/2021", Value = 20 });
+            line.DataPoints.Add(new CategoricalDataPoint() { Category = "2/1/2021", Value = 40 });
+            line.DataPoints.Add(new CategoricalDataPoint() { Category = "3/1/2021", Value = 35 });
+            line.DataPoints.Add(new CategoricalDataPoint() { Category = "4/1/2021", Value = 40 });
+            line.DataPoints.Add(new CategoricalDataPoint() { Category = "5/1/2021", Value = 30 });
+            line.DataPoints.Add(new CategoricalDataPoint() { Category = "6/1/2021", Value = 90 });
+            line.DataPoints.Add(new CategoricalDataPoint() { Category = "7/1/2021", Value = 90 });
+
+            LineSeries line2 = new LineSeries();
+            line2.Stroke = new SolidColorBrush(System.Windows.Media.Colors.Red);
+            line2.StrokeThickness = 2;
+            line2.DataPoints.Add(new CategoricalDataPoint() { Category = "1/1/2021", Value = 30 });
+            line2.DataPoints.Add(new CategoricalDataPoint() { Category = "2/1/2021", Value = 70 });
+            
+            chart.Series.Add(line);
+            chart.Series.Add(line2);
+
+            legend.Items = new LegendItemCollection();
+
+        }
+        private void reportProductSelected(object sender, SelectionChangeEventArgs e)
+        {
+            var legendCollection = legend.Items;
+            var addedItems = e.AddedItems;
+            var removedItems = e.RemovedItems;
+            if(productReportCombobox.SelectedItems.Count> 4 && addedItems.Count > 0) {
+                productReportCombobox.CloseDropDown();
+                string messageBoxText = "Select up to 4 books at a time";
+                string caption = "Maximum book selected";
+                MessageBoxButton button = MessageBoxButton.OK;
+                MessageBoxImage icon = MessageBoxImage.Information;
+                MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+                productReportCombobox.SelectedItems.Remove(addedItems[0]);
+                return;
+            }
+
+            foreach (Book product in addedItems)
+            {
+                var currentIdx = legendCollection.Count;
+                legendCollection.Add(new LegendItem { Title = Book.EllipsizeString(product.Name), 
+                    MarkerFill = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString(hexCodes[currentIdx]))});
+            }
+            foreach (Book productRm in removedItems)
+            {
+                var item = legendCollection.FirstOrDefault(item => item.Title == Book.EllipsizeString(productRm.Name));
+                legendCollection.Remove(item);
+            }
         }
         private async void orderTabLoaded()
         {
@@ -833,7 +910,7 @@ namespace MyShopProject
             import_BUS.getProductFromExcelFile(filename);
             import_BUS.getCategoryFromExcelFile(filename);
         }
-        
+
 
     }
 }
