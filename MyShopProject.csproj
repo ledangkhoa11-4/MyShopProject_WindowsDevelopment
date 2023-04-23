@@ -60,6 +60,7 @@
   <Compile Include="BUS\Coupon_BUS.cs" />
   <Compile Include="BUS\ImportData_BUS.cs" />
   <Compile Include="BUS\Order_BUS.cs" />
+  <Compile Include="BUS\Report_BUS.cs" />
   <Compile Include="Converters\Base64ToBitmapConverter.cs" />
   <Compile Include="BUS\Book_BUS.cs" /> 
   <Compile Include="BUS\Account_BUS.cs" />
@@ -68,6 +69,7 @@
   <Compile Include="Converters\CalculateQuantityOrderEdit.cs" />
   <Compile Include="Converters\CategoryNameConverter.cs" />
   <Compile Include="Converters\CheckApplyCoupon.cs" />
+  <Compile Include="Converters\DateFormat.cs" />
   <Compile Include="Converters\IDToStringConverter.cs" />
   <Compile Include="Converters\OldDiscountPriceConverter.cs" />
   <Compile Include="DAO\Account_DAO.cs" />
@@ -77,6 +79,7 @@
   <Compile Include="DAO\Category_DAO.cs" />
   <Compile Include="DAO\Coupon_DAO.cs" />
   <Compile Include="DAO\Order_DAO.cs" />
+  <Compile Include="DAO\Report_DAO.cs" />
   <Compile Include="DTO\Account.cs" />
   <Compile Include="DAO\Product_DAO.cs" />
   <Compile Include="DTO\Book.cs" />
@@ -84,6 +87,7 @@
   <Compile Include="DTO\DetailOrder.cs" />
   <Compile Include="DTO\Coupon.cs" />
   <Compile Include="DTO\Order.cs" />
+  <Compile Include="DTO\StatisticsProductByTime.cs" />
   <Compile Include="EditOrderWindow.xaml.cs" />
   <Compile Include="EditProductWindow.xaml.cs" />
   <Compile Include="LoginWindow.xaml.cs" />

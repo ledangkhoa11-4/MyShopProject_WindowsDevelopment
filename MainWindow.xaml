@@ -322,10 +322,10 @@
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Orders</TextBlock>
                 </telerik:RadTabItem.Header>
                 <Canvas>
-                    <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="11" Canvas.Top="27" VerticalAlignment="Top" CornerRadius="8,8,8,8"/>
+                    <telerik:RadRibbonButton Height="NaN" Text="Add new order" Width="178" telerik:StyleManager.Theme="Material" Background="#FFE5E5E5" Click="newOrderBtnClick" Canvas.Left="10" Canvas.Top="40" VerticalAlignment="Top" CornerRadius="8,8,8,8"/>
                     <telerik:RadGridView x:Name="listOrderGridView"   
                      ItemsSource="{Binding listOrder}"  
-                     AutoGenerateColumns="False" RowHeight="50" telerik:StyleManager.Theme="VisualStudio2019" Canvas.Left="11" Canvas.Top="70" ShowGroupPanel="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178" Height="513" EnableStickyGroupHeaders="True" IsReadOnly="True" CanUserResizeColumns="False" MouseDoubleClick="viewDetailOrderEvent" >
+                     AutoGenerateColumns="False" RowHeight="50" telerik:StyleManager.Theme="VisualStudio2019" Canvas.Left="11" Canvas.Top="86" ShowGroupPanel="False" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1178" Height="497" EnableStickyGroupHeaders="True" IsReadOnly="True" CanUserResizeColumns="False" MouseDoubleClick="viewDetailOrderEvent" >
                         <telerik:RadGridView.Columns>
                             <telerik:GridViewDataColumn Width="120" DataMemberBinding="{Binding _id}" >
                                 <telerik:GridViewDataColumn.CellTemplate>
@@ -398,12 +398,12 @@
                         </telerik:RadGridView.Columns>
 
                     </telerik:RadGridView>
-                    <telerik:RadDataPager x:Name="orderPager" PageSize="{Binding orderPerPage}" ItemCount="{Binding totalOrder}"  Canvas.Left="10" Canvas.Top="588" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1178" PageIndexChanged="changeOrderPage" />
+                    <telerik:RadDataPager DisplayMode="All" x:Name="orderPager" PageSize="{Binding orderPerPage}" ItemCount="{Binding totalOrder}"  Canvas.Left="10" Canvas.Top="588" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1178" PageIndexChanged="changeOrderPage" />
                     <telerik:RadBusyIndicator IsBusy="True"  Background="Transparent" x:Name="orderBusyIndicator"  BusyContent="Order is currently loading..."  Canvas.Left="488" Canvas.Top="27" telerik:StyleManager.Theme="Office2013" HorizontalAlignment="Left" VerticalAlignment="Top" Height="42" Width="224"/>
                     <telerik:RadRibbonDropDownButton 
                         x:Name="filterDropDownButton"
-                        Background="#FFE5E5E5" KeepOpen="True" Height="33" Canvas.Left="889" Canvas.Top="23" IsOpen="False" Text="Filter by: " 
-                                                     VerticalAlignment="Center" Width="178" telerik:StyleManager.Theme="Office2019" 
+                        Background="#FFE5E5E5" KeepOpen="True" Height="33" Canvas.Left="884" Canvas.Top="10" IsOpen="False" Text="Filter by: " 
+                                                     VerticalAlignment="Top" Width="178" telerik:StyleManager.Theme="Office2019" 
                                                      HorizontalAlignment="Left" CloseOnEnter="True">
                         <telerik:RadRibbonDropDownButton.Resources>
                             <Style TargetType="Border">
@@ -430,7 +430,7 @@
                             </ListBox>
                         </telerik:RadRibbonDropDownButton.DropDownContent>
                     </telerik:RadRibbonDropDownButton>
-                    <Button Click="removeFilterButton"  Height="34" Width="108" Canvas.Left="1081" Canvas.Top="23" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.731,0.692">
+                    <Button Click="removeFilterButton"  Height="34" Width="108" Canvas.Left="1081" Canvas.Top="10" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.731,0.692">
                         <Button.Template>
                             <ControlTemplate TargetType="{x:Type Button}">
                                 <Border Name="Border" CornerRadius="8" BorderBrush="Gray"  Background="#FFE5E5E5">
@@ -510,8 +510,8 @@
                     DisplayMemberPath="Name" 
                     Canvas.Left="222" Canvas.Top="9" 
                     telerik:StyleManager.Theme="Fluent" 
-                    HorizontalAlignment="Left" VerticalAlignment="Top" 
-                    Width="453" DropDownMinWidth="500" 
+                    HorizontalAlignment="Left" VerticalAlignment="Center" 
+                    Width="465" DropDownMinWidth="500" 
                     SelectionMode="Multiple"
                     AutoCompleteMode="Search" MatchCase="False" Height="41">
                         <telerik:RadMultiColumnComboBox.ItemsSourceProvider>
@@ -530,19 +530,68 @@
 
 
                     </telerik:RadMultiColumnComboBox>
-                    <telerik:RadCartesianChart x:Name="chart" Canvas.Left="10" Canvas.Top="55" Height="286" Width="1179" HorizontalAlignment="Center" VerticalAlignment="Top" telerik:StyleManager.Theme="Material">
+                    <telerik:RadCartesianChart x:Name="chart" Canvas.Left="10" Canvas.Top="55" Height="301" Width="1179" HorizontalAlignment="Center" VerticalAlignment="Top" telerik:StyleManager.Theme="Material">
                         <telerik:RadCartesianChart.Grid>
                             <telerik:CartesianChartGrid MajorLinesVisibility="XY" />
                         </telerik:RadCartesianChart.Grid>
                     </telerik:RadCartesianChart>
-                    <telerik:RadLegend x:Name="legend" Canvas.Left="713" Canvas.Top="10" Height="50" Width="476" HorizontalAlignment="Left" VerticalAlignment="Center" telerik:StyleManager.Theme="Material">
+                    <telerik:RadLegend x:Name="legend" Canvas.Left="943" Canvas.Top="10" Height="50" Width="246" HorizontalAlignment="Left" VerticalAlignment="Center" telerik:StyleManager.Theme="Material">
                         <telerik:RadLegend.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <telerik:RadWrapPanel Orientation="Vertical" ItemWidth="120" />
                             </ItemsPanelTemplate>
                         </telerik:RadLegend.ItemsPanel>
-
                     </telerik:RadLegend>
+
+                    <telerik:RadDropDownButton x:Name="statisticsDropdown" Content="Statistics Mode" Height="41" IsOpen="False" Width="246" Canvas.Left="692" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
+                        <telerik:RadDropDownButton.DropDownContent>
+                            <ListBox>
+                                <ListBoxItem  Padding="0 4 0 4">
+                                    <ListBoxItem.Content>
+                                        <telerik:RadDropDownButton  Content="By Day" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <telerik:RadDropDownButton.DropDownContent >
+                                                <ListBox telerik:StyleManager.Theme="Material" >
+                                                    <ListBoxItem >
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                            <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Start Day:</TextBlock>
+                                                            <telerik:RadDatePicker x:Name="statisticStartDay"></telerik:RadDatePicker>
+                                                        </StackPanel>
+                                                    </ListBoxItem>
+                                                    <ListBoxItem >
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                            <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">End Day:</TextBlock>
+                                                            <telerik:RadDatePicker x:Name="statisticEndDay"></telerik:RadDatePicker>
+                                                        </StackPanel>
+                                                    </ListBoxItem>
+                                                    <ListBoxItem>
+                                                        <telerik:RadButton Content="Apply" Click="statisticByDay" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
+                                                    </ListBoxItem>
+                                                </ListBox>
+                                            </telerik:RadDropDownButton.DropDownContent>
+                                        </telerik:RadDropDownButton>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                                <ListBoxItem  Padding="0 4 0 4">
+                                    <ListBoxItem.Content>
+                                        <telerik:RadDropDownButton  Content="By Month" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <telerik:RadDropDownButton.DropDownContent>
+                                                <telerik:RadCalendar DisplayMode="YearView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                            </telerik:RadDropDownButton.DropDownContent>
+                                        </telerik:RadDropDownButton>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                                <ListBoxItem  Padding="0 4 0 4">
+                                    <ListBoxItem.Content>
+                                        <telerik:RadDropDownButton  Content="By Year" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <telerik:RadDropDownButton.DropDownContent>
+                                                <telerik:RadCalendar DisplayMode="DecadeView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                            </telerik:RadDropDownButton.DropDownContent>
+                                        </telerik:RadDropDownButton>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                            </ListBox>
+                        </telerik:RadDropDownButton.DropDownContent>
+                    </telerik:RadDropDownButton>
 
                 </Canvas>
             </telerik:RadTabItem>

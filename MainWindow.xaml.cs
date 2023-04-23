@@ -25,6 +25,7 @@ using Telerik.Windows.Controls.ChartView;
 using Telerik.Charting;
 using Telerik.Windows.Controls.Legend;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
+using MyShopProject.Converters;
 
 namespace MyShopProject
 {
@@ -37,7 +38,7 @@ namespace MyShopProject
         public ObservableCollection<Coupon> listCoupon { get; set; }
         public ObservableCollection<Order> listOrder { get; set; }
 
-        public int orderPerPage { get; set; } = 3;
+        public int orderPerPage { get; set; } = 9;
         public int totalOrder { get; set; } = 0;
         public bool isOrderFilter { get; set; } = false;
         public string startDay { get; set; } = "";
@@ -73,6 +74,7 @@ namespace MyShopProject
         public Product_BUS product_BUS { get; set; }
         public Order_BUS order_BUS { get; set; }
         public Book_BUS book_BUS { get; set; }
+        public Report_BUS report_BUS { get; set; }
         public ImportData_BUS import_BUS { get; set; }
         public static MainViewModel modelBinding { get; set; } = new MainViewModel();
         public Account currentUser = null;
@@ -83,6 +85,8 @@ namespace MyShopProject
                 "#228B22", // Forest Green
                 "#0066CC"  // Sapphire Blue
             };
+        private int reportMode = 0;
+        private int maximumYAxis = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -92,6 +96,7 @@ namespace MyShopProject
             order_BUS = new Order_BUS();
             book_BUS = new Book_BUS();
             import_BUS = new ImportData_BUS();
+            report_BUS = new Report_BUS();
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -152,63 +157,84 @@ namespace MyShopProject
         }
         private async void reportTabLoaded()
         {
-
             modelBinding.listAllBriefBook = await book_BUS.getAllBriefBook();
-           
             chart.HorizontalAxis = new CategoricalAxis();
-            chart.VerticalAxis = new LinearAxis() { Maximum = 100 };
-            SplineSeries line = new SplineSeries();
-            
-            line.Stroke = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString("#FFD700"));
-            line.StrokeThickness = 2;
-            line.DataPoints.Add(new CategoricalDataPoint() {Category="1/1/2021", Value = 20 });
-            line.DataPoints.Add(new CategoricalDataPoint() { Category = "2/1/2021", Value = 40 });
-            line.DataPoints.Add(new CategoricalDataPoint() { Category = "3/1/2021", Value = 35 });
-            line.DataPoints.Add(new CategoricalDataPoint() { Category = "4/1/2021", Value = 40 });
-            line.DataPoints.Add(new CategoricalDataPoint() { Category = "5/1/2021", Value = 30 });
-            line.DataPoints.Add(new CategoricalDataPoint() { Category = "6/1/2021", Value = 90 });
-            line.DataPoints.Add(new CategoricalDataPoint() { Category = "7/1/2021", Value = 90 });
-
-            LineSeries line2 = new LineSeries();
-            line2.Stroke = new SolidColorBrush(System.Windows.Media.Colors.Red);
-            line2.StrokeThickness = 2;
-            line2.DataPoints.Add(new CategoricalDataPoint() { Category = "1/1/2021", Value = 30 });
-            line2.DataPoints.Add(new CategoricalDataPoint() { Category = "2/1/2021", Value = 70 });
-            
-            chart.Series.Add(line);
-            chart.Series.Add(line2);
-
+            chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
+            chart.Series.Clear();
             legend.Items = new LegendItemCollection();
+            
 
         }
-        private void reportProductSelected(object sender, SelectionChangeEventArgs e)
+        private SplineSeries createLine(List<StatisticsProductByTime> listRp, String color, String id)
+        {
+            SplineSeries line = new SplineSeries();
+            line.Stroke = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString(color));
+            line.StrokeThickness = 2;
+            line.Tag = id;
+            foreach(StatisticsProductByTime data in listRp)
+            {
+                line.DataPoints.Add(new CategoricalDataPoint() { Category = DateFormat.ConvertDateFormat(data.category), Value = data.quantitySelling });
+                if (data.quantitySelling >= maximumYAxis)
+                {
+                    maximumYAxis = data.quantitySelling + 1;
+                }
+            }
+            return line;
+           
+        }
+        private async void reportProductSelected(object sender, SelectionChangeEventArgs e)
         {
             var legendCollection = legend.Items;
             var addedItems = e.AddedItems;
             var removedItems = e.RemovedItems;
             if(productReportCombobox.SelectedItems.Count> 4 && addedItems.Count > 0) {
                 productReportCombobox.CloseDropDown();
-                string messageBoxText = "Select up to 4 books at a time";
-                string caption = "Maximum book selected";
-                MessageBoxButton button = MessageBoxButton.OK;
-                MessageBoxImage icon = MessageBoxImage.Information;
-                MessageBox.Show(messageBoxText, caption, button, icon, MessageBoxResult.Yes);
+                MessageBox.Show("Select up to 4 books at a time", "Maximum book selected", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
                 productReportCombobox.SelectedItems.Remove(addedItems[0]);
                 return;
             }
+            if(reportMode == 0)
+            {
+                productReportCombobox.CloseDropDown();
+                MessageBox.Show("Please select mode statistics first!!", "No mode report selected", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.Yes);
 
+                productReportCombobox.SelectedItems.Clear();
+                
+                return;
+            }
+            var lines = chart.Series;
+            
             foreach (Book product in addedItems)
             {
                 var currentIdx = legendCollection.Count;
                 legendCollection.Add(new LegendItem { Title = Book.EllipsizeString(product.Name), 
                     MarkerFill = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString(hexCodes[currentIdx]))});
+                List<StatisticsProductByTime>data = new List<StatisticsProductByTime>();
+                if(reportMode == 1)
+                {
+                    var startDay = statisticStartDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                    var endDay = statisticEndDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                    data = await report_BUS.statisticProductByDate(startDay, endDay, product._id);
+                    var newline = createLine(data, hexCodes[currentIdx], product._id);
+                    chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis , Minimum = -1 };
+                    lines.Add(newline);
+                }
             }
             foreach (Book productRm in removedItems)
             {
                 var item = legendCollection.FirstOrDefault(item => item.Title == Book.EllipsizeString(productRm.Name));
-                legendCollection.Remove(item);
+                
+                if(item!= null)
+                {
+                    var color = item.MarkerFill;
+                    legendCollection.Remove(item);
+                    var lineDelete = lines.FirstOrDefault(line => line.Tag.ToString() == productRm._id);
+                    lines.Remove(lineDelete);
+                }
+                
             }
         }
+
         private async void orderTabLoaded()
         {
             orderBusyIndicator.IsBusy = true;
@@ -911,6 +937,20 @@ namespace MyShopProject
             import_BUS.getCategoryFromExcelFile(filename);
         }
 
-
+        private void statisticByDay(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var startDay = statisticStartDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                var endDay = statisticEndDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                reportMode = 1;
+                statisticsDropdown.IsOpen = false;
+                statisticsDropdown.Content = $"{startDay} - {endDay}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
