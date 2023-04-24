@@ -86,7 +86,9 @@ namespace MyShopProject
         private int reportProfitMode = 0;
         private int maximumYAxis = 0;
         private int selectedMonth = 1;
+        private int profitSelectedMonth = 4;
         private int selectedYear = 1;
+        private int profitSelectedYear = 2023;
         public MainWindow()
         {
             InitializeComponent();
@@ -160,13 +162,9 @@ namespace MyShopProject
             chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
             chart.Series.Clear();
             legend.Items = new LegendItemCollection();
-            List<Profit> data = new List<Profit>
-        {
-            new Profit { profit = 10, time = "Week 1" },
-            new Profit { profit = 20, time = "Week 2" },
-            new Profit { profit = 20, time = "Week 3" },
-            new Profit { profit = 25, time = "Week 4" }
-        };
+            List<Profit> data = new List<Profit>();
+            data = await report_BUS.statisticProfitByMonth(profitSelectedMonth, profitSelectedYear);
+            profitChart.Series.Clear();
             profitChart.Series.Add(createBar(data));
 
         }
@@ -605,6 +603,7 @@ namespace MyShopProject
             modelBinding.totalProduct = await product_BUS.getSize();
             modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
             modelBinding.totalOrder = await order_BUS.getCountOrder();
+            
            
             //Tab nào thì code ở tabloadded nhe, đừng code ở đây
 
@@ -1036,6 +1035,10 @@ namespace MyShopProject
                 profitDropdown.Content = $"{startDay} - {endDay}";
                 List<Profit> data = new List<Profit>();
                 data = await report_BUS.statisticProfitByDate(startDay, endDay);
+                foreach (Profit dt in data)
+                {
+                    dt.time = DateFormat.ConvertDateFormat(dt.time);
+                }
                 profitChart.Series.Clear();
                 profitChart.Series.Add(createBar(data));
             }
@@ -1044,17 +1047,31 @@ namespace MyShopProject
                 MessageBox.Show(ex.Message);
             }
         }
-        private void pickMonthStatisticProfit(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
+        private async void pickMonthStatisticProfit(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
         {
-            var date = profitPickMonthCalendar.DisplayDate.ToString("dd/MM/yyyy");
-            Debug.WriteLine(date);
-            selectedMonth = int.Parse(date.Substring(3, 2));
-            selectedYear = int.Parse(date.Substring(6, 4));
-            Debug.WriteLine(selectedMonth);
-            profitDropdown.Content = $"In {DateFormat.IntToMonth(selectedMonth)} - {selectedYear}";
-            reportProfitMode = 2;
-            profitDropdown.IsOpen = false;
-            profitPickMonthCalendar.DisplayMode = DisplayMode.YearView;
+            try
+            {
+                var date = profitPickMonthCalendar.DisplayDate.ToString("dd/MM/yyyy");
+                Debug.WriteLine(date);
+                profitSelectedMonth = int.Parse(date.Substring(3, 2));
+                profitSelectedYear = int.Parse(date.Substring(6, 4));
+                Debug.WriteLine(profitSelectedMonth);
+                profitDropdown.Content = $"In {DateFormat.IntToMonth(profitSelectedMonth)} - {profitSelectedYear}";
+                reportProfitMode = 2;
+                profitDropdown.IsOpen = false;
+                profitPickMonthCalendar.DisplayMode = DisplayMode.YearView;
+                List<Profit> data = new List<Profit>();
+                if (profitChart != null)
+                {
+                    data = await report_BUS.statisticProfitByMonth(profitSelectedMonth, profitSelectedYear);
+                    profitChart.Series.Clear();
+                    profitChart.Series.Add(createBar(data));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }

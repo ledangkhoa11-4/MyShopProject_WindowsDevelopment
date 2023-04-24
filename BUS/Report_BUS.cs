@@ -32,7 +32,7 @@ namespace MyShopProject.BUS
         }
         public async Task<List<Profit>> statisticProfitByMonth(int month, int year)
         {
-            var result = await report_DAO.statisticProfitByMonth(month, year);
+            List<Profit> result = await report_DAO.statisticProfitByMonth(month, year);
             return result;
         }
     }
