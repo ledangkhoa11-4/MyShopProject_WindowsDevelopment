@@ -952,11 +952,23 @@ namespace MyShopProject
             }
         }
         
-        private  void ImportDataBtn_Click(object sender, RoutedEventArgs e)
+        private  async void ImportDataBtn_Click(object sender, RoutedEventArgs e)
         {
             var filename = _selectedFile.FullName;
-            import_BUS.getProductFromExcelFile(filename);
-            import_BUS.getCategoryFromExcelFile(filename);
+            if(TypeImportCBB.Text!= "")
+            {
+                if (TypeImportCBB.Text.Equals("Category"))
+                {
+                    import_BUS.getCategoryFromExcelFile(filename);
+                    modelBinding.listCat = await category_BUS.getAllCategory();
+                }
+                else
+                {
+                    import_BUS.getProductFromExcelFile(filename);
+                }
+            }
+            
+            
         }
 
         private void statisticByDay(object sender, RoutedEventArgs e)
