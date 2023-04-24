@@ -17,15 +17,11 @@ using MyShopProject.DAO;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Collections.Generic;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Convert = System.Convert;
-using Sheet = DocumentFormat.OpenXml.Spreadsheet.Sheet;
 using Telerik.Windows.Controls.ChartView;
 using Telerik.Charting;
 using Telerik.Windows.Controls.Legend;
-using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using MyShopProject.Converters;
+using Telerik.Windows.Controls.Calendar;
 
 namespace MyShopProject
 {
@@ -87,6 +83,8 @@ namespace MyShopProject
             };
         private int reportMode = 0;
         private int maximumYAxis = 0;
+        private int selectedMonth = 1;
+        private int selectedYear = 1;
         public MainWindow()
         {
             InitializeComponent();
@@ -174,13 +172,24 @@ namespace MyShopProject
             foreach(StatisticsProductByTime data in listRp)
             {
                 line.DataPoints.Add(new CategoricalDataPoint() { Category = DateFormat.ConvertDateFormat(data.category), Value = data.quantitySelling });
-                if (data.quantitySelling >= maximumYAxis)
-                {
-                    maximumYAxis = data.quantitySelling + 1;
-                }
             }
             return line;
            
+        }
+        private void calculateYAxisValue()
+        {
+            double maxY = 0;
+            var totalLine = chart.Series;
+            foreach(SplineSeries line in totalLine)
+            {
+                var points = line.DataPoints;
+                foreach(CategoricalDataPoint point in points)
+                {
+                    if (point.Value > maxY)
+                        maxY = (double)point.Value;
+                }
+            }
+            maximumYAxis = (int)maxY + 1;
         }
         private async void reportProductSelected(object sender, SelectionChangeEventArgs e)
         {
@@ -210,14 +219,26 @@ namespace MyShopProject
                 legendCollection.Add(new LegendItem { Title = Book.EllipsizeString(product.Name), 
                     MarkerFill = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString(hexCodes[currentIdx]))});
                 List<StatisticsProductByTime>data = new List<StatisticsProductByTime>();
-                if(reportMode == 1)
+                
+                if (reportMode == 1)
                 {
                     var startDay = statisticStartDay.SelectedDate.Value.ToString("yyyy-MM-dd");
                     var endDay = statisticEndDay.SelectedDate.Value.ToString("yyyy-MM-dd");
                     data = await report_BUS.statisticProductByDate(startDay, endDay, product._id);
                     var newline = createLine(data, hexCodes[currentIdx], product._id);
-                    chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis , Minimum = -1 };
+                   
                     lines.Add(newline);
+                    calculateYAxisValue();
+                    chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
+                }
+                if (reportMode == 2)
+                {
+                    data = await report_BUS.statisticProductByMonth(selectedMonth, selectedYear, product._id);
+                    var newline = createLine(data, hexCodes[currentIdx], product._id);
+                   
+                    lines.Add(newline);
+                    calculateYAxisValue();
+                    chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
                 }
             }
             foreach (Book productRm in removedItems)
@@ -230,8 +251,9 @@ namespace MyShopProject
                     legendCollection.Remove(item);
                     var lineDelete = lines.FirstOrDefault(line => line.Tag.ToString() == productRm._id);
                     lines.Remove(lineDelete);
+                    calculateYAxisValue();
+                    chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
                 }
-                
             }
         }
 
@@ -494,7 +516,7 @@ namespace MyShopProject
                 Debug.WriteLine(bookSelected.Name);
 
             }
-            catch (Exception ex)
+            catch
             {
                 //ignore
             }
@@ -522,7 +544,7 @@ namespace MyShopProject
                     }
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 contextMenu.Visibility = Visibility.Collapsed;
             }
@@ -712,7 +734,7 @@ namespace MyShopProject
                 }
                 imageLoading.IsBusy = false;
             }
-            catch (Exception ex) { }
+            catch { }
         }
        
 
@@ -951,6 +973,18 @@ namespace MyShopProject
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void pickMonthStatistic(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
+        {
+            var date = pickMonthCalendar.DisplayDate.ToString();
+            selectedMonth = int.Parse(date.Substring(3, 2));
+            selectedYear = int.Parse(date.Substring(6, 4));
+            Debug.WriteLine(selectedMonth);
+            statisticsDropdown.Content = $"In {DateFormat.IntToMonth(selectedMonth)} - {selectedYear}";
+            reportMode = 2;
+            statisticsDropdown.IsOpen = false;
+            pickMonthCalendar.DisplayMode = DisplayMode.YearView;
         }
     }
 }

@@ -16,5 +16,11 @@ namespace MyShopProject.DAO
             var statistics = JsonConvert.DeserializeObject<List<StatisticsProductByTime>>(json);
             return statistics;
         }
+        public async Task<List<StatisticsProductByTime>> statisticByMonth(int month, int year, String id)
+        {
+            var json = await API.getMethod($"/report/statistic/month?month={month}&year={year}&id={id}");
+            var statistics = JsonConvert.DeserializeObject<List<StatisticsProductByTime>>(json);
+            return statistics;
+        }
     }
 }

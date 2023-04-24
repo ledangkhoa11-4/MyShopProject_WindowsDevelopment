@@ -575,7 +575,7 @@
                                     <ListBoxItem.Content>
                                         <telerik:RadDropDownButton  Content="By Month" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
                                             <telerik:RadDropDownButton.DropDownContent>
-                                                <telerik:RadCalendar DisplayMode="YearView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                                <telerik:RadCalendar x:Name="pickMonthCalendar" DisplayMode="YearView" DisplayModeChanged="pickMonthStatistic" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
                                             </telerik:RadDropDownButton.DropDownContent>
                                         </telerik:RadDropDownButton>
                                     </ListBoxItem.Content>

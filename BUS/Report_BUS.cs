@@ -20,5 +20,10 @@ namespace MyShopProject.BUS
             var result = await report_DAO.statisticByRangeDate(from, to, id);
             return result;
         }
+        public async Task<List<StatisticsProductByTime>> statisticProductByMonth(int month, int year, String id)
+        {
+            var result = await report_DAO.statisticByMonth(month, year, id);
+            return result;
+        }
     }
 }
