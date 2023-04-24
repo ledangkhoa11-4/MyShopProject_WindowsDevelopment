@@ -536,7 +536,7 @@
 
 
                     </telerik:RadMultiColumnComboBox>
-                    <telerik:RadCartesianChart x:Name="chart" Canvas.Left="10" Canvas.Top="55" Height="301" Width="1179" HorizontalAlignment="Center" VerticalAlignment="Top" telerik:StyleManager.Theme="Material">
+                    <telerik:RadCartesianChart x:Name="chart" Canvas.Left="10" Canvas.Top="55" Height="286" Width="1179" HorizontalAlignment="Center" VerticalAlignment="Top" telerik:StyleManager.Theme="Material">
                         <telerik:RadCartesianChart.Grid>
                             <telerik:CartesianChartGrid MajorLinesVisibility="XY" />
                         </telerik:RadCartesianChart.Grid>
@@ -598,6 +598,63 @@
                             </ListBox>
                         </telerik:RadDropDownButton.DropDownContent>
                     </telerik:RadDropDownButton>
+                    <TextBlock Text="Profit by:" FontSize="20" Canvas.Top="371" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="10"/>
+
+                    <telerik:RadDropDownButton x:Name="profitDropdown" Content="Mode" Height="41" IsOpen="False" Width="246" Canvas.Left="108" Canvas.Top="358" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <telerik:RadDropDownButton.DropDownContent>
+                            <ListBox>
+                                <ListBoxItem  Padding="0 4 0 4">
+                                    <ListBoxItem.Content>
+                                        <telerik:RadDropDownButton  Content="By Day" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <telerik:RadDropDownButton.DropDownContent >
+                                                <ListBox telerik:StyleManager.Theme="Material" >
+                                                    <ListBoxItem >
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                            <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">Start Day:</TextBlock>
+                                                            <telerik:RadDatePicker x:Name="profitStartDay"></telerik:RadDatePicker>
+                                                        </StackPanel>
+                                                    </ListBoxItem>
+                                                    <ListBoxItem >
+                                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                                            <TextBlock Margin="0 0 20 0" VerticalAlignment="Center">End Day:</TextBlock>
+                                                            <telerik:RadDatePicker x:Name="profitEndDay"></telerik:RadDatePicker>
+                                                        </StackPanel>
+                                                    </ListBoxItem>
+                                                    <ListBoxItem>
+                                                        <telerik:RadButton Content="Apply" Click="statisticByDay" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
+                                                    </ListBoxItem>
+                                                </ListBox>
+                                            </telerik:RadDropDownButton.DropDownContent>
+                                        </telerik:RadDropDownButton>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                                <ListBoxItem  Padding="0 4 0 4">
+                                    <ListBoxItem.Content>
+                                        <telerik:RadDropDownButton  Content="By Month" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <telerik:RadDropDownButton.DropDownContent>
+                                                <telerik:RadCalendar x:Name="profitPickMonthCalendar" DisplayMode="YearView" DisplayModeChanged="pickMonthStatistic" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                            </telerik:RadDropDownButton.DropDownContent>
+                                        </telerik:RadDropDownButton>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                                <ListBoxItem  Padding="0 4 0 4">
+                                    <ListBoxItem.Content>
+                                        <telerik:RadDropDownButton  Content="By Year" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
+                                            <telerik:RadDropDownButton.DropDownContent>
+                                                <telerik:RadCalendar DisplayMode="DecadeView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                            </telerik:RadDropDownButton.DropDownContent>
+                                        </telerik:RadDropDownButton>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                            </ListBox>
+                        </telerik:RadDropDownButton.DropDownContent>
+                    </telerik:RadDropDownButton>
+
+                    <telerik:RadCartesianChart x:Name="profitChart" Canvas.Top="395" Height="273" Width="1179" HorizontalAlignment="Center" VerticalAlignment="Top" telerik:StyleManager.Theme="Material" Canvas.Left="10">
+                        <telerik:RadCartesianChart.Grid>
+                            <telerik:CartesianChartGrid MajorLinesVisibility="XY" />
+                        </telerik:RadCartesianChart.Grid>
+                    </telerik:RadCartesianChart>
 
                 </Canvas>
             </telerik:RadTabItem>

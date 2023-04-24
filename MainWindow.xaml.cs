@@ -82,6 +82,7 @@ namespace MyShopProject
                 "#0066CC"  // Sapphire Blue
             };
         private int reportMode = 0;
+        private int reportProfitMode = 0;
         private int maximumYAxis = 0;
         private int selectedMonth = 1;
         private int selectedYear = 1;
@@ -989,7 +990,7 @@ namespace MyShopProject
 
         private void pickMonthStatistic(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
         {
-            var date = pickMonthCalendar.DisplayDate.ToString();
+            var date = pickMonthCalendar.DisplayDate.ToString("dd/MM/yyyy");
             selectedMonth = int.Parse(date.Substring(3, 2));
             selectedYear = int.Parse(date.Substring(6, 4));
             Debug.WriteLine(selectedMonth);
