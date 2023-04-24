@@ -621,7 +621,7 @@
                                                         </StackPanel>
                                                     </ListBoxItem>
                                                     <ListBoxItem>
-                                                        <telerik:RadButton Content="Apply" Click="statisticByDay" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
+                                                        <telerik:RadButton Content="Apply" Click="statisticProfitByDay" HorizontalAlignment="Right" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
                                                     </ListBoxItem>
                                                 </ListBox>
                                             </telerik:RadDropDownButton.DropDownContent>
@@ -632,7 +632,7 @@
                                     <ListBoxItem.Content>
                                         <telerik:RadDropDownButton  Content="By Month" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
                                             <telerik:RadDropDownButton.DropDownContent>
-                                                <telerik:RadCalendar x:Name="profitPickMonthCalendar" DisplayMode="YearView" DisplayModeChanged="pickMonthStatistic" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                                <telerik:RadCalendar x:Name="profitPickMonthCalendar" DisplayMode="YearView" DisplayModeChanged="pickMonthStatisticProfit" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
                                             </telerik:RadDropDownButton.DropDownContent>
                                         </telerik:RadDropDownButton>
                                     </ListBoxItem.Content>

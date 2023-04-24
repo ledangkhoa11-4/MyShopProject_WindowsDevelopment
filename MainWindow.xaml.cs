@@ -22,6 +22,7 @@ using Telerik.Charting;
 using Telerik.Windows.Controls.Legend;
 using MyShopProject.Converters;
 using Telerik.Windows.Controls.Calendar;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 
 namespace MyShopProject
 {
@@ -151,6 +152,7 @@ namespace MyShopProject
         {
             modelBinding.listCat = await category_BUS.getAllCategory();
         }
+      
         private async void reportTabLoaded()
         {
             modelBinding.listAllBriefBook = await book_BUS.getAllBriefBook();
@@ -158,7 +160,31 @@ namespace MyShopProject
             chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
             chart.Series.Clear();
             legend.Items = new LegendItemCollection();
+            List<Profit> data = new List<Profit>
+        {
+            new Profit { profit = 10, time = "Week 1" },
+            new Profit { profit = 20, time = "Week 2" },
+            new Profit { profit = 20, time = "Week 3" },
+            new Profit { profit = 25, time = "Week 4" }
+        };
+            profitChart.Series.Add(createBar(data));
+
+        }
+        private BarSeries createBar(List<Profit> data)
+        {
             
+            BarSeries barSeries = new BarSeries();
+            // Bind data to chart
+            barSeries.CategoryBinding = new PropertyNameDataPointBinding("time");
+            barSeries.ValueBinding = new PropertyNameDataPointBinding("profit");
+            barSeries.ItemsSource = data;
+            LinearAxis verticalAxis = new LinearAxis();
+            profitChart.VerticalAxis = verticalAxis;
+            verticalAxis.Title = "profit";
+            CategoricalAxis horizontalAxis = new CategoricalAxis();
+            profitChart.HorizontalAxis = horizontalAxis;
+            horizontalAxis.Title = "time";
+            return barSeries;
 
         }
         private SplineSeries createLine(List<StatisticsProductByTime> listRp, String color, String id)
@@ -174,6 +200,7 @@ namespace MyShopProject
             return line;
            
         }
+
         private void calculateYAxisValue()
         {
             double maxY = 0;
@@ -996,6 +1023,38 @@ namespace MyShopProject
             reportMode = 2;
             statisticsDropdown.IsOpen = false;
             pickMonthCalendar.DisplayMode = DisplayMode.YearView;
+        }
+
+        private async void statisticProfitByDay(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var startDay = profitStartDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                var endDay = profitEndDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                reportProfitMode = 1;
+                profitDropdown.IsOpen = false;
+                profitDropdown.Content = $"{startDay} - {endDay}";
+                List<Profit> data = new List<Profit>();
+                data = await report_BUS.statisticProfitByDate(startDay, endDay);
+                profitChart.Series.Clear();
+                profitChart.Series.Add(createBar(data));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void pickMonthStatisticProfit(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
+        {
+            var date = profitPickMonthCalendar.DisplayDate.ToString("dd/MM/yyyy");
+            Debug.WriteLine(date);
+            selectedMonth = int.Parse(date.Substring(3, 2));
+            selectedYear = int.Parse(date.Substring(6, 4));
+            Debug.WriteLine(selectedMonth);
+            profitDropdown.Content = $"In {DateFormat.IntToMonth(selectedMonth)} - {selectedYear}";
+            reportProfitMode = 2;
+            profitDropdown.IsOpen = false;
+            profitPickMonthCalendar.DisplayMode = DisplayMode.YearView;
         }
     }
 }

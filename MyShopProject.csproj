@@ -87,6 +87,7 @@
   <Compile Include="DTO\DetailOrder.cs" />
   <Compile Include="DTO\Coupon.cs" />
   <Compile Include="DTO\Order.cs" />
+  <Compile Include="DTO\Profit.cs" />
   <Compile Include="DTO\StatisticsProductByTime.cs" />
   <Compile Include="EditOrderWindow.xaml.cs" />
   <Compile Include="EditProductWindow.xaml.cs" />
