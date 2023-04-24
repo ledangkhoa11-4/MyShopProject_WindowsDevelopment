@@ -127,9 +127,6 @@ namespace MyShopProject
             string tabItem = (((sender as RadTabControl).SelectedItem as RadTabItem).Header as TextBlock).Text;
             switch (tabItem)
             {
-                case "Dasboard":
-                    break;
-
                 case "Category":
                     cateLoaded();
                     break;
@@ -150,9 +147,9 @@ namespace MyShopProject
                     return;
             }
         }
-        private void cateLoaded()
+        private async void cateLoaded()
         {
-
+            modelBinding.listCat = await category_BUS.getAllCategory();
         }
         private async void reportTabLoaded()
         {
@@ -991,6 +988,7 @@ namespace MyShopProject
         private void pickMonthStatistic(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
         {
             var date = pickMonthCalendar.DisplayDate.ToString("dd/MM/yyyy");
+            Debug.WriteLine(date);
             selectedMonth = int.Parse(date.Substring(3, 2));
             selectedYear = int.Parse(date.Substring(6, 4));
             Debug.WriteLine(selectedMonth);
