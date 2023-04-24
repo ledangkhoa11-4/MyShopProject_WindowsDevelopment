@@ -489,12 +489,18 @@
                         CornerRadius="15"
                         Padding="20"
                         Background="#00ab66"
-                        Canvas.Left="513" Canvas.Top="178"
-                        IsEnabled="False">
+                        Canvas.Left="513" Canvas.Top="226"
+                        IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <telerik:RadButton.Content>
                             <TextBlock VerticalAlignment="Center" FontSize="25">Import Data</TextBlock>
                         </telerik:RadButton.Content>
                     </telerik:RadButton>
+                    <TextBlock Canvas.Left="482" Canvas.Top="176" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center">Data Type:</TextBlock>
+                    <telerik:RadComboBox x:Name="TypeImportCBB" Width="140" Canvas.Left="579" Canvas.Top="175" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26">
+                        <telerik:RadComboBoxItem FontSize="20" Content="Category" />
+                        <telerik:RadComboBoxItem FontSize="20" Content="Product" />
+                    </telerik:RadComboBox>
+
                 </Canvas>
             </telerik:RadTabItem>
 
