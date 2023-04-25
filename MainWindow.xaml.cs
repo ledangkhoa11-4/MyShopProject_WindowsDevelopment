@@ -22,6 +22,7 @@ using Telerik.Charting;
 using Telerik.Windows.Controls.Legend;
 using MyShopProject.Converters;
 using Telerik.Windows.Controls.Calendar;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using System.Configuration;
 
 namespace MyShopProject
@@ -84,9 +85,12 @@ namespace MyShopProject
                 "#0066CC"  // Sapphire Blue
             };
         private int reportMode = 0;
+        private int reportProfitMode = 0;
         private int maximumYAxis = 0;
         private int selectedMonth = 1;
+        private int profitSelectedMonth = 4;
         private int selectedYear = 1;
+        private int profitSelectedYear = 2023;
         public MainWindow()
         {
             InitializeComponent();
@@ -173,6 +177,7 @@ namespace MyShopProject
                 category_BUS = new Category_BUS();
             modelBinding.listCat = await category_BUS.getAllCategory();
         }
+      
         private async void reportTabLoaded()
         {
             if(book_BUS == null) book_BUS = new Book_BUS();
@@ -181,7 +186,27 @@ namespace MyShopProject
             chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
             chart.Series.Clear();
             legend.Items = new LegendItemCollection();
+            List<Profit> data = new List<Profit>();
+            data = await report_BUS.statisticProfitByMonth(profitSelectedMonth, profitSelectedYear);
+            profitChart.Series.Clear();
+            profitChart.Series.Add(createBar(data));
+
+        }
+        private BarSeries createBar(List<Profit> data)
+        {
             
+            BarSeries barSeries = new BarSeries();
+            // Bind data to chart
+            barSeries.CategoryBinding = new PropertyNameDataPointBinding("time");
+            barSeries.ValueBinding = new PropertyNameDataPointBinding("profit");
+            barSeries.ItemsSource = data;
+            LinearAxis verticalAxis = new LinearAxis();
+            profitChart.VerticalAxis = verticalAxis;
+            verticalAxis.Title = "profit";
+            CategoricalAxis horizontalAxis = new CategoricalAxis();
+            profitChart.HorizontalAxis = horizontalAxis;
+            horizontalAxis.Title = "time";
+            return barSeries;
 
         }
         private SplineSeries createLine(List<StatisticsProductByTime> listRp, String color, String id)
@@ -197,6 +222,7 @@ namespace MyShopProject
             return line;
            
         }
+
         private void calculateYAxisValue()
         {
             double maxY = 0;
@@ -979,12 +1005,11 @@ namespace MyShopProject
             {
                 if (TypeImportCBB.Text.Equals("Category"))
                 {
-                    import_BUS.getCategoryFromExcelFile(filename);
-                    modelBinding.listCat = await category_BUS.getAllCategory();
+                    modelBinding.listCat=await import_BUS.GetCategoryFromExcelFile(filename,sheetName.Text);
                 }
                 else
                 {
-                    import_BUS.getProductFromExcelFile(filename);
+                    import_BUS.getProductFromExcelFile(filename, sheetName.Text);
                 }
             }
             
@@ -1018,6 +1043,56 @@ namespace MyShopProject
             reportMode = 2;
             statisticsDropdown.IsOpen = false;
             pickMonthCalendar.DisplayMode = DisplayMode.YearView;
+        }
+
+        private async void statisticProfitByDay(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var startDay = profitStartDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                var endDay = profitEndDay.SelectedDate.Value.ToString("yyyy-MM-dd");
+                reportProfitMode = 1;
+                profitDropdown.IsOpen = false;
+                profitDropdown.Content = $"{startDay} - {endDay}";
+                List<Profit> data = new List<Profit>();
+                data = await report_BUS.statisticProfitByDate(startDay, endDay);
+                foreach (Profit dt in data)
+                {
+                    dt.time = DateFormat.ConvertDateFormat(dt.time);
+                }
+                profitChart.Series.Clear();
+                profitChart.Series.Add(createBar(data));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private async void pickMonthStatisticProfit(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
+        {
+            try
+            {
+                var date = profitPickMonthCalendar.DisplayDate.ToString("dd/MM/yyyy");
+                Debug.WriteLine(date);
+                profitSelectedMonth = int.Parse(date.Substring(3, 2));
+                profitSelectedYear = int.Parse(date.Substring(6, 4));
+                Debug.WriteLine(profitSelectedMonth);
+                profitDropdown.Content = $"In {DateFormat.IntToMonth(profitSelectedMonth)} - {profitSelectedYear}";
+                reportProfitMode = 2;
+                profitDropdown.IsOpen = false;
+                profitPickMonthCalendar.DisplayMode = DisplayMode.YearView;
+                List<Profit> data = new List<Profit>();
+                if (profitChart != null)
+                {
+                    data = await report_BUS.statisticProfitByMonth(profitSelectedMonth, profitSelectedYear);
+                    profitChart.Series.Clear();
+                    profitChart.Series.Add(createBar(data));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void saveLastTab()
