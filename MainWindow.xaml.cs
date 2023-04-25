@@ -22,6 +22,7 @@ using Telerik.Charting;
 using Telerik.Windows.Controls.Legend;
 using MyShopProject.Converters;
 using Telerik.Windows.Controls.Calendar;
+using System.Configuration;
 
 namespace MyShopProject
 {
@@ -47,6 +48,7 @@ namespace MyShopProject
         public string CurrentMonth { get; set; }
         public int AmountOfOrderByMonth { get; set; }
         public int AmountOfOrderByWeek { get; set; }
+        public int lastTab { get; set; }
         
         public ObservableCollection<Book> bestSaleBook { get; set;}
         public MainViewModel()
@@ -88,13 +90,20 @@ namespace MyShopProject
         public MainWindow()
         {
             InitializeComponent();
-            product_BUS = new Product_BUS();
-            category_BUS = new Category_BUS();
-            coupon_BUS = new Coupon_BUS();
-            order_BUS = new Order_BUS();
-            book_BUS = new Book_BUS();
-            import_BUS = new ImportData_BUS();
-            report_BUS = new Report_BUS();
+            if(product_BUS == null)
+                product_BUS = new Product_BUS();
+            if(category_BUS == null)
+                category_BUS = new Category_BUS();
+            if (coupon_BUS == null)
+                coupon_BUS = new Coupon_BUS();
+            if (order_BUS == null)
+                order_BUS = new Order_BUS();
+            if (book_BUS == null)
+                book_BUS = new Book_BUS();
+            if (import_BUS == null)
+                import_BUS = new ImportData_BUS();
+            if (report_BUS == null)
+                report_BUS = new Report_BUS();
         }
 
         private void chooseImageClick(object sender, RoutedEventArgs e)
@@ -126,32 +135,47 @@ namespace MyShopProject
             string tabItem = (((sender as RadTabControl).SelectedItem as RadTabItem).Header as TextBlock).Text;
             switch (tabItem)
             {
-                case "Category":
+                case "Categories":
+                    modelBinding.lastTab = 1;
+                    saveLastTab();
                     cateLoaded();
                     break;
 
                 case "Products":
+                    modelBinding.lastTab = 2;
+                    saveLastTab();
                     productLoaded();
                     break;
                 case "Orders":
+                    modelBinding.lastTab = 3;
+                    saveLastTab();
                     orderTabLoaded();
                     break;
                 case "Dashboard":
+                    modelBinding.lastTab = 0;
+                    saveLastTab();
                     dashboardTabLoaded();
                     break;
                 case "Report":
+                    modelBinding.lastTab = 5;
+                    saveLastTab();
                     reportTabLoaded();
                     break;
                 default:
+                    modelBinding.lastTab = 4;
+                    saveLastTab();
                     return;
             }
         }
         private async void cateLoaded()
         {
+            if(category_BUS == null)
+                category_BUS = new Category_BUS();
             modelBinding.listCat = await category_BUS.getAllCategory();
         }
         private async void reportTabLoaded()
         {
+            if(book_BUS == null) book_BUS = new Book_BUS();
             modelBinding.listAllBriefBook = await book_BUS.getAllBriefBook();
             chart.HorizontalAxis = new CategoricalAxis();
             chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
@@ -257,6 +281,7 @@ namespace MyShopProject
         private async void orderTabLoaded()
         {
             orderBusyIndicator.IsBusy = true;
+            if (order_BUS == null) order_BUS = new Order_BUS();
             modelBinding.listOrder = await order_BUS.getAllOrder(modelBinding.orderPerPage, orderPager.PageIndex);
             orderBusyIndicator.IsBusy = false;
         }
@@ -264,14 +289,20 @@ namespace MyShopProject
         {
             DateTime dt = DateTime.Now;
             modelBinding.CurrentMonth = "In " + dt.ToString("MMMM") + ":";
+            if(order_BUS == null) order_BUS = new Order_BUS();
             modelBinding.AmountOfOrderByMonth = await order_BUS.getCountByCurMonth();
             modelBinding.AmountOfOrderByWeek = await order_BUS.getCountByCurWeek();
+            if(product_BUS == null) product_BUS = new Product_BUS();
+            var stockInfo = await product_BUS.CountStock();
+            modelBinding.countStock = stockInfo.Item1;
+            modelBinding.countTitles = stockInfo.Item2;
         }
         private async void productLoaded()
         {
             modelBinding.listBook.Clear();
             productBusyIndicator.IsBusy = true;
-            var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage); ;
+            if(product_BUS == null) product_BUS = new Product_BUS();
+            var listProduct = await product_BUS.getProductWithPagination(productPager.PageIndex, modelBinding.productPerPage);
             productBusyIndicator.IsBusy = false;
             modelBinding.listBook.AddRange(listProduct);
             modelBinding.totalProduct= await product_BUS.getSize();
@@ -566,24 +597,16 @@ namespace MyShopProject
                 MessageBox.Show(testConn.Item2 + "Application will close", "Error connect web service");
                 System.Windows.Application.Current.Shutdown();
             }
-            var login = new LoginWindow();
-            if (login.ShowDialog() == true)
-            {
-                currentUser = login.currentAccount;
-
-            }
-
-            modelBinding.listCat = await category_BUS.getAllCategory();
-            modelBinding.totalProduct = await product_BUS.getSize();
-            modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-            modelBinding.totalOrder = await order_BUS.getCountOrder();
+            //modelBinding.listCat = await category_BUS.getAllCategory();
+            //modelBinding.totalProduct = await product_BUS.getSize();
+            //modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
+            //modelBinding.totalOrder = await order_BUS.getCountOrder();
            
             //Tab nào thì code ở tabloadded nhe, đừng code ở đây
-
-            this.DataContext = modelBinding;
-            var stockInfo = await product_BUS.CountStock();
-            modelBinding.countStock = stockInfo.Item1;
-            modelBinding.countTitles = stockInfo.Item2;
+            //this.DataContext = modelBinding;
+            //var stockInfo = await product_BUS.CountStock();
+            //modelBinding.countStock = stockInfo.Item1;
+            //modelBinding.countTitles = stockInfo.Item2;
 
         }
 
@@ -995,6 +1018,15 @@ namespace MyShopProject
             reportMode = 2;
             statisticsDropdown.IsOpen = false;
             pickMonthCalendar.DisplayMode = DisplayMode.YearView;
+        }
+
+        private void saveLastTab()
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(
+                        ConfigurationUserLevel.None);
+            config.AppSettings.Settings["LastTab"].Value = modelBinding.lastTab.ToString();
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
         }
     }
 }

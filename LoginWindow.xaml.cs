@@ -17,6 +17,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Telerik.Windows.Controls;
+using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
+using Convert = System.Convert;
 
 namespace MyShopProject
 {
@@ -82,13 +84,28 @@ namespace MyShopProject
                 config.AppSettings.Settings["Password"].Value = passwordIn64;
                 config.AppSettings.Settings["Entropy"].Value = entropyIn64;
 
-                config.Save(ConfigurationSaveMode.Full);
+                config.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection("appSettings");
             }
             if (result != null)
             {
                 currentAccount = result;
-                this.DialogResult = true;
+                //this.DialogResult = true;
+                var category_BUS = new Category_BUS();
+                var product_BUS = new Product_BUS();
+                var coupon_BUS = new Coupon_BUS();
+                var order_BUS = new Order_BUS();
+                //MainWindow.modelBinding.listCat = await category_BUS.getAllCategory();
+                MainWindow.modelBinding.totalProduct = await product_BUS.getSize();
+                MainWindow.modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
+                MainWindow.modelBinding.totalOrder = await order_BUS.getCountOrder();
+                int lastTab = 0;
+                int.TryParse(ConfigurationManager.AppSettings["LastTab"],out lastTab);
+                MainWindow.modelBinding.lastTab = lastTab;
+                var mainWindow = new MainWindow();
+                mainWindow.currentUser= currentAccount;
+                mainWindow.DataContext = MainWindow.modelBinding;
+                mainWindow.Show();
                 this.Close();
             }
             else
