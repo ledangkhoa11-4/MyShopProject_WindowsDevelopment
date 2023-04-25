@@ -983,12 +983,11 @@ namespace MyShopProject
             {
                 if (TypeImportCBB.Text.Equals("Category"))
                 {
-                    import_BUS.getCategoryFromExcelFile(filename);
-                    modelBinding.listCat = await category_BUS.getAllCategory();
+                    modelBinding.listCat=await import_BUS.GetCategoryFromExcelFile(filename,sheetName.Text);
                 }
                 else
                 {
-                    import_BUS.getProductFromExcelFile(filename);
+                    import_BUS.getProductFromExcelFile(filename, sheetName.Text);
                 }
             }
             

@@ -1,8 +1,10 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using MyShopProject.DTO;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,14 +83,14 @@ namespace MyShopProject.BUS
                 return "";
             }
         }
-        public async void getProductFromExcelFile(string filename)
+        public async void getProductFromExcelFile(string filename, string sheetName)
         {
             try
             {
                 var document = SpreadsheetDocument.Open(filename, false);
                 var wbPart = document.WorkbookPart;
                 var sheets = wbPart.Workbook.Descendants<Sheet>();
-                var sheet = sheets.FirstOrDefault(s => s.Name == "Sheet1");
+                var sheet = sheets.FirstOrDefault(s => s.Name == sheetName);
                 var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
                 var rows = wsPart.Worksheet.Descendants<Row>();
                 int numRows = rows.Count();
@@ -96,17 +98,17 @@ namespace MyShopProject.BUS
                 for (int i = 2; i <= numRows; i++)
                 {
                     var book = new Book();
-                    book.Name = GetCellValue(filename, "Sheet1", $"A{i}");
-                    book.ImageBase64 = GetCellValue(filename, "Sheet1", $"B{i}");
-                    book.PurchasePrice = Convert.ToInt32(GetCellValue(filename, "Sheet1", $"C{i}"));
-                    book.SellingPrice = Convert.ToInt32(GetCellValue(filename, "Sheet1", $"D{i}"));
-                    book.Author = GetCellValue(filename, "Sheet1", $"E{i}");
-                    book.PublishedYear = Convert.ToInt32(GetCellValue(filename, "Sheet1", $"F{i}"));
-                    book.QuantityStock = Convert.ToInt32(GetCellValue(filename, "Sheet1", $"G{i}"));
-                    book.QuantityOrder = Convert.ToInt32(GetCellValue(filename, "Sheet1", $"H{i}"));
-                    book.CatID = GetCellValue(filename, "Sheet1", $"I{i}");
-                    book.Description = GetCellValue(filename, "Sheet1", $"J{i}");
-                    book.IsOnStock = Convert.ToBoolean(GetCellValue(filename, "Sheet1", $"K{i}"));
+                    book.Name = GetCellValue(filename, sheetName, $"A{i}");
+                    book.ImageBase64 = GetCellValue(filename, sheetName, $"B{i}");
+                    book.PurchasePrice = Convert.ToInt32(GetCellValue(filename, sheetName, $"C{i}"));
+                    book.SellingPrice = Convert.ToInt32(GetCellValue(filename, sheetName, $"D{i}"));
+                    book.Author = GetCellValue(filename, sheetName, $"E{i}");
+                    book.PublishedYear = Convert.ToInt32(GetCellValue(filename, sheetName, $"F{i}"));
+                    book.QuantityStock = Convert.ToInt32(GetCellValue(filename, sheetName, $"G{i}"));
+                    book.QuantityOrder = Convert.ToInt32(GetCellValue(filename, sheetName, $"H{i}"));
+                    book.CatID = GetCellValue(filename, sheetName, $"I{i}");
+                    book.Description = GetCellValue(filename, sheetName, $"J{i}");
+                    book.IsOnStock = Convert.ToBoolean(GetCellValue(filename, sheetName, $"K{i}"));
                     await product_BUS.AddProduct(book);
                 }
             }
@@ -116,14 +118,14 @@ namespace MyShopProject.BUS
                 MessageBox.Show(ex.Message);
             }
         }
-        public async void getCategoryFromExcelFile(string filename)
+        public async Task<ObservableCollection<Category>> GetCategoryFromExcelFile(string filename,string sheetName)
         {
             try
             {
                 var document = SpreadsheetDocument.Open(filename, false);
                 var wbPart = document.WorkbookPart;
                 var sheets = wbPart.Workbook.Descendants<Sheet>();
-                var sheet = sheets.FirstOrDefault(s => s.Name == "Sheet2");
+                var sheet = sheets.FirstOrDefault(s => s.Name == sheetName);
                 var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
                 var rows = wsPart.Worksheet.Descendants<Row>();
                 int numRows = rows.Count();
@@ -131,18 +133,22 @@ namespace MyShopProject.BUS
                 for (int i = 2; i <= numRows; i++)
                 {
                     var cat = new Category();
-                    cat.Name = GetCellValue(filename, "Sheet2", $"A{i}");
-                    cat.Description = GetCellValue(filename, "Sheet2", $"B{i}");
+                    cat.Name = GetCellValue(filename, sheetName, $"A{i}");
+                    cat.Description = GetCellValue(filename, sheetName, $"B{i}");
 
-                    await category_BUS.addCategory(cat);
-                    MessageBox.Show($"{cat.Name} {cat.Description}");
+                    var result = await category_BUS.addCategory(cat);
+                    
+                    
                 }
+                var allcat = await category_BUS.getAllCategory();
+                return allcat;
 
             }
             catch (Exception ex)
 
             {
                 MessageBox.Show(ex.Message);
+                return null;
             }
         }
     }
