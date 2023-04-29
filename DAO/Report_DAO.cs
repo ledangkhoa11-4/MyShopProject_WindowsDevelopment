@@ -22,6 +22,12 @@ namespace MyShopProject.DAO
             var statistics = JsonConvert.DeserializeObject<List<StatisticsProductByTime>>(json);
             return statistics;
         }
+        public async Task<List<StatisticsProductByTime>> statisticByYear(int year, String id)
+        {
+            var json = await API.getMethod($"/report/statistic/year?year={year}&id={id}");
+            var statistics = JsonConvert.DeserializeObject<List<StatisticsProductByTime>>(json);
+            return statistics;
+        }
         public async Task<List<Profit>> statisticProfitByRangeDate(String start, String end)
         {
             var json = await API.getMethod($"/report/profit/day?start={start}&end={end}");

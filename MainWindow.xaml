@@ -99,7 +99,7 @@
                     <Border Margin="10 0 10 10" Background="White" CornerRadius="18" DockPanel.Dock="Top" Height="430" >
                         <Canvas>
                             <TextBlock Text="Best selling books:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="19,19,0,0"/>
-                            <telerik:RadCarousel x:Name="bestSaleCarousel" ItemsSource="{Binding bestSaleBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1159" Height="273" Canvas.Top="-42"/>
+                            <telerik:RadCarousel x:Name="bestSaleCarousel" ItemsSource="{Binding bestSaleBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1159" Height="273" Canvas.Top="-26"/>
                             <telerik:RadDropDownButton x:Name="bestSellDropdown" Content="Choose field" Height="NaN" IsOpen="False" Width="148" Canvas.Left="210" Canvas.Top="13" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <telerik:RadDropDownButton.DropDownContent>
                                     <ListBox  Width="150">
@@ -601,7 +601,7 @@
                                     <ListBoxItem.Content>
                                         <telerik:RadDropDownButton  Content="By Year" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
                                             <telerik:RadDropDownButton.DropDownContent>
-                                                <telerik:RadCalendar DisplayMode="DecadeView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                                <telerik:RadCalendar x:Name="pickYearCalendar" DisplayModeChanged="pickYearStatistic" DisplayMode="DecadeView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
                                             </telerik:RadDropDownButton.DropDownContent>
                                         </telerik:RadDropDownButton>
                                     </ListBoxItem.Content>

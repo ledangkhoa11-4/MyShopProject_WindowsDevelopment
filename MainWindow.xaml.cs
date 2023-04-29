@@ -282,7 +282,14 @@ namespace MyShopProject
                 {
                     data = await report_BUS.statisticProductByMonth(selectedMonth, selectedYear, product._id);
                     var newline = createLine(data, hexCodes[currentIdx], product._id);
-                   
+                    lines.Add(newline);
+                    calculateYAxisValue();
+                    chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
+                }
+                if (reportMode == 3)
+                {
+                    data = await report_BUS.statisticProductByYear(selectedYear, product._id);
+                    var newline = createLine(data, hexCodes[currentIdx], product._id);
                     lines.Add(newline);
                     calculateYAxisValue();
                     chart.VerticalAxis = new LinearAxis() { Maximum = maximumYAxis, Minimum = -1 };
@@ -1102,6 +1109,18 @@ namespace MyShopProject
             config.AppSettings.Settings["LastTab"].Value = modelBinding.lastTab.ToString();
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        private void pickYearStatistic(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
+        {
+            var date = pickYearCalendar.DisplayDate.ToString("dd/MM/yyyy");
+            Debug.WriteLine(date);
+            selectedYear = int.Parse(date.Substring(6, 4));
+            Debug.WriteLine(selectedYear);
+            statisticsDropdown.Content = $"In {selectedYear}";
+            reportMode = 3;
+            statisticsDropdown.IsOpen = false;
+            pickYearCalendar.DisplayMode = DisplayMode.DecadeView;
         }
     }
 }
