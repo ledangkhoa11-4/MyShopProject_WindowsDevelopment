@@ -73,7 +73,7 @@ namespace MyShopProject
 
             var passwordIn64 = Convert.ToBase64String(cypherText);
             var entropyIn64 = Convert.ToBase64String(entropy);
-            Account account = new Account() { Username= username, Password = passwordIn64 };
+            Account account = new Account() { Username= username, Password = passwordIn64, Salt = entropyIn64 };
             var account_BUS = new Account_BUS();
             var result = await account_BUS.getAccount(account);
             var alert = new RadDesktopAlert();

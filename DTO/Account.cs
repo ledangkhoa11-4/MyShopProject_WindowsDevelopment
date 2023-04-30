@@ -13,6 +13,7 @@ namespace MyShopProject.DTO
         public event PropertyChangedEventHandler PropertyChanged;
         private string username;
         private string password;
+        private string salt;
         public string Username {
             get { return string.Join("", username.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries)); }
             set { username = value; } 
@@ -20,6 +21,11 @@ namespace MyShopProject.DTO
         public string Password {
             get { return string.Join("", password.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries)); }
             set { password = value; }
+        }
+        public string Salt
+        {
+            get { return string.Join("", salt.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries)); }
+            set { salt = value; }
         }
     }
 
