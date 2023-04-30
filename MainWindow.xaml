@@ -53,7 +53,7 @@
 
     </Window.Resources>
     <Canvas Width="1198" Height="740" >
-        <telerik:RadTabControl Height="730" Width="1199" SelectedIndex="{Binding lastTab}" SelectionChanged="tabChanged" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" >
+        <telerik:RadTabControl Height="744" Width="1199" SelectedIndex="{Binding lastTab}" SelectionChanged="tabChanged" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" >
             <telerik:RadTabItem x:Name="RadTabItem4" >
                 <telerik:RadTabItem.Header>
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Dashboard</TextBlock>
@@ -83,16 +83,16 @@
                         <Border Margin="10 0 0 0" Background="White" CornerRadius="18" Grid.Column="1">
                             <Canvas Background="White" >
                                 <TextBlock Text="Total Orders:" FontSize="20" Canvas.Left="10" Canvas.Top="10" FontStyle="Italic" FontWeight="Bold"/>
-                                <TextBlock Text="In this week:" FontSize="20" Canvas.Left="33" Canvas.Top="59" FontStyle="Italic"/>
-                                <TextBlock d:Text="In April: " Text="{Binding CurrentMonth}" FontSize="20" Canvas.Left="33" Canvas.Top="114" FontStyle="Italic"/>
-                                <TextBlock d:Text="9999" Text="{Binding AmountOfOrderByMonth}" FontSize="30" Canvas.Left="167" Canvas.Top="108" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                                <TextBlock d:Text="9999" Text="{Binding AmountOfOrderByWeek}" FontSize="30" Canvas.Left="167" Canvas.Top="53" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                <TextBlock Text="In this week:" FontSize="20" Canvas.Left="10" Canvas.Top="71" FontStyle="Italic"/>
+                                <TextBlock d:Text="In April: " Text="{Binding CurrentMonth}" FontSize="20" Canvas.Left="10" Canvas.Top="126" FontStyle="Italic"/>
+                                <TextBlock d:Text="9999" Text="{Binding AmountOfOrderByMonth}" FontSize="30" Canvas.Left="167" Canvas.Top="120" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.182,1.043"/>
+                                <TextBlock d:Text="9999" Text="{Binding AmountOfOrderByWeek}" FontSize="30" Canvas.Left="167" Canvas.Top="65" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             </Canvas>
                         </Border>
                         <Border Margin="10 0 0 0" Background="White" CornerRadius="18" Grid.Column="2">
                             <Canvas Background="White" >
                                 <TextBlock Text="Profit:" FontSize="20" Canvas.Left="10" Canvas.Top="10" FontStyle="Italic" FontWeight="Bold"/>
-                                <TextBlock Text="In this month:" FontSize="20" Canvas.Left="33" Canvas.Top="59" FontStyle="Italic"/>
+                                <TextBlock Text="In this month:" FontSize="20" Canvas.Left="33" Canvas.Top="59" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 <TextBlock d:Text="9999" Text="{Binding profitByMonth}" FontSize="30" Canvas.Left="33" Canvas.Top="109" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                                 <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="profitBusyIndicator"  BusyContent="Profit is currently loading..." telerik:StyleManager.Theme="Office2013" Canvas.Left="33" Canvas.Top="109" HorizontalAlignment="Center" VerticalAlignment="Top"/>
 
@@ -105,8 +105,8 @@
                     <Border Margin="10 0 10 10" Background="White" CornerRadius="18" DockPanel.Dock="Top" Height="430" >
                         <Canvas>
                             <TextBlock Text="Best selling books:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="19,19,0,0"/>
-                            <telerik:RadCarousel x:Name="bestSaleCarousel" ItemsSource="{Binding bestSaleBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1069" Height="241" Canvas.Top="-26" Canvas.Left="55"/>
-                            <telerik:RadDropDownButton x:Name="bestSellDropdown" Content="Choose field" Height="NaN" IsOpen="False" Width="148" Canvas.Left="210" Canvas.Top="13" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <telerik:RadCarousel Panel.ZIndex="9" x:Name="bestSaleCarousel" ItemsSource="{Binding bestSaleBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Left" VerticalAlignment="Center" Width="1068" Height="280" Canvas.Left="56" Canvas.Top="-41"/>
+                            <telerik:RadDropDownButton Panel.ZIndex="10" x:Name="bestSellDropdown" Content="Choose field" Height="NaN" IsOpen="False" Width="148" Canvas.Left="210" Canvas.Top="13" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <telerik:RadDropDownButton.DropDownContent>
                                     <ListBox  Width="150">
                                         <ListBoxItem PreviewMouseDown="selectFieldBestSaleDashboard" Padding="0 4 0 4" Content="By week" />
@@ -115,8 +115,8 @@
                                     </ListBox>
                                 </telerik:RadDropDownButton.DropDownContent>
                             </telerik:RadDropDownButton>
-                            <TextBlock Text="Running low on stock:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="220"/>
-                            <telerik:RadCarousel x:Name="lowStockCarousel" ItemsSource="{Binding lowStockBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1069" Height="241" Canvas.Top="179" Canvas.Left="55"/>
+                            <TextBlock Text="Running low on stock:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="215"/>
+                            <telerik:RadCarousel x:Name="lowStockCarousel" ItemsSource="{Binding lowStockBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1069" Height="252" Canvas.Top="178" Canvas.Left="55"/>
 
 
                         </Canvas>
@@ -143,20 +143,36 @@
                         ItemsSource="{Binding listCat}"
                         x:Name ="currentCat"
                         telerik:StyleManager.Theme="Material" 
-                        Height="324" Width="1178" Canvas.Top="348" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" EditEnded="afterEditCat" DeletingItem="beforeDelCat" Canvas.Left="10"/>
+                        Height="324" Width="1178"  Canvas.Top="348" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" EditEnded="afterEditCat" DeletingItem="beforeDelCat" Canvas.Left="10">
+                       
+                       
+                    </telerik:RadDataForm>
 
                     <telerik:RadGridView 
-
                         RowLoaded ="CateTableLoaded"
                         ItemsSource="{Binding listCat}"
                         ShowGroupPanel="False"
                         x:Name="listCategory" 
+                        AutoGenerateColumns="False"
                         telerik:StyleManager.Theme="Material" 
                         HorizontalAlignment="Center" Canvas.Top="10" 
                         VerticalAlignment="Top" Width="1178" Height="318" 
-                        Canvas.Left="11" RowHeight="40"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent" RowIndicatorVisibility="Collapsed" />
-                    <telerik:HtmlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
-                    <telerik:XamlDataProvider RichTextBox="{Binding ElementName=radRichTextBox}"/>
+                        Canvas.Left="11" RowHeight="40"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent" RowIndicatorVisibility="Collapsed">
+
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn DataMemberBinding="{Binding _id}"  
+                                        TextWrapping="Wrap"/>
+                            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" 
+                                        TextAlignment="Right" 
+                                        Header="Est."  />
+                            <telerik:GridViewDataColumn DataMemberBinding="{Binding Description}" 
+                                        TextTrimming="WordEllipsis" 
+                                        Header="Stadium"  />
+                            
+                        </telerik:RadGridView.Columns>
+
+                    </telerik:RadGridView>
+                    
                     <Grid x:Name="radRichTextBoxParent">
 
                         <Grid.RowDefinitions>
@@ -309,7 +325,7 @@
                                 <ListBoxItem>
                                     <StackPanel Orientation="Horizontal" >
                                         <telerik:RadButton x:Name="ApplyFilterBtn" Click="ApplyFilterBtn_Click" Grid.Column="2" Content="Apply" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
-                                        <telerik:RadButton x:Name="UnApplyFilterBtn" Click="UnApplyFilterBtn_Click" Grid.Column="2" Content="Cancel" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material" Margin="100,0,0,0"/>
+                                        <telerik:RadButton x:Name="UnApplyFilterBtn" Click="UnApplyFilterBtn_Click" Grid.Column="2" Content="Remove filter" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material" Margin="100,0,0,0"/>
                                     </StackPanel>
 
                                 </ListBoxItem>

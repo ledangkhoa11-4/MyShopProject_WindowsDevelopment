@@ -9,7 +9,7 @@
          WindowStartupLocation="CenterScreen"
         Title="LoginWindow" Height="450" Width="800">
     <Canvas Background="#f3f3f3">
-
+        <TextBlock FontWeight="Bold" FontSize="24" Canvas.Left="274" Canvas.Top="22" >Login to Your Account</TextBlock>
         <Border CornerRadius="10" Background="#e3e3e3" BorderThickness="1" BorderBrush="Gray" Canvas.Left="150" Canvas.Top="67">
             <Canvas Width="500" Height="300" Canvas.Left="150" Canvas.Top="67">
                 <Button x:Name="connectButton"  Width="80" Height="35" Content="Connect" Click="connectButton_Click" Canvas.Left="177" Canvas.Top="196" HorizontalAlignment="Left" VerticalAlignment="Center">

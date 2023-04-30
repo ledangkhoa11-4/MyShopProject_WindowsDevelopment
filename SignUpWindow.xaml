@@ -10,9 +10,10 @@
         WindowStartupLocation="CenterScreen"
         Title="SignUpWindow" Height="450" Width="800">
     <Canvas>
+        <TextBlock FontWeight="Bold" FontSize="24" Canvas.Left="274" Canvas.Top="22" >Create a new account</TextBlock>
         <Border CornerRadius="10" Background="#e3e3e3" BorderThickness="1" BorderBrush="Gray" Canvas.Left="150" Canvas.Top="67">
             <Canvas Width="500" Height="300" Canvas.Left="150" Canvas.Top="67">
-                <Button Name="signupButton"  Width="80" Height="35" Click="signupButton_Click" Canvas.Left="239" Canvas.Top="184" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Button Name="signupButton"  Width="80" Height="35" Click="signupButton_Click" Canvas.Left="239" Canvas.Top="178" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border Name="Border" CornerRadius="5" BorderBrush="Gray" BorderThickness="1" Background="#f3f3f3">

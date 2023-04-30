@@ -325,6 +325,7 @@ namespace MyShopProject
         private async void dashboardTabLoaded()
         {
             DateTime dt = DateTime.Now;
+            Debug.WriteLine(dt);
             modelBinding.CurrentMonth = "In " + dt.ToString("MMMM") + ":";
             if(order_BUS == null) order_BUS = new Order_BUS();
             modelBinding.AmountOfOrderByMonth = await order_BUS.getCountByCurMonth();
@@ -351,7 +352,7 @@ namespace MyShopProject
             modelBinding.lowStockBook.Clear();
             modelBinding.lowStockBook.AddRange(lowStock);
             var panel = lowStockCarousel.FindCarouselPanel();
-            panel.MoveBy(lowStock.Count);
+            panel.MoveBy((int)Math.Ceiling((5 + lowStock.Count - 1) / 2.0));
             foreach (Book b in lowStock)
             {
                 string imageBase64 = await book_BUS.getImageBook(b._id);
@@ -978,7 +979,7 @@ namespace MyShopProject
             modelBinding.bestSaleBook.Clear();
             modelBinding.bestSaleBook.AddRange(bestSale);
             var panel = bestSaleCarousel.FindCarouselPanel();
-            panel.MoveBy(bestSale.Count);
+            panel.MoveBy((int)Math.Ceiling((5+bestSale.Count-1)/2.0));
             foreach (Book b in bestSale)
             {
                 string imageBase64 = await book_BUS.getImageBook(b._id);

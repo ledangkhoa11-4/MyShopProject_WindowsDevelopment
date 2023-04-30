@@ -107,6 +107,7 @@ namespace MyShopProject
                 mainWindow.currentUser= currentAccount;
                 mainWindow.DataContext = MainWindow.modelBinding;
                 mainWindow.Show();
+                loginBusyIndicator.IsBusy = false;
                 this.Close();
             }
             else
@@ -116,6 +117,7 @@ namespace MyShopProject
                 alert.ShowDuration = 3000;
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
+                loginBusyIndicator.IsBusy = false;
             }
             loginBusyIndicator.IsBusy = false;
         }
