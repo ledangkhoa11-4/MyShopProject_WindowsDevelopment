@@ -7,6 +7,7 @@
     <EnableDefaultItems>False</EnableDefaultItems>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <UserSecretsId>e275500a-4110-42fe-8124-8e5495e1e292</UserSecretsId>
+    <ApplicationIcon>shop.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -101,6 +102,10 @@
   <Compile Include="OrderDetailWindow.xaml.cs" />
   <Compile Include="SignUpWindow.xaml.cs" />
 </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="shop.ico" />
+  </ItemGroup>
   
   <ItemGroup>
     <Resource Include="Images\export.png" />

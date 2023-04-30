@@ -6,6 +6,7 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
         xmlns:local="clr-namespace:MyShopProject"
         mc:Ignorable="d"
+        
         WindowStartupLocation="CenterScreen"
         Title="SignUpWindow" Height="450" Width="800">
     <Canvas>
@@ -25,11 +26,11 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <TextBlock Text="Username:" Canvas.Left="129" Canvas.Top="88"/>
-                <TextBox Name="usernameTextBox" VerticalContentAlignment="Center" Width="150" Height="35" Canvas.Left="204" Canvas.Top="78"/>
-                <TextBlock Text="Password:" Canvas.Left="129" Canvas.Top="136"/>
+                <TextBlock Text="Username:" Canvas.Left="104" Canvas.Top="78"/>
+                <TextBox Name="usernameTextBox" VerticalContentAlignment="Center" Width="200" Height="35" Canvas.Left="179" Canvas.Top="68" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                <TextBlock Text="Password:" Canvas.Left="104" Canvas.Top="125"/>
                 <!--<PasswordBox PasswordChar="*" x:Name="passwordBox" Width="150" Height="35" Canvas.Left="370" Canvas.Top="182"/>-->
-                <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="150" Height="35" Canvas.Left="204" Canvas.Top="126"  TextWrapping="Wrap" WatermarkContent="Enter password" telerik:StyleManager.Theme="Fluent"/>
+                <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="200" Height="35" Canvas.Left="179" Canvas.Top="115"  TextWrapping="Wrap" WatermarkContent="Enter password" telerik:StyleManager.Theme="Fluent" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             </Canvas>
         </Border>
     </Canvas>

@@ -68,5 +68,53 @@ namespace MyShopProject.Converters
 
             return monthRes;
         }
+        public static string StringToMonth(string month)
+        {
+            string monthRes;
+            switch (month)
+            {
+                case "Month 1":
+                    monthRes = "January";
+                    break;
+                case "Month 2":
+                    monthRes = "February";
+                    break;
+                case "Month 3":
+                    monthRes = "March";
+                    break;
+                case "Month 4":
+                    monthRes = "April";
+                    break;
+                case "Month 5":
+                    monthRes = "May";
+                    break;
+                case "Month 6":
+                    monthRes = "June";
+                    break;
+                case "Month 7":
+                    monthRes = "July";
+                    break;
+                case "Month 8":
+                    monthRes = "August";
+                    break;
+                case "Month 9":
+                    monthRes = "September";
+                    break;
+                case "Month 10":
+                    monthRes = "October";
+                    break;
+                case "Month 11":
+                    monthRes = "November";
+                    break;
+                case "Month 12":
+                    monthRes = "December";
+                    break;
+                default:
+                    monthRes = "Invalid month";
+                    break;
+            }
+
+            return monthRes;
+        }
     }
 }
