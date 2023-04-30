@@ -6,11 +6,13 @@
         xmlns:local="clr-namespace:MyShopProject"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.LoginWindow"
         mc:Ignorable="d"
+         WindowStartupLocation="CenterScreen"
         Title="LoginWindow" Height="450" Width="800">
     <Canvas Background="#f3f3f3">
+
         <Border CornerRadius="10" Background="#e3e3e3" BorderThickness="1" BorderBrush="Gray" Canvas.Left="150" Canvas.Top="67">
             <Canvas Width="500" Height="300" Canvas.Left="150" Canvas.Top="67">
-                <Button x:Name="connectButton"  Width="80" Height="35" Content="Connect" Click="connectButton_Click" Canvas.Left="137" Canvas.Top="196">
+                <Button x:Name="connectButton"  Width="80" Height="35" Content="Connect" Click="connectButton_Click" Canvas.Left="177" Canvas.Top="196" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border Name="Border" CornerRadius="5" BorderBrush="Gray" BorderThickness="1" Background="#f3f3f3">
@@ -24,7 +26,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button x:Name="signupButton" Width="80" Height="35" Click="signupButton_Click" Canvas.Left="265" Canvas.Top="196">
+                <Button x:Name="signupButton" Width="80" Height="35" Click="signupButton_Click" Canvas.Left="296" Canvas.Top="196" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border Name="Border" CornerRadius="5" BorderBrush="Gray" BorderThickness="1" Background="#f3f3f3">
@@ -47,5 +49,7 @@
                 <telerik:RadPasswordBox x:Name="passwordBox" Background="White" Width="199" Height="35" Canvas.Left="177" Canvas.Top="79"  TextWrapping="Wrap" Text="RadPasswordBox" WatermarkContent="Enter password" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Canvas>
         </Border>
+        <telerik:RadBusyIndicator IsBusy="False" Background="#FFDA5A5A" x:Name="loginBusyIndicator"  BusyContent="Authenticating..." telerik:StyleManager.Theme="Office2016Touch" Canvas.Left="149" Canvas.Top="67" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="#FFA22F2F" Foreground="#FF01337F" Height="302" Width="502"/>
+
     </Canvas>
 </Window>

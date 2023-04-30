@@ -55,6 +55,7 @@ namespace MyShopProject
 
         private async void connectButton_Click(object sender, RoutedEventArgs e)
         {
+            loginBusyIndicator.IsBusy = true;
             string username = usernameTextBox.Text;
             string password = passwordBox.Password;
             var passwordInBytes = Encoding.UTF8.GetBytes(password);
@@ -116,7 +117,7 @@ namespace MyShopProject
                 RadDesktopAlertManager manager = new RadDesktopAlertManager();
                 manager.ShowAlert(alert);
             }
-            
+            loginBusyIndicator.IsBusy = false;
         }
 
         private void signupButton_Click(object sender, RoutedEventArgs e)

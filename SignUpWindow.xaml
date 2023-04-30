@@ -6,6 +6,7 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
         xmlns:local="clr-namespace:MyShopProject"
         mc:Ignorable="d"
+        
         WindowStartupLocation="CenterScreen"
         Title="SignUpWindow" Height="450" Width="800">
     <Canvas>

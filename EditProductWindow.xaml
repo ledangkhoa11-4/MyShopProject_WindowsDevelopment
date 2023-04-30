@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MyShopProject.Converters"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.EditProductWindow"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Edit a Product" Height="558" Width="662" Loaded="Window_Loaded">
     <Window.Resources>
         <local:Base64ToBitmapConverter x:Key="bitmapConverter"/>

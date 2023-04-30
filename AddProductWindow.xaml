@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MyShopProject"
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="MyShopProject.AddProductWindow"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Create a New Product" Height="558" Width="662" Loaded="Window_Loaded">
 
     <Canvas>
