@@ -65,5 +65,11 @@ namespace MyShopProject.DAO
             var res = JsonConvert.DeserializeObject<List<Book>>(json);
             return res;
         }
+        public async Task<List<Book>> getLowStockProducts()
+        {
+            var json = await API.getMethod($"/product/low-stock");
+            var res = JsonConvert.DeserializeObject<List<Book>>(json);
+            return res;
+        }
     }
 }

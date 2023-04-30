@@ -40,6 +40,10 @@ namespace MyShopProject.BUS
             List<Profit> result = await report_DAO.statisticProfitByMonth(month, year);
             return result;
         }
-        
+        public async Task<List<Profit>> statisticProfitByYear(int year)
+        {
+            var result = await report_DAO.statisticProfitByYear(year);
+            return result;
+        }
     }
 }

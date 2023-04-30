@@ -24,6 +24,7 @@ using MyShopProject.Converters;
 using Telerik.Windows.Controls.Calendar;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using System.Configuration;
+using System.Globalization;
 
 namespace MyShopProject
 {
@@ -49,9 +50,11 @@ namespace MyShopProject
         public string CurrentMonth { get; set; }
         public int AmountOfOrderByMonth { get; set; }
         public int AmountOfOrderByWeek { get; set; }
+        public string profitByMonth { get; set; }
         public int lastTab { get; set; }
         
         public ObservableCollection<Book> bestSaleBook { get; set;}
+        public ObservableCollection<Book> lowStockBook { get; set; }
         public MainViewModel()
         {
             listCat = new ObservableCollection<Category>();
@@ -59,6 +62,7 @@ namespace MyShopProject
             listOrder = new ObservableCollection<Order>();
             listCoupon = new ObservableCollection<Coupon>();
             bestSaleBook = new ObservableCollection<Book>();
+            lowStockBook = new ObservableCollection<Book>();
 
             listAllBriefBook = new ObservableCollection<Book>();
         }
@@ -202,7 +206,7 @@ namespace MyShopProject
             barSeries.ItemsSource = data;
             LinearAxis verticalAxis = new LinearAxis();
             profitChart.VerticalAxis = verticalAxis;
-            verticalAxis.Title = "profit";
+            verticalAxis.Title = "VND";
             CategoricalAxis horizontalAxis = new CategoricalAxis();
             profitChart.HorizontalAxis = horizontalAxis;
             horizontalAxis.Title = "time";
@@ -329,6 +333,30 @@ namespace MyShopProject
             var stockInfo = await product_BUS.CountStock();
             modelBinding.countStock = stockInfo.Item1;
             modelBinding.countTitles = stockInfo.Item2;
+
+            profitBusyIndicator.IsBusy = true;
+            List<Profit> data = new List<Profit>();
+            data = await report_BUS.statisticProfitByMonth(profitSelectedMonth, profitSelectedYear);
+            var profit = 0;
+            foreach (var d in data)
+            {
+                profit += d.profit;
+            }
+            modelBinding.profitByMonth = profit.ToString("#,#", CultureInfo.InvariantCulture) + "₫";
+            profitBusyIndicator.IsBusy = false;
+            //Low stock
+
+            var lowStock = new ObservableCollection<Book>();
+            lowStock = await product_BUS.getLowStockProducts();
+            modelBinding.lowStockBook.Clear();
+            modelBinding.lowStockBook.AddRange(lowStock);
+            var panel = lowStockCarousel.FindCarouselPanel();
+            panel.MoveBy(lowStock.Count);
+            foreach (Book b in lowStock)
+            {
+                string imageBase64 = await book_BUS.getImageBook(b._id);
+                b.ImageBase64 = imageBase64;
+            }
         }
         private async void productLoaded()
         {
@@ -630,11 +658,12 @@ namespace MyShopProject
                 MessageBox.Show(testConn.Item2 + "Application will close", "Error connect web service");
                 System.Windows.Application.Current.Shutdown();
             }
+            cateLoaded();
             //modelBinding.listCat = await category_BUS.getAllCategory();
             //modelBinding.totalProduct = await product_BUS.getSize();
             //modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
             //modelBinding.totalOrder = await order_BUS.getCountOrder();
-           
+
             //Tab nào thì code ở tabloadded nhe, đừng code ở đây
             //this.DataContext = modelBinding;
             //var stockInfo = await product_BUS.CountStock();
@@ -1121,6 +1150,28 @@ namespace MyShopProject
             reportMode = 3;
             statisticsDropdown.IsOpen = false;
             pickYearCalendar.DisplayMode = DisplayMode.DecadeView;
+        }
+        private async void pickYearStatisticProfit(object sender, Telerik.Windows.Controls.Calendar.CalendarModeChangedEventArgs e)
+        {
+            var date = profitPickYearCalendar.DisplayDate.ToString("dd/MM/yyyy");
+            Debug.WriteLine(date);
+            profitSelectedYear = int.Parse(date.Substring(6, 4));
+         
+            profitDropdown.Content = $"In {selectedYear}";
+            reportProfitMode = 3;
+            profitDropdown.IsOpen = false;
+            profitPickYearCalendar.DisplayMode = DisplayMode.DecadeView;
+            List<Profit> data = new List<Profit>();
+            if (profitChart != null)
+            {
+                data = await report_BUS.statisticProfitByYear(profitSelectedYear);
+                 foreach (Profit dt in data)
+                {
+                    dt.time = DateFormat.StringToMonth(dt.time);
+                }
+                profitChart.Series.Clear();
+                profitChart.Series.Add(createBar(data));
+            }
         }
     }
 }

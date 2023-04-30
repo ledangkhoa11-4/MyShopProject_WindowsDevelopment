@@ -71,5 +71,10 @@ namespace MyShopProject.BUS
             var listBook = await product_DAO.getBestSellingProducts(filterby);
             return new ObservableCollection<Book>(listBook);
         }
+        public async Task<ObservableCollection<Book>> getLowStockProducts()
+        {
+            var listBook = await product_DAO.getLowStockProducts();
+            return new ObservableCollection<Book>(listBook);
+        }
     }
 }

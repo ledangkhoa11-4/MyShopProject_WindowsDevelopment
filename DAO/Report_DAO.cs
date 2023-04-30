@@ -40,5 +40,11 @@ namespace MyShopProject.DAO
             var profit = JsonConvert.DeserializeObject<List<Profit>>(json);
             return profit;
         }
+        public async Task<List<Profit>> statisticProfitByYear(int year)
+        {
+            var json = await API.getMethod($"/report/profit/year?year={year}");
+            var profit = JsonConvert.DeserializeObject<List<Profit>>(json);
+            return profit;
+        }
     }
 }

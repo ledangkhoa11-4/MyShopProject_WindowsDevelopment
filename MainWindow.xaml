@@ -90,7 +90,13 @@
                             </Canvas>
                         </Border>
                         <Border Margin="10 0 0 0" Background="White" CornerRadius="18" Grid.Column="2">
-                            <Canvas Background="White" ></Canvas>
+                            <Canvas Background="White" >
+                                <TextBlock Text="Profit:" FontSize="20" Canvas.Left="10" Canvas.Top="10" FontStyle="Italic" FontWeight="Bold"/>
+                                <TextBlock Text="In this month:" FontSize="20" Canvas.Left="33" Canvas.Top="59" FontStyle="Italic"/>
+                                <TextBlock d:Text="9999" Text="{Binding profitByMonth}" FontSize="30" Canvas.Left="33" Canvas.Top="109" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="profitBusyIndicator"  BusyContent="Profit is currently loading..." telerik:StyleManager.Theme="Office2013" Canvas.Left="33" Canvas.Top="109" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+
+                            </Canvas>
                         </Border>
                         <Border Margin="10 0 0 0" Background="White" CornerRadius="18" Grid.Column="3">
                             <Canvas Background="White" ></Canvas>
@@ -99,7 +105,7 @@
                     <Border Margin="10 0 10 10" Background="White" CornerRadius="18" DockPanel.Dock="Top" Height="430" >
                         <Canvas>
                             <TextBlock Text="Best selling books:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="19,19,0,0"/>
-                            <telerik:RadCarousel x:Name="bestSaleCarousel" ItemsSource="{Binding bestSaleBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1159" Height="273" Canvas.Top="-26"/>
+                            <telerik:RadCarousel x:Name="bestSaleCarousel" ItemsSource="{Binding bestSaleBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1069" Height="241" Canvas.Top="-21" Canvas.Left="55"/>
                             <telerik:RadDropDownButton x:Name="bestSellDropdown" Content="Choose field" Height="NaN" IsOpen="False" Width="148" Canvas.Left="210" Canvas.Top="13" telerik:StyleManager.Theme="Material" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <telerik:RadDropDownButton.DropDownContent>
                                     <ListBox  Width="150">
@@ -109,6 +115,9 @@
                                     </ListBox>
                                 </telerik:RadDropDownButton.DropDownContent>
                             </telerik:RadDropDownButton>
+                            <TextBlock Text="Running low on stock:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="220"/>
+                            <telerik:RadCarousel x:Name="lowStockCarousel" ItemsSource="{Binding lowStockBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Left" VerticalAlignment="Top" Width="1069" Height="241" Canvas.Top="179" Canvas.Left="55"/>
+
 
                         </Canvas>
 
@@ -652,7 +661,7 @@
                                     <ListBoxItem.Content>
                                         <telerik:RadDropDownButton  Content="By Year" Height="41" IsOpen="False" Width="171" Canvas.Left="680" Canvas.Top="9" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top">
                                             <telerik:RadDropDownButton.DropDownContent>
-                                                <telerik:RadCalendar DisplayMode="DecadeView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
+                                                <telerik:RadCalendar x:Name="profitPickYearCalendar" DisplayModeChanged="pickYearStatisticProfit" DisplayMode="DecadeView" Canvas.Left="738" Canvas.Top="50" telerik:StyleManager.Theme="Material"/>
                                             </telerik:RadDropDownButton.DropDownContent>
                                         </telerik:RadDropDownButton>
                                     </ListBoxItem.Content>
