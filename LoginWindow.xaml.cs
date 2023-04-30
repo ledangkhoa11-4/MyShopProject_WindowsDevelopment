@@ -88,6 +88,7 @@ namespace MyShopProject
                 config.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection("appSettings");
             }
+            result = new Account();
             if (result != null)
             {
                 currentAccount = result;

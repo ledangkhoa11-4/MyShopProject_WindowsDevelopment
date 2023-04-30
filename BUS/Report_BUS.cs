@@ -15,17 +15,17 @@ namespace MyShopProject.BUS
         {
             report_DAO = new Report_DAO();
         }
-        public async Task<List<StatisticsProductByTime>> statisticProductByDate(String from, String to, String id)
+        public async Task<List<StatisticsProduct>> statisticProductByDate(String from, String to, String id)
         {
             var result = await report_DAO.statisticByRangeDate(from, to, id);
             return result;
         }
-        public async Task<List<StatisticsProductByTime>> statisticProductByMonth(int month, int year, String id)
+        public async Task<List<StatisticsProduct>> statisticProductByMonth(int month, int year, String id)
         {
             var result = await report_DAO.statisticByMonth(month, year, id);
             return result;
         }
-        public async Task<List<StatisticsProductByTime>> statisticProductByYear(int year, String id)
+        public async Task<List<StatisticsProduct>> statisticProductByYear(int year, String id)
         {
             var result = await report_DAO.statisticByYear(year, id);
             return result;
@@ -43,6 +43,11 @@ namespace MyShopProject.BUS
         public async Task<List<Profit>> statisticProfitByYear(int year)
         {
             var result = await report_DAO.statisticProfitByYear(year);
+            return result;
+        }
+        public async Task<List<StatisticsProduct>> statisticDistribution()
+        {
+            var result = await report_DAO.statisticDistribution();
             return result;
         }
     }

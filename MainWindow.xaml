@@ -59,7 +59,7 @@
                     <TextBlock FontWeight="Bold" FontSize="15" Foreground="White">Dashboard</TextBlock>
                 </telerik:RadTabItem.Header>
                 <DockPanel Background="#e3e3e3" LastChildFill="True">
-                    <Grid Height="200" DockPanel.Dock="Top" Margin="20,20">
+                    <Grid Height="200" DockPanel.Dock="Top" Margin="20,10">
                         <Grid.Resources>
                             <Style TargetType="{x:Type Canvas}">
                                 <Setter Property="Margin" Value="10,0,10,0" />
@@ -71,7 +71,7 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Border Background="White" CornerRadius="18">
+                        <Border Background="White" CornerRadius="18" Margin="-8,0,27,0">
                             <Canvas  Grid.Column="0">
                                 <TextBlock Text="Books On Stock:" FontSize="20" Canvas.Left="10" Canvas.Top="10" FontStyle="Italic" FontWeight="Bold"></TextBlock>
                                 <TextBlock x:Name="ProductQuantity" Foreground="#FF012875" d:Text="9999" Text="{Binding countStock}" FontSize="30" Canvas.Left="151" Canvas.Top="63" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.568,0.813"></TextBlock>
@@ -80,29 +80,58 @@
                                 <TextBlock x:Name="TitlesQuantity" Foreground="#FF012875" d:Text="9999" Text="{Binding countTitles}" FontSize="30" Canvas.Left="151" Canvas.Top="126" RenderTransformOrigin="0.568,0.813" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             </Canvas>
                         </Border>
-                        <Border Margin="10 0 0 0" Background="White" CornerRadius="18" Grid.Column="1">
-                            <Canvas Background="White" >
-                                <TextBlock Text="Total Orders:" FontSize="20" Canvas.Left="10" Canvas.Top="10" FontStyle="Italic" FontWeight="Bold"/>
-                                <TextBlock Text="In this week:" FontSize="20" Canvas.Left="10" Canvas.Top="71" FontStyle="Italic"/>
-                                <TextBlock d:Text="In April: " Text="{Binding CurrentMonth}" FontSize="20" Canvas.Left="10" Canvas.Top="126" FontStyle="Italic"/>
-                                <TextBlock d:Text="9999" Text="{Binding AmountOfOrderByMonth}" FontSize="30" Canvas.Left="167" Canvas.Top="120" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.182,1.043"/>
-                                <TextBlock d:Text="9999" Text="{Binding AmountOfOrderByWeek}" FontSize="30" Canvas.Left="167" Canvas.Top="65" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Border Margin="268,0,58,0" Background="White" CornerRadius="18" Grid.ColumnSpan="2">
+                            <Canvas Background="White" Margin="10,10,10,10" >
+                                <TextBlock Text="Total Orders:" FontSize="20" Canvas.Left="2" FontStyle="Italic" FontWeight="Bold"/>
+                                <TextBlock Foreground="#FF012875" Text="In this week:" FontSize="20" Canvas.Left="10" Canvas.Top="59" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                <TextBlock  Foreground="#FF012875" d:Text="In April: " Text="{Binding CurrentMonth}" FontSize="20" Canvas.Left="10" Canvas.Top="120" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                                <TextBlock Foreground="#FF012875" d:Text="9999" Text="{Binding AmountOfOrderByMonth}" FontSize="30" Canvas.Left="151" Canvas.Top="114" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top" RenderTransformOrigin="0.182,1.043"/>
+                                <TextBlock  Foreground="#FF012875" d:Text="9999" Text="{Binding AmountOfOrderByWeek}" FontSize="30" Canvas.Left="151" Canvas.Top="53" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                             </Canvas>
                         </Border>
-                        <Border Margin="10 0 0 0" Background="White" CornerRadius="18" Grid.Column="2">
-                            <Canvas Background="White" >
-                                <TextBlock Text="Profit:" FontSize="20" Canvas.Left="10" Canvas.Top="10" FontStyle="Italic" FontWeight="Bold"/>
-                                <TextBlock Text="In this month:" FontSize="20" Canvas.Left="33" Canvas.Top="59" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                <TextBlock d:Text="9999" Text="{Binding profitByMonth}" FontSize="30" Canvas.Left="33" Canvas.Top="109" FontStyle="Italic" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                                <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="profitBusyIndicator"  BusyContent="Profit is currently loading..." telerik:StyleManager.Theme="Office2013" Canvas.Left="33" Canvas.Top="109" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        <Border Margin="236,0,120,0" Background="White" CornerRadius="18" Grid.Column="1" Grid.ColumnSpan="2">
+                            <Canvas Background="White" Margin="10,10,10,10" >
+                                <TextBlock Text="Profit:" FontSize="20" FontStyle="Italic" FontWeight="Bold"/>
+                                <TextBlock Text="In this month:" FontSize="20" Canvas.Left="17" Canvas.Top="54" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock d:Text="9999" Text="{Binding profitByMonth}" FontSize="30" Canvas.Left="10" Canvas.Top="109" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" TextAlignment="Center"/>
+                                <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="profitBusyIndicator"  BusyContent="Profit is currently loading..." telerik:StyleManager.Theme="Office2013" Canvas.Left="16" Canvas.Top="103" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
                             </Canvas>
                         </Border>
-                        <Border Margin="10 0 0 0" Background="White" CornerRadius="18" Grid.Column="3">
-                            <Canvas Background="White" ></Canvas>
+                        <Border Margin="174,0,-9,0" Background="White" CornerRadius="18" Grid.Column="2" Grid.ColumnSpan="2">
+                            <Canvas Background="White" Margin="10,10,10,10">
+                                <telerik:RadPieChart Panel.ZIndex="999" x:Name="distributionChart" Palette="Windows8" Height="240" Width="256" Canvas.Left="157" Canvas.Top="-25" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <telerik:RadPieChart.Series>
+                                        <telerik:PieSeries x:Name="seriesChart">
+                                            <telerik:PieSeries.SliceStyles>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Fill" Value="#0077c2"/>
+                                                </Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Fill" Value="#00bfa5"/>
+                                                </Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Fill" Value="#f57f17"/>
+                                                </Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Fill" Value="#e5ed02"/>
+                                                </Style>
+                                                <Style TargetType="Path">
+                                                    <Setter Property="Fill" Value="#8e24aa"/>
+                                                </Style>
+                                            </telerik:PieSeries.SliceStyles>
+                                        </telerik:PieSeries>
+                                    </telerik:RadPieChart.Series>
+                                    <telerik:RadPieChart.Behaviors>
+                                        <telerik:ChartSelectionBehavior />
+                                    </telerik:RadPieChart.Behaviors>
+                                </telerik:RadPieChart>
+                                <TextBlock Text="Profit distribution:" TextWrapping="Wrap" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"/>
+                                <telerik:RadLegend x:Name="legendChart" Canvas.Top="54" Height="126" RenderTransformOrigin="0.5,0.5" Width="152" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="25"/>
+                            </Canvas>
                         </Border>
                     </Grid>
-                    <Border Margin="10 0 10 10" Background="White" CornerRadius="18" DockPanel.Dock="Top" Height="430" >
+                    <Border Margin="10 0 10 10" Background="White" CornerRadius="18" DockPanel.Dock="Top" Height="458" >
                         <Canvas>
                             <TextBlock Text="Best selling books:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="19,19,0,0"/>
                             <telerik:RadCarousel Panel.ZIndex="9" x:Name="bestSaleCarousel" ItemsSource="{Binding bestSaleBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Left" VerticalAlignment="Center" Width="1068" Height="280" Canvas.Left="56" Canvas.Top="-41"/>
@@ -116,7 +145,7 @@
                                 </telerik:RadDropDownButton.DropDownContent>
                             </telerik:RadDropDownButton>
                             <TextBlock Text="Running low on stock:" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Left="10" Canvas.Top="215"/>
-                            <telerik:RadCarousel x:Name="lowStockCarousel" ItemsSource="{Binding lowStockBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1069" Height="252" Canvas.Top="178" Canvas.Left="55"/>
+                            <telerik:RadCarousel x:Name="lowStockCarousel" ItemsSource="{Binding lowStockBook}" telerik:StyleManager.Theme="VisualStudio2019" HorizontalAlignment="Center" VerticalAlignment="Top" Width="1069" Height="270" Canvas.Top="178" Canvas.Left="55"/>
 
 
                         </Canvas>
@@ -143,9 +172,8 @@
                         ItemsSource="{Binding listCat}"
                         x:Name ="currentCat"
                         telerik:StyleManager.Theme="Material" 
-                        Height="324" Width="1178"  Canvas.Top="348" HorizontalAlignment="Left" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" EditEnded="afterEditCat" DeletingItem="beforeDelCat" Canvas.Left="10">
-                       
-                       
+                        Height="300" Width="1178"  Canvas.Top="372" HorizontalAlignment="Center" VerticalAlignment="Top" AutoGeneratingField="categoryGenerated2" EditEnded="afterEditCat" DeletingItem="beforeDelCat" Canvas.Left="10">
+
                     </telerik:RadDataForm>
 
                     <telerik:RadGridView 
@@ -156,23 +184,24 @@
                         AutoGenerateColumns="False"
                         telerik:StyleManager.Theme="Material" 
                         HorizontalAlignment="Center" Canvas.Top="10" 
-                        VerticalAlignment="Top" Width="1178" Height="318" 
+                        VerticalAlignment="Top" Width="1178" Height="357" 
                         Canvas.Left="11" RowHeight="40"  ColumnWidth="*" IsReadOnly="True" SelectedCellsChanged="selectCateEvent" RowIndicatorVisibility="Collapsed">
-
                         <telerik:RadGridView.Columns>
-                            <telerik:GridViewDataColumn DataMemberBinding="{Binding _id}"  
-                                        TextWrapping="Wrap"/>
-                            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" 
-                                        TextAlignment="Right" 
-                                        Header="Est."  />
+                            <telerik:GridViewDataColumn Width="0.2*" DataMemberBinding="{Binding _id}"  
+                                        TextWrapping="NoWrap"
+                                        TextTrimming="WordEllipsis" 
+                                        Header="ID" />
+                            <telerik:GridViewDataColumn Width="0.4*" DataMemberBinding="{Binding Name}" 
+                                        TextAlignment="Left" 
+                                        Header="Book Name"  />
                             <telerik:GridViewDataColumn DataMemberBinding="{Binding Description}" 
                                         TextTrimming="WordEllipsis" 
-                                        Header="Stadium"  />
-                            
+                                        Header="Description"  />
+
                         </telerik:RadGridView.Columns>
 
                     </telerik:RadGridView>
-                    
+
                     <Grid x:Name="radRichTextBoxParent">
 
                         <Grid.RowDefinitions>
