@@ -194,7 +194,7 @@
                                         Header="ID" />
                             <telerik:GridViewDataColumn Width="0.4*" DataMemberBinding="{Binding Name}" 
                                         TextAlignment="Left" 
-                                        Header="Book Name"  />
+                                        Header="Category Name"  />
                             <telerik:GridViewDataColumn DataMemberBinding="{Binding Description}" 
                                         TextTrimming="WordEllipsis" 
                                         Header="Description"  />
@@ -355,7 +355,7 @@
                                 <ListBoxItem>
                                     <StackPanel Orientation="Horizontal" >
                                         <telerik:RadButton x:Name="ApplyFilterBtn" Click="ApplyFilterBtn_Click" Grid.Column="2" Content="Apply" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material"/>
-                                        <telerik:RadButton x:Name="UnApplyFilterBtn" Click="UnApplyFilterBtn_Click" Grid.Column="2" Content="Remove filter" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="100" telerik:StyleManager.Theme="Material" Margin="100,0,0,0"/>
+                                        <telerik:RadButton x:Name="UnApplyFilterBtn" Click="UnApplyFilterBtn_Click" Grid.Column="2" Content="Remove filter" HorizontalAlignment="Center" Height="40" VerticalAlignment="Center" Width="150" telerik:StyleManager.Theme="Material" Margin="100,0,0,0"/>
                                     </StackPanel>
 
                                 </ListBoxItem>
