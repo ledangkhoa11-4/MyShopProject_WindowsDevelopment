@@ -32,6 +32,9 @@
   <Page Include="AddProductWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
+  <Page Include="ConfigWindow.xaml">
+    <Generator>MSBuild:Compile</Generator>
+  </Page>
   <Page Include="EditOrderWindow.xaml">
     <Generator>MSBuild:Compile</Generator>
   </Page>
@@ -62,6 +65,7 @@
   <Compile Include="BUS\ImportData_BUS.cs" />
   <Compile Include="BUS\Order_BUS.cs" />
   <Compile Include="BUS\Report_BUS.cs" />
+  <Compile Include="ConfigWindow.xaml.cs" />
   <Compile Include="Converters\Base64ToBitmapConverter.cs" />
   <Compile Include="BUS\Book_BUS.cs" /> 
   <Compile Include="BUS\Account_BUS.cs" />
@@ -104,6 +108,7 @@
 </ItemGroup>
   
   <ItemGroup>
+    <Resource Include="Images\settings.png" />
     <Content Include="shop.ico" />
   </ItemGroup>
   

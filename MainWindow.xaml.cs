@@ -27,7 +27,6 @@ using System.Configuration;
 using System.Globalization;
 using Telerik.Windows.Controls.Data.DataForm;
 
-
 namespace MyShopProject
 {
 
@@ -68,7 +67,6 @@ namespace MyShopProject
 
             listAllBriefBook = new ObservableCollection<Book>();
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
@@ -1206,6 +1204,26 @@ namespace MyShopProject
                 }
                 profitChart.Series.Clear();
                 profitChart.Series.Add(createBar(data));
+            }
+        }
+
+        private void configWindowOpen(object sender, RoutedEventArgs e)
+        {
+            var confScr = new ConfigWindow(modelBinding.productPerPage, modelBinding.orderPerPage, modelBinding.totalProduct, modelBinding.totalOrder);
+            if(confScr.ShowDialog() == true)
+            {
+                var newProductPerPage = confScr.model.productPerPage;
+                var newOrderPerPage = confScr.model.orderPerPage;
+                if(modelBinding.productPerPage != newProductPerPage)
+                {
+                    modelBinding.productPerPage = newProductPerPage;
+                    productLoaded();
+                }
+                if(modelBinding.orderPerPage!= newOrderPerPage)
+                {
+                    modelBinding.orderPerPage = newOrderPerPage;
+                    orderTabLoaded();
+                }
             }
         }
     }

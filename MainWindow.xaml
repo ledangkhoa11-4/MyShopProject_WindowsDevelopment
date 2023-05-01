@@ -53,6 +53,7 @@
 
     </Window.Resources>
     <Canvas Width="1198" Height="740" >
+
         <telerik:RadTabControl Height="744" Width="1199" SelectedIndex="{Binding lastTab}" SelectionChanged="tabChanged" telerik:StyleManager.Theme="Material" HorizontalAlignment="Center" VerticalAlignment="Top" >
             <telerik:RadTabItem x:Name="RadTabItem4" >
                 <telerik:RadTabItem.Header>
@@ -126,7 +127,7 @@
                                         <telerik:ChartSelectionBehavior />
                                     </telerik:RadPieChart.Behaviors>
                                 </telerik:RadPieChart>
-                                <TextBlock Text="Profit distribution:" TextWrapping="Wrap" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120"/>
+                                <TextBlock Text="Revenue distribution:" TextWrapping="Wrap" FontSize="20" FontStyle="Italic" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="177"/>
                                 <telerik:RadLegend x:Name="legendChart" Canvas.Top="54" Height="126" RenderTransformOrigin="0.5,0.5" Width="152" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="25"/>
                             </Canvas>
                         </Border>
@@ -724,5 +725,14 @@
                 </Canvas>
             </telerik:RadTabItem>
         </telerik:RadTabControl>
+
+        <telerik:RadRibbonButton Click="configWindowOpen" Height="NaN" Canvas.Left="1144"  Canvas.Top="6" Width="NaN" VerticalAlignment="Top">
+            <telerik:RadRibbonButton.Content>
+                <Image Source="Images/settings.png" Height="26" Canvas.Left="981" Canvas.Top="325" Width="27" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+            </telerik:RadRibbonButton.Content>
+
+
+        </telerik:RadRibbonButton>
+
     </Canvas>
 </Window>
