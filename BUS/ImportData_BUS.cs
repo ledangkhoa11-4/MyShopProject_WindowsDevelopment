@@ -5,10 +5,13 @@ using MyShopProject.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Telerik.Windows.Controls;
+using Category = MyShopProject.DTO.Category;
 
 namespace MyShopProject.BUS
 {
@@ -83,7 +86,7 @@ namespace MyShopProject.BUS
                 return "";
             }
         }
-        public async void getProductFromExcelFile(string filename, string sheetName)
+        public async Task<bool> getProductFromExcelFile(string filename, string sheetName)
         {
             try
             {
@@ -94,7 +97,15 @@ namespace MyShopProject.BUS
                 var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
                 var rows = wsPart.Worksheet.Descendants<Row>();
                 int numRows = rows.Count();
-
+                foreach (var row in rows)
+                {
+                    int cellcount = row.Descendants<Cell>().Count();
+                    if (cellcount != 11)
+                    {
+                        MessageBox.Show("File's format is not correct please check the file again!!");
+                        return false;
+                    }
+                }
                 for (int i = 2; i <= numRows; i++)
                 {
                     var book = new Book();
@@ -111,12 +122,15 @@ namespace MyShopProject.BUS
                     book.IsOnStock = Convert.ToBoolean(GetCellValue(filename, sheetName, $"K{i}"));
                     await product_BUS.AddProduct(book);
                 }
+                
             }
             catch (Exception ex)
 
             {
-                MessageBox.Show(ex.Message);
+                
+                return false;
             }
+            return true;
         }
         public async Task<ObservableCollection<Category>> GetCategoryFromExcelFile(string filename,string sheetName)
         {
@@ -129,7 +143,18 @@ namespace MyShopProject.BUS
                 var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
                 var rows = wsPart.Worksheet.Descendants<Row>();
                 int numRows = rows.Count();
-
+                
+                foreach( var row in rows )
+                {
+                    int cellcount = row.Descendants<Cell>().Count();
+                    Debug.WriteLine($"Row {row.RowIndex} has {cellcount} cells.");
+                    if (cellcount != 2)
+                    {
+                        MessageBox.Show("File's format is not correct please check the file again!!");
+                        return null;
+                        
+                    }
+                }
                 for (int i = 2; i <= numRows; i++)
                 {
                     var cat = new Category();
@@ -141,13 +166,14 @@ namespace MyShopProject.BUS
                     
                 }
                 var allcat = await category_BUS.getAllCategory();
+                
                 return allcat;
 
             }
             catch (Exception ex)
 
             {
-                MessageBox.Show(ex.Message);
+                
                 return null;
             }
         }

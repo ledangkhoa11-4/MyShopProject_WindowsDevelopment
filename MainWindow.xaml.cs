@@ -27,7 +27,6 @@ using System.Configuration;
 using System.Globalization;
 using Telerik.Windows.Controls.Data.DataForm;
 
-
 namespace MyShopProject
 {
 
@@ -68,7 +67,6 @@ namespace MyShopProject
 
             listAllBriefBook = new ObservableCollection<Book>();
         }
-
         public event PropertyChangedEventHandler PropertyChanged;
     }
 
@@ -353,7 +351,11 @@ namespace MyShopProject
             {
                 profit += d.profit;
             }
-            modelBinding.profitByMonth = profit.ToString("#,#", CultureInfo.InvariantCulture) + "₫";
+            if (profit == 0)
+            {
+                modelBinding.profitByMonth = "0₫";
+            }
+            else modelBinding.profitByMonth = profit.ToString("#,#", CultureInfo.InvariantCulture) + "₫";
             profitBusyIndicator.IsBusy = false;
             //Low stock
 
@@ -1076,11 +1078,31 @@ namespace MyShopProject
             {
                 if (TypeImportCBB.Text.Equals("Category"))
                 {
-                    modelBinding.listCat=await import_BUS.GetCategoryFromExcelFile(filename,sheetName.Text);
+                    var temp=await import_BUS.GetCategoryFromExcelFile(filename,sheetName.Text);
+                    if (temp!=null)
+                    {
+                        modelBinding.listCat=temp;
+                        var alert = new RadDesktopAlert();
+                        alert.Header = "IMPORT DATA SUCCESSFULLY";
+                        alert.Content = "Datas have been imported successfully";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                    }
                 }
                 else
                 {
-                    import_BUS.getProductFromExcelFile(filename, sheetName.Text);
+                    var result=await import_BUS.getProductFromExcelFile(filename, sheetName.Text);
+                    if (result)
+                    {
+                        var alert = new RadDesktopAlert();
+                        alert.Header = "IMPORT DATA SUCCESSFULLY";
+                        alert.Content = "Datas have been imported successfully";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                    }
+
                 }
             }
             
@@ -1158,6 +1180,7 @@ namespace MyShopProject
                     data = await report_BUS.statisticProfitByMonth(profitSelectedMonth, profitSelectedYear);
                     profitChart.Series.Clear();
                     profitChart.Series.Add(createBar(data));
+                    profitName.Text = $"In {DateFormat.IntToMonth(profitSelectedMonth)} - {profitSelectedYear}";
                 }
             }
             catch (Exception ex)
@@ -1206,6 +1229,26 @@ namespace MyShopProject
                 }
                 profitChart.Series.Clear();
                 profitChart.Series.Add(createBar(data));
+            }
+        }
+
+        private void configWindowOpen(object sender, RoutedEventArgs e)
+        {
+            var confScr = new ConfigWindow(modelBinding.productPerPage, modelBinding.orderPerPage, modelBinding.totalProduct, modelBinding.totalOrder);
+            if(confScr.ShowDialog() == true)
+            {
+                var newProductPerPage = confScr.model.productPerPage;
+                var newOrderPerPage = confScr.model.orderPerPage;
+                if(modelBinding.productPerPage != newProductPerPage)
+                {
+                    modelBinding.productPerPage = newProductPerPage;
+                    productLoaded();
+                }
+                if(modelBinding.orderPerPage!= newOrderPerPage)
+                {
+                    modelBinding.orderPerPage = newOrderPerPage;
+                    orderTabLoaded();
+                }
             }
         }
     }
