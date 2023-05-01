@@ -85,6 +85,18 @@ namespace MyShopProject
                         config.Save(ConfigurationSaveMode.Modified);
                         ConfigurationManager.RefreshSection("appSettings");
                     }
+                    else
+                    {
+                        var config = ConfigurationManager.OpenExeConfiguration(
+                                ConfigurationUserLevel.None);
+                        config.AppSettings.Settings["Username"].Value = "";
+                        config.AppSettings.Settings["Password"].Value = "";
+                        config.AppSettings.Settings["Key"].Value = "";
+                        config.AppSettings.Settings["IV"].Value = "";
+
+                        config.Save(ConfigurationSaveMode.Modified);
+                        ConfigurationManager.RefreshSection("appSettings");
+                    }
                     var product_BUS = new Product_BUS();
                     var coupon_BUS = new Coupon_BUS();
                     var order_BUS = new Order_BUS();
