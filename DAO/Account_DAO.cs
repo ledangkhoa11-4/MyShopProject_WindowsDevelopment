@@ -15,27 +15,24 @@ namespace MyShopProject.DAO
     class Account_DAO
     {
        
-        public async Task<Account> getAccount(string username,string password,string salt)
+        public async Task<Account> getAccount(string username,string password,string key,string iv)
         {
             var json = await API.getMethod($"/account?username={username}");
             var account = JsonConvert.DeserializeObject<Account>(json);
             if(account != null)
             {
-                byte[] entropyInBytes1 = Convert.FromBase64String(salt);
-                byte[] cypherTextInBytes1 = Convert.FromBase64String(password);
-                byte[] passwordInBytes1 = ProtectedData.Unprotect(cypherTextInBytes1,
-                    entropyInBytes1,
-                    DataProtectionScope.CurrentUser
-                );
-                string pass1 = Encoding.UTF8.GetString(passwordInBytes1);
+                byte[] keyInBytes1 = Convert.FromBase64String(key);
+                byte[] ivInBytes1 = Convert.FromBase64String(iv);
+                byte[] passwordInBytes1 = Convert.FromBase64String(password);
+                byte[] passwordHash1 = Account.Decrypt(passwordInBytes1, keyInBytes1, ivInBytes1);
+                string pass1 = Encoding.UTF8.GetString(passwordHash1);
 
-                byte[] entropyInBytes2 = Convert.FromBase64String(account.Salt);
-                byte[] cypherTextInBytes2 = Convert.FromBase64String(account.Password);
-                byte[] passwordInBytes2 = ProtectedData.Unprotect(cypherTextInBytes2,
-                    entropyInBytes2,
-                    DataProtectionScope.CurrentUser
-                );
-                string pass2 = Encoding.UTF8.GetString(passwordInBytes2);
+                byte[] keyInBytes2 = Convert.FromBase64String(account.Key);
+                byte[] ivInBytes2 = Convert.FromBase64String(account.IV);
+                byte[] passwordInBytes2 = Convert.FromBase64String(account.Password);
+                byte[] passwordHash2 = Account.Decrypt(passwordInBytes2, keyInBytes2, ivInBytes2);
+                string pass2 = Encoding.UTF8.GetString(passwordHash2);
+
                 if (pass1 == pass2)
                     return account;
             }

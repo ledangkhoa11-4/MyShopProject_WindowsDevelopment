@@ -33,18 +33,17 @@ namespace MyShopProject
             InitializeComponent();
             string username = ConfigurationManager.AppSettings["Username"]!;
             string passwordIn64 = ConfigurationManager.AppSettings["Password"]!;
-            string entropyIn64 = ConfigurationManager.AppSettings["Entropy"]!;
+            string keyIn64 = ConfigurationManager.AppSettings["Key"]!;
+            string ivIn64  = ConfigurationManager.AppSettings["IV"]!;
             if (passwordIn64.Length != 0)
             {
-                byte[] entropyInBytes = Convert.FromBase64String(entropyIn64);
-                byte[] cypherTextInBytes = Convert.FromBase64String(passwordIn64);
+                byte[] keyInBytes = Convert.FromBase64String(keyIn64);
+                byte[] ivInBytes = Convert.FromBase64String(ivIn64);
+                byte[] passwordInBytes = Convert.FromBase64String(passwordIn64);
 
-                byte[] passwordInBytes = ProtectedData.Unprotect(cypherTextInBytes,
-                    entropyInBytes,
-                    DataProtectionScope.CurrentUser
-                );
+                byte[] passwordHash = Account.Decrypt(passwordInBytes, keyInBytes, ivInBytes);
 
-                string password = Encoding.UTF8.GetString(passwordInBytes);
+                string password = Encoding.UTF8.GetString(passwordHash);
 
                 usernameTextBox.Text = username;
                 passwordBox.Password = password;
@@ -59,67 +58,60 @@ namespace MyShopProject
             string username = usernameTextBox.Text;
             string password = passwordBox.Password;
             var passwordInBytes = Encoding.UTF8.GetBytes(password);
-            var entropy = new byte[20];
-            using (var rng = RandomNumberGenerator.Create())
+            Account account;
+            string passwordHash = "";
+            using (AesManaged aes = new AesManaged())
             {
-                rng.GetBytes(entropy);
+                passwordHash = Convert.ToBase64String(Account.Encrypt(passwordInBytes, aes.Key, aes.IV));
+                account = new Account() { Username = username, Password = passwordHash, Key = Convert.ToBase64String(aes.Key), IV = Convert.ToBase64String(aes.IV) };
             }
-
-            var cypherText = ProtectedData.Protect(
-                passwordInBytes,
-                entropy,
-                DataProtectionScope.CurrentUser
-            );
-
-            var passwordIn64 = Convert.ToBase64String(cypherText);
-            var entropyIn64 = Convert.ToBase64String(entropy);
-            Account account = new Account() { Username= username, Password = passwordIn64, Salt = entropyIn64 };
-            var account_BUS = new Account_BUS();
-            var result = await account_BUS.getAccount(account);
-            var alert = new RadDesktopAlert();
-            if(rememberCheckBox.IsChecked== true)
+            if (account != null)
             {
-                var config = ConfigurationManager.OpenExeConfiguration(
-                        ConfigurationUserLevel.None);
-                config.AppSettings.Settings["Username"].Value = username;
-                config.AppSettings.Settings["Password"].Value = passwordIn64;
-                config.AppSettings.Settings["Entropy"].Value = entropyIn64;
+                var account_BUS = new Account_BUS();
+                var result = await account_BUS.getAccount(account);
+                var alert = new RadDesktopAlert();
+                if (result != null)
+                {
+                    currentAccount = result;
+                    if (rememberCheckBox.IsChecked == true)
+                    {
+                        var config = ConfigurationManager.OpenExeConfiguration(
+                                ConfigurationUserLevel.None);
+                        config.AppSettings.Settings["Username"].Value = username;
+                        config.AppSettings.Settings["Password"].Value = passwordHash;
+                        config.AppSettings.Settings["Key"].Value = account.Key;
+                        config.AppSettings.Settings["IV"].Value = account.IV;
 
-                config.Save(ConfigurationSaveMode.Modified);
-                ConfigurationManager.RefreshSection("appSettings");
-            }
-            if (result != null)
-            {
-                currentAccount = result;
-                //this.DialogResult = true;
-                var category_BUS = new Category_BUS();
-                var product_BUS = new Product_BUS();
-                var coupon_BUS = new Coupon_BUS();
-                var order_BUS = new Order_BUS();
-                //MainWindow.modelBinding.listCat = await category_BUS.getAllCategory();
-                MainWindow.modelBinding.totalProduct = await product_BUS.getSize();
-                MainWindow.modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
-                MainWindow.modelBinding.totalOrder = await order_BUS.getCountOrder();
-                int lastTab = 0;
-                int.TryParse(ConfigurationManager.AppSettings["LastTab"],out lastTab);
-                MainWindow.modelBinding.lastTab = lastTab;
-                var mainWindow = new MainWindow();
-                mainWindow.currentUser= currentAccount;
-                mainWindow.DataContext = MainWindow.modelBinding;
-                mainWindow.Show();
-                loginBusyIndicator.IsBusy = false;
-                this.Close();
-            }
-            else
-            {
-                alert.Header = "ERROR";
-                alert.Content = "Unvalid account, please check again!!!";
-                alert.ShowDuration = 3000;
-                RadDesktopAlertManager manager = new RadDesktopAlertManager();
-                manager.ShowAlert(alert);
+                        config.Save(ConfigurationSaveMode.Modified);
+                        ConfigurationManager.RefreshSection("appSettings");
+                    }
+                    var product_BUS = new Product_BUS();
+                    var coupon_BUS = new Coupon_BUS();
+                    var order_BUS = new Order_BUS();
+                    MainWindow.modelBinding.totalProduct = await product_BUS.getSize();
+                    MainWindow.modelBinding.listCoupon = await coupon_BUS.getAllCoupon();
+                    MainWindow.modelBinding.totalOrder = await order_BUS.getCountOrder();
+                    int lastTab = 0;
+                    int.TryParse(ConfigurationManager.AppSettings["LastTab"], out lastTab);
+                    MainWindow.modelBinding.lastTab = lastTab;
+                    var mainWindow = new MainWindow();
+                    mainWindow.currentUser = currentAccount;
+                    mainWindow.DataContext = MainWindow.modelBinding;
+                    mainWindow.Show();
+                    loginBusyIndicator.IsBusy = false;
+                    this.Close();
+                }
+                else
+                {
+                    alert.Header = "ERROR";
+                    alert.Content = "Unvalid account, please check again!!!";
+                    alert.ShowDuration = 3000;
+                    RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                    manager.ShowAlert(alert);
+                    loginBusyIndicator.IsBusy = false;
+                }
                 loginBusyIndicator.IsBusy = false;
             }
-            loginBusyIndicator.IsBusy = false;
         }
 
         private void signupButton_Click(object sender, RoutedEventArgs e)

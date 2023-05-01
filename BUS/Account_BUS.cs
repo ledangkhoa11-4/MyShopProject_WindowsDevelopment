@@ -19,7 +19,7 @@ namespace MyShopProject.BUS
         }
         public async Task<Account> getAccount(Account account)
         {
-            Account res = await account_DAO.getAccount(account.Username,account.Password,account.Salt);
+            Account res = await account_DAO.getAccount(account.Username,account.Password,account.Key,account.IV);
             return res;
         }
         public async Task<bool> checkExists(Account account)

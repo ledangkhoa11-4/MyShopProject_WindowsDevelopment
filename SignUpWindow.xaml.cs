@@ -33,54 +33,56 @@ namespace MyShopProject
             string username = usernameTextBox.Text;
             string password = passwordBox.Password;
             var passwordInBytes = Encoding.UTF8.GetBytes(password);
-            var entropy = new byte[20];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(entropy);
-            }
-
-            var cypherText = ProtectedData.Protect(
-                passwordInBytes,
-                entropy,
-                DataProtectionScope.CurrentUser
-            );
-
-            var passwordIn64 = Convert.ToBase64String(cypherText);
-            var entropyIn64 = Convert.ToBase64String(entropy);
-            Account account = new Account() { Username = username, Password = passwordIn64, Salt = entropyIn64 };
-            var account_BUS = new Account_BUS();
             var alert = new RadDesktopAlert();
-            bool check = await account_BUS.checkExists(account);
-            if (check)
+            Account account;
+            using (AesManaged aes = new AesManaged())
             {
-                alert.Header = "ERROR";
-                alert.Content = "Account existed, please try again!!!";
-                alert.ShowDuration = 3000;
-                RadDesktopAlertManager manager = new RadDesktopAlertManager();
-                manager.ShowAlert(alert);
+                string passwordHash = Convert.ToBase64String(Account.Encrypt(passwordInBytes, aes.Key, aes.IV));
+                account = new Account() { Username = username, Password = passwordHash, Key = Convert.ToBase64String(aes.Key), IV = Convert.ToBase64String(aes.IV) };
             }
-            else
+            if (account != null)
             {
-                var result = await account_BUS.addAccount(account);
-
-                if (result.Length != 0)
+                var account_BUS = new Account_BUS();
+                bool check = await account_BUS.checkExists(account);
+                if (check)
                 {
-                    alert.Header = "Success";
-                    alert.Content = "Sign up successfully!!!";
+                    alert.Header = "ERROR";
+                    alert.Content = "Account existed, please try again!!!";
                     alert.ShowDuration = 3000;
                     RadDesktopAlertManager manager = new RadDesktopAlertManager();
                     manager.ShowAlert(alert);
-                    this.DialogResult = true;
-                    this.Close();
                 }
                 else
                 {
-                    alert.Header = "ERROR";
-                    alert.Content = "There was an error, please try again!!!";
-                    alert.ShowDuration = 3000;
-                    RadDesktopAlertManager manager = new RadDesktopAlertManager();
-                    manager.ShowAlert(alert);
+                    var result = await account_BUS.addAccount(account);
+
+                    if (result.Length != 0)
+                    {
+                        alert.Header = "Success";
+                        alert.Content = "Sign up successfully!!!";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                        this.DialogResult = true;
+                        this.Close();
+                    }
+                    else
+                    {
+                        alert.Header = "ERROR";
+                        alert.Content = "There was an error, please try again!!!";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                    }
                 }
+            }
+            else
+            {
+                alert.Header = "ERROR";
+                alert.Content = "There was an error, please try again!!!";
+                alert.ShowDuration = 3000;
+                RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                manager.ShowAlert(alert);
             }
         }
     }
