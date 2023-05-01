@@ -1078,11 +1078,31 @@ namespace MyShopProject
             {
                 if (TypeImportCBB.Text.Equals("Category"))
                 {
-                    modelBinding.listCat=await import_BUS.GetCategoryFromExcelFile(filename,sheetName.Text);
+                    var temp=await import_BUS.GetCategoryFromExcelFile(filename,sheetName.Text);
+                    if (temp!=null)
+                    {
+                        modelBinding.listCat=temp;
+                        var alert = new RadDesktopAlert();
+                        alert.Header = "IMPORT DATA SUCCESSFULLY";
+                        alert.Content = "Datas have been imported successfully";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                    }
                 }
                 else
                 {
-                    import_BUS.getProductFromExcelFile(filename, sheetName.Text);
+                    var result=await import_BUS.getProductFromExcelFile(filename, sheetName.Text);
+                    if (result)
+                    {
+                        var alert = new RadDesktopAlert();
+                        alert.Header = "IMPORT DATA SUCCESSFULLY";
+                        alert.Content = "Datas have been imported successfully";
+                        alert.ShowDuration = 3000;
+                        RadDesktopAlertManager manager = new RadDesktopAlertManager();
+                        manager.ShowAlert(alert);
+                    }
+
                 }
             }
             
