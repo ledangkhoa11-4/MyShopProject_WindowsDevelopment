@@ -58,15 +58,15 @@ namespace MyShopProject.DTO
                 }
             }
         }
-        public static string EllipsizeString(string input)
+        public static string EllipsizeString(string input, int numberShow)
         {
-            if (input.Length <= 12)
+            if (input.Length <= numberShow)
             {
                 return input;
             }
             else
             {
-                return input.Substring(0, 12) + "...";
+                return input.Substring(0, numberShow) + "...";
             }
         }
     }

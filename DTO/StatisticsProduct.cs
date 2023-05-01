@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MyShopProject.DTO
 {
-    public class StatisticsProductByTime : INotifyPropertyChanged
+    public class StatisticsProduct : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public string category { get; set; } = "";  //category là label của trục hoành chứ không phải category book
-        public int quantitySelling { get; set; } = 0;
+        public double quantitySelling { get; set; } = 0;
 
     }
 }

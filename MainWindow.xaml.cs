@@ -25,6 +25,8 @@ using Telerik.Windows.Controls.Calendar;
 using Telerik.Windows.Documents.Spreadsheet.Expressions.Functions;
 using System.Configuration;
 using System.Globalization;
+using Telerik.Windows.Controls.Data.DataForm;
+
 
 namespace MyShopProject
 {
@@ -87,6 +89,14 @@ namespace MyShopProject
                 "#6A0DAD", // Royal Purple
                 "#228B22", // Forest Green
                 "#0066CC"  // Sapphire Blue
+            };
+        List<string> colorListPieChart = new List<string>()
+            {
+                "#0077c2",
+                "#00bfa5",
+                "#f57f17",
+                "#e5ed02",
+                "#8e24aa"
             };
         private int reportMode = 0;
         private int reportProfitMode = 0;
@@ -213,13 +223,13 @@ namespace MyShopProject
             return barSeries;
 
         }
-        private SplineSeries createLine(List<StatisticsProductByTime> listRp, String color, String id)
+        private SplineSeries createLine(List<StatisticsProduct> listRp, String color, String id)
         {
             SplineSeries line = new SplineSeries();
             line.Stroke = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString(color));
             line.StrokeThickness = 2;
             line.Tag = id;
-            foreach(StatisticsProductByTime data in listRp)
+            foreach(StatisticsProduct data in listRp)
             {
                 line.DataPoints.Add(new CategoricalDataPoint() { Category = DateFormat.ConvertDateFormat(data.category), Value = data.quantitySelling });
             }
@@ -267,9 +277,9 @@ namespace MyShopProject
             foreach (Book product in addedItems)
             {
                 var currentIdx = legendCollection.Count;
-                legendCollection.Add(new LegendItem { Title = Book.EllipsizeString(product.Name), 
+                legendCollection.Add(new LegendItem { Title = Book.EllipsizeString(product.Name,12), 
                     MarkerFill = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString(hexCodes[currentIdx]))});
-                List<StatisticsProductByTime>data = new List<StatisticsProductByTime>();
+                List<StatisticsProduct>data = new List<StatisticsProduct>();
                 
                 if (reportMode == 1)
                 {
@@ -301,7 +311,7 @@ namespace MyShopProject
             }
             foreach (Book productRm in removedItems)
             {
-                var item = legendCollection.FirstOrDefault(item => item.Title == Book.EllipsizeString(productRm.Name));
+                var item = legendCollection.FirstOrDefault(item => item.Title == Book.EllipsizeString(productRm.Name,12));
                 
                 if(item!= null)
                 {
@@ -347,8 +357,7 @@ namespace MyShopProject
             profitBusyIndicator.IsBusy = false;
             //Low stock
 
-            var lowStock = new ObservableCollection<Book>();
-            lowStock = await product_BUS.getLowStockProducts();
+            var lowStock = await product_BUS.getLowStockProducts();
             modelBinding.lowStockBook.Clear();
             modelBinding.lowStockBook.AddRange(lowStock);
             var panel = lowStockCarousel.FindCarouselPanel();
@@ -357,6 +366,32 @@ namespace MyShopProject
             {
                 string imageBase64 = await book_BUS.getImageBook(b._id);
                 b.ImageBase64 = imageBase64;
+            }
+            
+            var distributionData = await report_BUS.statisticDistribution();
+            var pieSeries = seriesChart;
+            pieSeries.SelectedPointOffset = 0.2;
+            pieSeries.RadiusFactor = 0.8;
+            pieSeries.DataPoints.Clear();
+            legendChart.Items = new LegendItemCollection();
+            int i = 0;
+            foreach (var d in distributionData)
+            {
+               var book = await product_BUS.getProduct(d.category, true);
+                var label = "";
+                if (book != null)
+                    label = book.Name;
+                else
+                    label = d.category;
+                var piePoint = new PieDataPoint();
+                piePoint.Label = d.quantitySelling.ToString()+"%";
+                piePoint.Value = d.quantitySelling;
+                pieSeries.DataPoints.Add(piePoint);
+                legendChart.Items.Add(new LegendItem
+                {
+                    Title = Book.EllipsizeString(label,20),
+                    MarkerFill = new SolidColorBrush((System.Windows.Media.Color)ColorConverter.ConvertFromString(colorListPieChart[i++]))
+                });
             }
         }
         private async void productLoaded()
@@ -384,11 +419,7 @@ namespace MyShopProject
 
             }
             if (e.PropertyName == "Description")
-            {
-                e.DataField.MaxWidth = 1300;
-
-
-            }
+                e.DataField.Width = 1200;
         }
 
         private void selectCateEvent(object sender, Telerik.Windows.Controls.GridView.GridViewSelectedCellsChangedEventArgs e)
@@ -436,6 +467,9 @@ namespace MyShopProject
 
         private async void afterEditCat(object sender, Telerik.Windows.Controls.Data.DataForm.EditEndedEventArgs e)
         {
+            var action = e.EditAction;
+            if (action == EditAction.Cancel)
+                return;
             var currentItem = listCategory.SelectedItem as Category;
             var alert = new RadDesktopAlert();
             if (currentItem == null)
