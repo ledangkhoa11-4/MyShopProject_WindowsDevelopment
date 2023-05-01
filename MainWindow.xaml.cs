@@ -351,7 +351,11 @@ namespace MyShopProject
             {
                 profit += d.profit;
             }
-            modelBinding.profitByMonth = profit.ToString("#,#", CultureInfo.InvariantCulture) + "₫";
+            if (profit == 0)
+            {
+                modelBinding.profitByMonth = "0₫";
+            }
+            else modelBinding.profitByMonth = profit.ToString("#,#", CultureInfo.InvariantCulture) + "₫";
             profitBusyIndicator.IsBusy = false;
             //Low stock
 
@@ -1156,6 +1160,7 @@ namespace MyShopProject
                     data = await report_BUS.statisticProfitByMonth(profitSelectedMonth, profitSelectedYear);
                     profitChart.Series.Clear();
                     profitChart.Series.Add(createBar(data));
+                    profitName.Text = $"In {DateFormat.IntToMonth(profitSelectedMonth)} - {profitSelectedYear}";
                 }
             }
             catch (Exception ex)

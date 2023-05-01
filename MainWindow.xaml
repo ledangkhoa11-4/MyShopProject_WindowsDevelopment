@@ -93,7 +93,7 @@
                         <Border Margin="236,0,120,0" Background="White" CornerRadius="18" Grid.Column="1" Grid.ColumnSpan="2">
                             <Canvas Background="White" Margin="10,10,10,10" >
                                 <TextBlock Text="Profit:" FontSize="20" FontStyle="Italic" FontWeight="Bold"/>
-                                <TextBlock Text="In this month:" FontSize="20" Canvas.Left="17" Canvas.Top="54" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                                <TextBlock x:Name="profitName" Text="In this month:" FontSize="20" Canvas.Left="17" Canvas.Top="54" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                                 <TextBlock d:Text="9999" Text="{Binding profitByMonth}" FontSize="30" Canvas.Left="10" Canvas.Top="109" FontStyle="Italic" HorizontalAlignment="Left" VerticalAlignment="Center" Width="180" TextAlignment="Center"/>
                                 <telerik:RadBusyIndicator IsBusy="True" Background="Transparent" x:Name="profitBusyIndicator"  BusyContent="Profit is currently loading..." telerik:StyleManager.Theme="Office2013" Canvas.Left="16" Canvas.Top="103" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
