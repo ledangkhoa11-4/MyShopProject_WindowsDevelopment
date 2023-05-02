@@ -94,6 +94,11 @@ namespace MyShopProject.BUS
                 var wbPart = document.WorkbookPart;
                 var sheets = wbPart.Workbook.Descendants<Sheet>();
                 var sheet = sheets.FirstOrDefault(s => s.Name == sheetName);
+                if (sheet == null)
+                {
+                    MessageBox.Show("Sheet Name is not exist please try again!!!");
+                    return false;
+                }
                 var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
                 var rows = wsPart.Worksheet.Descendants<Row>();
                 int numRows = rows.Count();
@@ -140,6 +145,11 @@ namespace MyShopProject.BUS
                 var wbPart = document.WorkbookPart;
                 var sheets = wbPart.Workbook.Descendants<Sheet>();
                 var sheet = sheets.FirstOrDefault(s => s.Name == sheetName);
+                if(sheet == null)
+                {
+                    MessageBox.Show("Sheet Name is not exist please try again!!!");
+                    return null;
+                }
                 var wsPart = (WorksheetPart)(wbPart.GetPartById(sheet.Id));
                 var rows = wsPart.Worksheet.Descendants<Row>();
                 int numRows = rows.Count();
