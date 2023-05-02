@@ -127,7 +127,7 @@ namespace MyShopProject.BUS
             catch (Exception ex)
 
             {
-                
+                MessageBox.Show(ex.Message);
                 return false;
             }
             return true;
@@ -173,7 +173,7 @@ namespace MyShopProject.BUS
             catch (Exception ex)
 
             {
-                
+                MessageBox.Show(ex.Message);
                 return null;
             }
         }
