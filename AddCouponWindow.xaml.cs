@@ -52,9 +52,11 @@ namespace MyShopProject
             }
             else
             {
-                MainWindow.modelBinding.listCoupon.Add(newCoupon);
+                
                 var coupon_BUS = new Coupon_BUS();
                 var result = await coupon_BUS.AddCoupon(newCoupon);
+                newCoupon._id = result;
+                MainWindow.modelBinding.listCoupon.Add(newCoupon);
                 var alert = new RadDesktopAlert();
                 if (result.Length != 0)
                 {

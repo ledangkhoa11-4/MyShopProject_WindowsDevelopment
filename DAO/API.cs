@@ -17,7 +17,7 @@ namespace MyShopProject.DAO
         {
             try
             {
-                var response = await _httpClient.GetAsync("/"); //GET 127.0.0.1:5000/category
+                var response = await _httpClient.GetAsync("/"); 
                 var stringResult = await response.Content.ReadAsStringAsync();
                 return Tuple.Create<Boolean,String>(true, "Connect web service successfully");
             }
