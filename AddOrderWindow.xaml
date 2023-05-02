@@ -88,6 +88,7 @@
                 </telerik:RadMultiColumnComboBox>
                 <telerik:RadButton Click="AddNewCoupon" Content="Add Coupon" Height="28" Canvas.Left="353" Canvas.Top="164" Width="80" telerik:StyleManager.Theme="Office2019" CornerRadius="6,6,6,6"/>
                 <telerik:Label Name="currentDiscount" Content="{Binding newOrder.Coupon.DiscountPercent}" Canvas.Left="112" Canvas.Top="169" HorizontalAlignment="Left" Height="23" VerticalAlignment="Top" Width="50" HorizontalContentAlignment="Center" IsEnabled="False" Visibility="Hidden"/>
+                <telerik:Label Content="Products:" FontSize="14" Canvas.Left="10" Canvas.Top="174" Height="36" Width="152" HorizontalAlignment="Center" VerticalAlignment="Top" />
             </Canvas>
         </GroupBox>
 
